@@ -1,0 +1,51 @@
+---
+import type { FAQItem } from '../data/faq';
+
+interface Props {
+  items: FAQItem[];
+  title?: string;
+  variant?: 'dark' | 'light';
+  id?: string;
+}
+
+const {
+  items,
+  title = 'Frequently Asked Questions',
+  variant = 'dark',
+  id = 'faq',
+} = Astro.props;
+---
+
+<section
+  class:list={['section', variant === 'dark' ? 'faq-section--dark' : 'section--alt']}
+  aria-labelledby={`${id}-heading`}
+>
+  <div class="container container--narrow">
+    <h2 id={`${id}-heading`} class="section__title text-center">{title}</h2>
+    <div class:list={['faq', variant === 'light' && 'faq--light']}>
+      {
+        items.map((item) => (
+          <details>
+            <summary>{item.question}</summary>
+            <p class="faq__answer">{item.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-section--dark {
+    background: var(--color-brand);
+    color: #fff;
+  }
+
+  .faq-section--dark .section__title {
+    color: #fff;
+  }
+
+  .faq-section--dark a {
+    color: #fff;
+  }
+</style>

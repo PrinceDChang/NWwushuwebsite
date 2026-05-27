@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import FAQSection from '../../components/FAQSection.astro';
+import { site } from '../../data/site';
+import { faqItems } from '../../data/faq';
+---
+
+<BaseLayout title="Thank You" currentPath="/contact" showStickyCta={false}>
+  <PageHero title="Contact Us" />
+
+  <section class="section">
+    <div class="container container--narrow text-center">
+      <h2 class="section__title">Thank you for contacting us!</h2>
+      <p>We will reach out within {site.replyTime}.</p>
+      <a href="/" class="btn btn--primary" style="margin-top: 1.5rem">Go back to homepage</a>
+    </div>
+  </section>
+
+  <FAQSection items={faqItems.slice(0, 6)} variant="dark" />
+</BaseLayout>

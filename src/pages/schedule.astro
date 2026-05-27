@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ClassCard from '../components/ClassCard.astro';
+import CTABand from '../components/CTABand.astro';
+import { site } from '../data/site';
+import { classes } from '../data/classes';
+---
+
+<BaseLayout title="Schedule" currentPath="/schedule">
+  <PageHero title="Schedule" subtitle={site.address.full} />
+
+  <section class="section">
+    <div class="container" style="max-width: 48rem">
+      <p class="text-muted text-center" style="margin-bottom: 2rem">
+        All group classes meet on <strong>Saturdays</strong> at the Seattle Armory. We will confirm
+        trial bookings within {site.replyTime}.
+      </p>
+      {classes.map((c) => <ClassCard classInfo={c} />)}
+    </div>
+  </section>
+
+  <CTABand />
+</BaseLayout>

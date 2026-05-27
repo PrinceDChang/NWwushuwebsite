@@ -1,0 +1,37 @@
+---
+interface Props {
+  current: 1 | 2 | 3;
+}
+
+const { current } = Astro.props;
+const steps = [
+  { num: 1, label: 'Your info' },
+  { num: 2, label: 'Waivers' },
+  { num: 3, label: 'Date & time' },
+];
+---
+
+<nav class="stepper" aria-label="Trial sign-up progress">
+  {
+    steps.map((step, i) => (
+      <>
+        <div class="stepper__step">
+          <span
+            class:list={[
+              'stepper__dot',
+              step.num === current && 'stepper__dot--active',
+              step.num < current && 'stepper__dot--done',
+            ]}
+            aria-current={step.num === current ? 'step' : undefined}
+          >
+            {step.num}
+          </span>
+          <span class="stepper__label">{step.label}</span>
+        </div>
+        {i < steps.length - 1 && (
+          <div class:list={['stepper__line', step.num < current && 'stepper__line--done']} aria-hidden="true" />
+        )}
+      </>
+    ))
+  }
+</nav>

@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import TrialStepper from '../../components/TrialStepper.astro';
+import FAQSection from '../../components/FAQSection.astro';
+import { site } from '../../data/site';
+import { faqItems } from '../../data/faq';
+---
+
+<BaseLayout title="Trial Request Received" currentPath="/trial" showStickyCta={false}>
+  <PageHero title="Free Trial Sign Up" variant="image" imageSrc="/images/studio-training.jpg" />
+
+  <div class="container container--narrow">
+    <TrialStepper current={3} />
+
+    <p class="text-center" style="font-size: 1.25rem; font-weight: 600">Request received!</p>
+    <p class="text-center text-muted">
+      We will confirm your trial within {site.replyTime}. Check your email for updates.
+    </p>
+
+    <div class="confirm-card">
+      <div class="confirm-card__icon confirm-card__pending" aria-hidden="true">⏳</div>
+      <h2 style="margin: 0 0 0.5rem">Trial lesson (pending)</h2>
+      <p style="color: var(--color-brand); font-weight: 700; margin: 0 0 0.5rem" id="confirm-class">—</p>
+      <p id="confirm-date" style="margin: 0 0 0.25rem">—</p>
+      <p id="confirm-time" style="margin: 0 0 1rem">—</p>
+      <p style="font-size: 0.9375rem; text-align: left">
+        Please wear comfortable sportswear and shoes. We are excited to meet you!
+      </p>
+      <button type="button" class="btn btn--ghost btn--small" id="add-calendar" style="margin-top: 1rem">
+        Add tentative reminder (.ics)
+      </button>
+    </div>
+
+    <p class="text-center">
+      <a href="/" class="btn btn--primary">Go back to homepage</a>
+    </p>
+  </div>
+
+  <FAQSection items={faqItems.slice(0, 6)} variant="dark" />
+</BaseLayout>
+
+<script type="module" src="/scripts/trial-confirmation.js"></script>

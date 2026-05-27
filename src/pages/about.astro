@@ -1,0 +1,229 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import CTABand from '../components/CTABand.astro';
+import { site } from '../data/site';
+import { featuredCoach, coaches } from '../data/coaches';
+---
+
+<BaseLayout title="About" description={`About ${site.name}`} currentPath="/about">
+  <PageHero
+    title="About Northwest Wushu"
+    subtitle="Seattle's home for traditional Chinese martial arts since 2008."
+    variant="image"
+    imageSrc="/images/class-teens-adults.jpg"
+  />
+
+  <nav class="about-subnav" aria-label="About sections">
+    <div class="container">
+      <a href="#what-is-wushu">Wushu</a>
+      <a href="#coaches">Coaches</a>
+      <a href="#programs">Programs</a>
+    </div>
+  </nav>
+
+  <section class="section" id="what-is-wushu">
+    <div class="container about-split">
+      <img
+        src="/images/studio-training.jpg"
+        alt="Instructor guiding a student with a staff in the training studio"
+        width="500"
+        height="600"
+        loading="lazy"
+      />
+      <div>
+        <h2 class="section__title">What is Wushu</h2>
+        <p>
+          Wushu is a modern, standardized form of Chinese martial arts that combines traditional
+          combat techniques with athletic movement and acrobatics. Students develop strength,
+          flexibility, coordination, and discipline.
+        </p>
+        <p>
+          At Northwest Wushu Academy, we train kids, teens, and adults in a supportive community at
+          the Seattle Armory. Whether you are exploring martial arts for fitness, culture, or
+          competition, you are welcome here.
+        </p>
+        <p class="text-muted">(Additional history and forms content — placeholder for approved copy.)</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section coaches-banner" id="coaches" aria-labelledby="coaches-heading">
+    <div class="container">
+      <h2 id="coaches-heading" class="coaches-banner__title">Coaches</h2>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container coach-feature">
+      <img
+        src="/images/studio-partners.jpg"
+        alt="Adult students training together"
+        width="400"
+        height="500"
+        loading="lazy"
+      />
+      <div>
+        {featuredCoach.role && <p class="coach-feature__role">{featuredCoach.role}</p>}
+        <h3 class="coach-feature__name">{featuredCoach.name}</h3>
+        <p>{featuredCoach.bio}</p>
+      </div>
+    </div>
+
+    <div class="container coach-grid">
+      {
+        coaches.map((coach) => (
+          <article class="card">
+            {coach.image && (
+              <img src={coach.image} alt="" width="120" height="120" class="coach-grid__photo" />
+            )}
+            <h3>{coach.name}</h3>
+            <p>{coach.bio}</p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section section--alt" id="programs">
+    <div class="container">
+      <h2 class="section__title text-center">Our Programs</h2>
+      <div class="program-grid">
+        <article class="card program-card">
+          <img src="/images/class-kids.jpg" alt="Kids wushu class" loading="lazy" />
+          <h3>Kids Class</h3>
+          <p>Saturday 10:00–11:00 AM · Ages 6–12. Foundations, coordination, and confidence.</p>
+          <a href="/trial/?class=kids" class="btn btn--primary btn--small">Sign up for free trial</a>
+        </article>
+        <article class="card program-card">
+          <img src="/images/class-teens-adults.jpg" alt="Teen and adult class stretching" loading="lazy" />
+          <h3>Teen &amp; Adult</h3>
+          <p>Saturday 11:00 AM–1:00 PM · Ages 13+. Forms, weapons, and conditioning.</p>
+          <a href="/trial/?class=adult" class="btn btn--primary btn--small">Sign up for free trial</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <CTABand />
+</BaseLayout>
+
+<style>
+  .about-subnav {
+    background: #facc15;
+    padding: 0.75rem 0;
+  }
+
+  .about-subnav .container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .about-subnav a {
+    color: var(--color-ink);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .about-subnav a:hover {
+    text-decoration: underline;
+  }
+
+  .about-split {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  @media (min-width: 768px) {
+    .about-split {
+      grid-template-columns: 1fr 1.2fr;
+    }
+  }
+
+  .about-split img {
+    border-radius: var(--radius-lg);
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .coaches-banner {
+    background: var(--color-brand);
+    color: #fff;
+    padding: 2rem 0;
+  }
+
+  .coaches-banner__title {
+    margin: 0;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    text-align: center;
+  }
+
+  .coach-feature {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .coach-feature {
+      grid-template-columns: 280px 1fr;
+    }
+  }
+
+  .coach-feature img {
+    border-radius: var(--radius-lg);
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .coach-feature__role {
+    color: var(--color-brand);
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+  }
+
+  .coach-feature__name {
+    font-size: 1.75rem;
+    margin: 0 0 1rem;
+  }
+
+  .coach-grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .coach-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .coach-grid__photo {
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    object-fit: cover;
+  }
+
+  .program-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .program-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .program-card img {
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    width: 100%;
+  }
+</style>

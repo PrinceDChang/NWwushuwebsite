@@ -1,0 +1,72 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  variant?: 'default' | 'image';
+  imageSrc?: string;
+  imageAlt?: string;
+}
+
+const { title, subtitle, variant = 'default', imageSrc, imageAlt = '' } = Astro.props;
+---
+
+<section
+  class:list={['page-hero', variant === 'image' && 'page-hero--image']}
+  style={variant === 'image' && imageSrc ? `background-image: url(${imageSrc})` : undefined}
+>
+  <div class="container page-hero__content">
+    <h1 class:list={[variant === 'default' && 'hero-title', variant === 'image' && 'page-hero__title-image']}>
+      {title}
+    </h1>
+    {subtitle && <p class="page-hero__subtitle">{subtitle}</p>}
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    background: var(--color-surface-alt);
+    padding: 3rem 0;
+  }
+
+  .page-hero__subtitle {
+    text-align: center;
+    margin: 1rem 0 0;
+    font-size: 1.0625rem;
+    color: var(--color-ink);
+  }
+
+  .page-hero--image {
+    background-size: cover;
+    background-position: center;
+    min-height: 16rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .page-hero--image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  .page-hero--image .page-hero__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .page-hero__title-image {
+    color: #fff;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    text-align: center;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+
+  .page-hero--image .page-hero__subtitle {
+    color: #fff;
+  }
+</style>
