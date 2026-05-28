@@ -36,8 +36,14 @@ import { site } from '../data/site';
     <div class="container">
       <h2 class="section__title">Our Training Space</h2>
       <div class="location-split">
-        <div class="location-placeholder" role="img" aria-label="Studio interior photo coming soon">
-          <p>Interior photos coming soon</p>
+        <div class="location-split__media">
+          <img
+            src="/images/location-studio-interior.jpg"
+            alt="Northwest Wushu training studio at the Seattle Armory with open floor space and mirrors"
+            width="800"
+            height="600"
+            loading="lazy"
+          />
         </div>
         <ul class="location-tips">
           <li>
@@ -79,14 +85,17 @@ import { site } from '../data/site';
     }
   }
 
-  .location-placeholder {
-    background: var(--color-border);
+  .location-split__media {
     border-radius: var(--radius-lg);
-    min-height: 16rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-muted);
+    overflow: hidden;
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  .location-split__media img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
   }
 
   .location-tips {
