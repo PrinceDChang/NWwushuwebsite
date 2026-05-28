@@ -1,0 +1,238 @@
+---
+import { featuredCoach, featuredCoachSlides } from '../data/coaches';
+
+const tickerId = 'coach-feature-ticker';
+const slideDurationMs = 9000;
+---
+
+<div
+  class="coach-ticker container"
+  id={tickerId}
+  data-interval={slideDurationMs}
+  style={`--coach-timer-duration: ${slideDurationMs}ms`}
+  aria-roledescription="carousel"
+  aria-label={`About ${featuredCoach.name}`}
+>
+  <div class="coach-ticker__viewport">
+    {
+      featuredCoachSlides.map((slide, index) => (
+        <article
+          class:list={['coach-ticker__slide', index === 0 && 'coach-ticker__slide--active']}
+          data-slide={index}
+          aria-hidden={index === 0 ? 'false' : 'true'}
+        >
+          <img
+            src={slide.image}
+            alt={slide.imageAlt}
+            width="400"
+            height="500"
+            loading={index === 0 ? 'eager' : 'lazy'}
+          />
+          <div class="coach-ticker__content">
+            {featuredCoach.role && <p class="coach-role-label">{featuredCoach.role}</p>}
+            <h3 class="coach-feature__name">{featuredCoach.name}</h3>
+            <p class="coach-ticker__aspect">{slide.aspect}</p>
+            {slide.paragraphs.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+            {
+              slide.youtubeUrl?.trim() ? (
+                <p class="coach-ticker__video-link">
+                  <a href={slide.youtubeUrl.trim()} target="_blank" rel="noopener noreferrer">
+                    Watch on YouTube
+                  </a>
+                </p>
+              ) : slide.youtubeUrl !== undefined ? (
+                <p class="coach-ticker__video-placeholder">YouTube video link coming soon.</p>
+              ) : null
+            }
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <div class="coach-ticker__controls">
+    <div class="coach-ticker__timers" role="tablist" aria-label="Slide progress">
+      {
+        featuredCoachSlides.map((slide, index) => (
+          <button
+            type="button"
+            class:list={['coach-timer', index === 0 && 'coach-timer--active']}
+            data-slide={index}
+            role="tab"
+            aria-selected={index === 0 ? 'true' : 'false'}
+            aria-label={slide.aspect}
+          >
+            <span class="coach-timer__circle" aria-hidden="true"></span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<script type="module" src="/scripts/coach-ticker.js"></script>
+
+<style>
+  @property --coach-timer-fill {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  .coach-ticker {
+    margin-bottom: 2rem;
+  }
+
+  .coach-ticker__viewport {
+    position: relative;
+    min-height: 16rem;
+  }
+
+  .coach-ticker__slide {
+    display: grid;
+    gap: 2rem;
+    align-items: start;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    inset: 0;
+    transition:
+      opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+      visibility 0.55s;
+    pointer-events: none;
+  }
+
+  .coach-ticker__slide--active {
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+    pointer-events: auto;
+  }
+
+  @media (min-width: 768px) {
+    .coach-ticker__slide {
+      grid-template-columns: 280px 1fr;
+    }
+  }
+
+  .coach-ticker__slide img {
+    border-radius: var(--radius-lg);
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 4 / 5;
+  }
+
+  .coach-ticker__aspect {
+    margin: 0 0 0.75rem;
+    font-weight: 700;
+    color: var(--color-brand-mid);
+    font-size: 1rem;
+  }
+
+  .coach-ticker__content p:not(.coach-role-label):not(.coach-ticker__aspect) {
+    margin: 0 0 0.75rem;
+  }
+
+  .coach-ticker__content > p:last-of-type:not(.coach-role-label):not(.coach-ticker__aspect) {
+    margin-bottom: 0;
+  }
+
+  .coach-ticker__video-link {
+    margin: 1rem 0 0;
+  }
+
+  .coach-ticker__video-link a {
+    font-weight: 600;
+    color: var(--color-brand-mid);
+  }
+
+  .coach-ticker__video-link a:hover {
+    text-decoration: underline;
+  }
+
+  .coach-ticker__video-placeholder {
+    margin: 1rem 0 0;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    font-style: italic;
+  }
+
+  .coach-feature__name {
+    font-size: 1.75rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .coach-ticker__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.25rem;
+  }
+
+  .coach-ticker__timers {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .coach-timer {
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    line-height: 0;
+  }
+
+  .coach-timer__circle {
+    display: block;
+    box-sizing: border-box;
+    width: 0.859375rem;
+    height: 0.859375rem;
+    border-radius: 50%;
+    border: 1px solid var(--color-brand-light-strong);
+    background: var(--color-brand-light);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .coach-timer--active .coach-timer__circle {
+    box-shadow: var(--shadow-sm), var(--shadow-brand);
+    background: conic-gradient(
+      from -90deg,
+      #e59a4d 0deg,
+      var(--color-brand-mid) var(--coach-timer-fill),
+      var(--color-brand-light) var(--coach-timer-fill)
+    );
+  }
+
+  .coach-timer:not(.coach-timer--active) .coach-timer__circle {
+    --coach-timer-fill: 0deg;
+    animation: none;
+  }
+
+  .coach-ticker.is-paused .coach-timer--active .coach-timer__circle {
+    animation-play-state: paused;
+  }
+
+  .coach-timer--active .coach-timer__circle {
+    animation: coach-timer-fill var(--coach-timer-duration, 9s) linear forwards;
+  }
+
+  @keyframes coach-timer-fill {
+    to {
+      --coach-timer-fill: 360deg;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .coach-ticker__slide {
+      transition: none;
+    }
+
+    .coach-timer--active .coach-timer__circle {
+      animation: none;
+      background: var(--gradient-brand);
+    }
+  }
+</style>

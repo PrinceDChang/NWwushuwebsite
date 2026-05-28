@@ -1,11 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CTABand from '../components/CTABand.astro';
+import FeatureIcon from '../components/FeatureIcon.astro';
+import InstagramSection from '../components/InstagramSection.astro';
 import { site } from '../data/site';
+
+const heroVideoId = 'Q32L4Rx_040';
+const heroVideoPoster = `https://i.ytimg.com/vi/${heroVideoId}/maxresdefault.jpg`;
 ---
 
 <BaseLayout title={site.shortName} currentPath="/">
   <section class="home-hero">
+    <div
+      class="home-hero__video"
+      aria-hidden="true"
+      data-video-id={heroVideoId}
+      style={`background-image: url(${heroVideoPoster})`}
+    ></div>
+    <div class="home-hero__overlay" aria-hidden="true"></div>
     <div class="container home-hero__inner">
       <h1 class="home-hero__title">Northwest Wushu</h1>
       <p class="home-hero__tagline">{site.tagline}</p>
@@ -20,21 +32,23 @@ import { site } from '../data/site';
     </div>
   </section>
 
+  <script type="module" src="/scripts/home-hero-video.js"></script>
+
   <section class="section">
     <div class="container">
       <div class="features">
         <div class="feature">
-          <div class="feature__icon" aria-hidden="true">◎</div>
+          <FeatureIcon variant="levels" />
           <h2 class="feature__title">All Levels Welcome</h2>
           <p>From first-timers to competitive athletes.</p>
         </div>
         <div class="feature">
-          <div class="feature__icon" aria-hidden="true">✦</div>
+          <FeatureIcon variant="tradition" />
           <h2 class="feature__title">Traditional &amp; Modern</h2>
           <p>Shanxi team methods through modern wushu training.</p>
         </div>
         <div class="feature">
-          <div class="feature__icon" aria-hidden="true">⌖</div>
+          <FeatureIcon variant="location" />
           <h2 class="feature__title">Seattle Location</h2>
           <p>{site.address.street}, {site.address.name}</p>
         </div>
@@ -46,8 +60,8 @@ import { site } from '../data/site';
     <div class="container home-split">
       <div class="home-split__media">
         <img
-          src="/images/class-kids.jpg"
-          alt="Kids wushu class practicing together on red mats"
+          src="/images/wushu-seattle-skyline.jpg"
+          alt="Wushu practitioner with staff on a hill overlooking the Seattle skyline at sunrise"
           width="600"
           height="400"
           loading="lazy"
@@ -60,22 +74,9 @@ import { site } from '../data/site';
           combat techniques with athletic movement and acrobatics. Training builds strength,
           flexibility, coordination, and discipline for all ages.
         </p>
-        <p>
-          <a href="/about/#what-is-wushu">Read more on our About page →</a>
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container text-center">
-      <h2 class="section__title">New here?</h2>
-      <p class="text-muted" style="max-width: 36rem; margin-inline: auto 1.5rem">
-        Parents: start with a free trial — we will confirm your Saturday spot within {site.replyTime}.
-      </p>
-      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap">
-        <a href="/trial/" class="btn btn--primary">Book free trial</a>
-        <a href="/contact/" class="btn btn--ghost">Ask a question</a>
+        <div class="home-split__cta">
+          <a href="/about/#what-is-wushu" class="btn btn--primary">Read more on our About page →</a>
+        </div>
       </div>
     </div>
   </section>
@@ -85,32 +86,82 @@ import { site } from '../data/site';
   <section class="section section--alt" id="instagram" aria-labelledby="instagram-heading">
     <div class="container">
       <h2 id="instagram-heading" class="section__title text-center">Follow us on Instagram</h2>
-      <p class="text-center text-muted">
-        <a href={site.instagram} target="_blank" rel="noopener noreferrer">{site.instagramHandle}</a>
-      </p>
-      <div class="instagram-embed">
-        <!-- Replace src with your SnapWidget/Elfsight embed when ready -->
-        <p>
-          Live feed: add an embed from
-          <a href={site.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
-          (SnapWidget or Elfsight). See README.
-        </p>
-      </div>
+      <InstagramSection limit={6} />
     </div>
   </section>
 </BaseLayout>
 
 <style>
   .home-hero {
+    position: relative;
+    overflow: hidden;
     background: var(--color-hero-bg);
     color: #fff;
     padding: 4rem 0;
+    min-height: clamp(22rem, 52vh, 32rem);
+    display: flex;
+    align-items: center;
+  }
+
+  .home-hero__video {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background-color: var(--color-hero-bg);
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Injected by home-hero-video.js — must be :global for Astro scoped styles */
+  .home-hero__video :global(.home-hero__video-inner) {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .home-hero__video :global(.home-hero__video-inner iframe) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 56.25vw;
+    min-width: 177.78vh;
+    min-height: 100%;
+    /*
+      YouTube sometimes flashes a control/progress UI at the start of loops.
+      Crop more aggressively (slightly upward) so those overlays remain off-screen.
+    */
+    transform: translate(-50%, -54%) scale(1.32);
+    border: 0;
+    pointer-events: none;
+  }
+
+  .home-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      to bottom,
+      rgb(26 21 32 / 0.45),
+      rgb(17 24 39 / 0.78)
+    );
   }
 
   .home-hero__inner {
+    position: relative;
+    z-index: 2;
     text-align: center;
     max-width: 40rem;
     margin-inline: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-hero__video {
+      display: none;
+    }
   }
 
   .home-hero__title {
@@ -136,6 +187,12 @@ import { site } from '../data/site';
     flex-wrap: wrap;
   }
 
+  .home-cta__lead {
+    max-width: 36rem;
+    margin-inline: auto;
+    margin-bottom: 1.5rem;
+  }
+
   .feature__title {
     font-size: 1.125rem;
     margin-bottom: 0.35rem;
@@ -157,5 +214,9 @@ import { site } from '../data/site';
     border-radius: var(--radius-lg);
     width: 100%;
     object-fit: cover;
+  }
+
+  .home-split__cta {
+    margin-top: 1.25rem;
   }
 </style>

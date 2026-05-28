@@ -5,10 +5,10 @@ import TrialStepper from '../../components/TrialStepper.astro';
 import { waiverText, photoReleaseText } from '../../data/waivers';
 ---
 
-<BaseLayout title="Free Trial — Waivers" currentPath="/trial">
+<BaseLayout title="Free Trial — Waivers" currentPath="/trial" bodyClass="trial-page">
   <PageHero title="Free Trial Sign Up" variant="image" imageSrc="/images/studio-training.jpg" />
 
-  <div class="container container--narrow">
+  <div class="container container--narrow trial-flow">
     <TrialStepper current={2} />
 
     <form id="trial-agreements-form" class="form-grid">
@@ -31,11 +31,11 @@ import { waiverText, photoReleaseText } from '../../data/waivers';
       </div>
       <fieldset class="form-field">
         <legend class="required">Photo release choice</legend>
-        <label style="display: block; margin-bottom: 0.5rem">
+        <label>
           <input type="radio" name="photoRelease" value="agree" required />
           I agree to the photo release
         </label>
-        <label style="display: block">
+        <label>
           <input type="radio" name="photoRelease" value="decline" />
           I do not consent to the photo release
         </label>

@@ -11,7 +11,14 @@ const honeypot = import.meta.env.PUBLIC_FORMSPREE_HONEYPOT || '_gotcha';
 ---
 
 <BaseLayout title="Contact" currentPath="/contact">
-  <PageHero title="Contact Us" />
+  <PageHero
+    title="Contact Us"
+    variant="image"
+    imageSrc="/images/contact-team.jpg"
+    imageAlt="Northwest Wushu team in competition uniforms at Seattle International Martial Arts"
+    imagePosition="center 22%"
+    heroScale={1.25}
+  />
 
   <section class="section">
     <div class="container container--narrow">
@@ -63,11 +70,6 @@ const honeypot = import.meta.env.PUBLIC_FORMSPREE_HONEYPOT || '_gotcha';
           <button type="submit" class="btn btn--primary">Send message</button>
         </div>
       </form>
-
-      <p class="text-center" style="margin-top: 2rem">
-        Prefer Instagram?
-        <a href={site.instagram} target="_blank" rel="noopener noreferrer">{site.instagramHandle}</a>
-      </p>
     </div>
   </section>
 

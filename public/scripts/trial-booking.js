@@ -1,35 +1,56 @@
-import { requireStep, saveTrialData, getTrialData, clearTrialData } from './trial-storage.js';
+import { saveTrialData, getTrialData, clearTrialData } from './trial-storage.js';
 
 const SLOTS = {
   kids: { label: 'Kids Wushu', time: '10:00 AM – 11:00 AM' },
   adult: { label: 'Teen & Adult Wushu', time: '11:00 AM – 1:00 PM' },
 };
 
-if (!requireStep(2)) {
-  /* redirected */
-} else {
-  const data = getTrialData();
-  const form = document.getElementById('trial-booking-form');
-  const formId = form?.dataset.formspreeId;
-  const classType = data.classType || 'kids';
-  const classRadios = form?.querySelectorAll('input[name="classType"]');
+const MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
 
-  classRadios?.forEach((r) => {
+function toISODateLocal(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+const trialData = getTrialData();
+const hasAccess = Boolean(trialData.step && trialData.step >= 2);
+
+if (!hasAccess) {
+  window.location.href = '/trial/agreements/';
+}
+
+const form = document.getElementById('trial-booking-form');
+if (!form) {
+  /* not on booking page */
+} else {
+  const formId = form.dataset.formspreeId;
+  const classType = trialData.classType || 'kids';
+  const classRadios = form.querySelectorAll('input[name="classType"]');
+
+  let viewYear = new Date().getFullYear();
+  let viewMonth = new Date().getMonth();
+  let selectedDate = trialData.selectedDate || null;
+
+  const monthLabel = document.getElementById('cal-month');
+  const grid = document.getElementById('cal-grid');
+  const selectedLabel = document.getElementById('selected-date-label');
+  const selectedInput = document.getElementById('selected-date-input');
+  const timeSlotBtn = document.getElementById('time-slot');
+  const submitBtn = document.getElementById('submit-trial');
+  const step3Col = document.getElementById('trial-step-3');
+
+  classRadios.forEach((r) => {
     if (r.value === classType) r.checked = true;
     r.addEventListener('change', () => updateSlotLabel(r.value));
   });
 
   updateSlotLabel(classType);
-
-  let viewYear = new Date().getFullYear();
-  let viewMonth = new Date().getMonth();
-  let selectedDate = data.selectedDate || null;
-
-  const monthLabel = document.getElementById('cal-month');
-  const grid = document.getElementById('cal-grid');
-  const selectedLabel = document.getElementById('selected-date-label');
-  const timeSlotBtn = document.getElementById('time-slot');
-  const submitBtn = document.getElementById('submit-trial');
+  updateStep3State();
 
   document.getElementById('cal-prev')?.addEventListener('click', () => {
     viewMonth -= 1;
@@ -54,20 +75,36 @@ if (!requireStep(2)) {
     if (timeSlotBtn) {
       timeSlotBtn.textContent = slot.time;
       timeSlotBtn.dataset.time = slot.time;
-      timeSlotBtn.setAttribute('aria-pressed', 'true');
     }
     saveTrialData({ classType: type });
   }
 
+  function updateStep3State() {
+    const locked = !selectedDate;
+    step3Col?.classList.toggle('trial-booking__col--locked', locked);
+    step3Col?.setAttribute('aria-disabled', locked ? 'true' : 'false');
+
+    if (submitBtn) submitBtn.disabled = locked;
+    if (timeSlotBtn) {
+      timeSlotBtn.disabled = locked;
+      timeSlotBtn.setAttribute('aria-pressed', locked ? 'false' : 'true');
+    }
+
+    if (selectedInput) selectedInput.value = selectedDate || '';
+
+    if (locked && selectedLabel) {
+      selectedLabel.textContent = 'Select a date above to continue';
+    }
+  }
+
   function renderCalendar() {
+    if (!monthLabel || !grid) return;
+
     const first = new Date(viewYear, viewMonth, 1);
     const startPad = first.getDay();
     const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-    const monthNames = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December',
-    ];
-    monthLabel.textContent = `${monthNames[viewMonth]} ${viewYear}`;
+
+    monthLabel.textContent = `${MONTH_NAMES[viewMonth]} ${viewYear}`;
     grid.innerHTML = '';
 
     ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].forEach((d) => {
@@ -79,6 +116,8 @@ if (!requireStep(2)) {
 
     for (let i = 0; i < startPad; i++) {
       const empty = document.createElement('span');
+      empty.className = 'calendar__day calendar__day--empty';
+      empty.setAttribute('aria-hidden', 'true');
       grid.appendChild(empty);
     }
 
@@ -92,20 +131,32 @@ if (!requireStep(2)) {
       btn.className = 'calendar__day';
       btn.textContent = String(day);
 
-      if (date.getDay() === 6 && date >= today) {
+      const iso = toISODateLocal(date);
+      const isSaturday = date.getDay() === 6;
+      const isFuture = date >= today;
+
+      if (isSaturday && isFuture) {
         btn.classList.add('calendar__day--sat');
-        const iso = date.toISOString().slice(0, 10);
-        if (iso === selectedDate) btn.classList.add('calendar__day--selected');
-        btn.addEventListener('click', () => selectDate(iso, date));
+        btn.dataset.date = iso;
+        btn.setAttribute('aria-label', date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }));
+        if (iso === selectedDate) {
+          btn.classList.add('calendar__day--selected');
+          btn.setAttribute('aria-pressed', 'true');
+        } else {
+          btn.setAttribute('aria-pressed', 'false');
+        }
+        btn.onclick = () => selectDate(iso, date);
       } else {
         btn.disabled = true;
+        btn.setAttribute('aria-hidden', 'true');
       }
+
       grid.appendChild(btn);
     }
 
     if (selectedDate) {
       const d = new Date(selectedDate + 'T12:00:00');
-      updateSelectedLabel(d);
+      if (!Number.isNaN(d.getTime())) updateSelectedLabel(d);
     }
   }
 
@@ -114,9 +165,11 @@ if (!requireStep(2)) {
     saveTrialData({ selectedDate: iso });
     renderCalendar();
     updateSelectedLabel(date);
+    updateStep3State();
   }
 
   function updateSelectedLabel(date) {
+    if (!selectedLabel) return;
     const opts = { weekday: 'long', month: 'long', day: 'numeric' };
     selectedLabel.textContent = date.toLocaleDateString('en-US', opts);
   }
@@ -126,6 +179,11 @@ if (!requireStep(2)) {
   });
 
   submitBtn?.addEventListener('click', async () => {
+    if (!hasAccess) {
+      window.location.href = '/trial/agreements/';
+      return;
+    }
+
     const current = getTrialData();
     const type = form.querySelector('input[name="classType"]:checked')?.value || 'kids';
     if (!selectedDate) {

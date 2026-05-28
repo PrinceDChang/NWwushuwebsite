@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHero from '../components/PageHero.astro';
+import ScheduleHero from '../components/ScheduleHero.astro';
 import ClassCard from '../components/ClassCard.astro';
 import CTABand from '../components/CTABand.astro';
 import { site } from '../data/site';
@@ -8,7 +8,7 @@ import { classes } from '../data/classes';
 ---
 
 <BaseLayout title="Schedule" currentPath="/schedule">
-  <PageHero title="Schedule" subtitle={site.address.full} />
+  <ScheduleHero title="Schedule" />
 
   <section class="section">
     <div class="container" style="max-width: 48rem">

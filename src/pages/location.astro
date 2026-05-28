@@ -6,7 +6,15 @@ import { site } from '../data/site';
 ---
 
 <BaseLayout title="Location" currentPath="/location">
-  <PageHero title="Location" subtitle={site.address.full} />
+  <PageHero
+    title="Location"
+    subtitle={site.address.full}
+    variant="image"
+    imageSrc="/images/location-seattle-skyline.png"
+    imageAlt="Seattle skyline with the Space Needle at sunset"
+    imagePosition="center 35%"
+    imageParallax
+  />
 
   <section class="section">
     <div class="container">
@@ -21,9 +29,6 @@ import { site } from '../data/site';
           loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
-      <p class="text-center" style="margin-top: 1rem">
-        <a href={site.mapsLink} target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
-      </p>
     </div>
   </section>
 

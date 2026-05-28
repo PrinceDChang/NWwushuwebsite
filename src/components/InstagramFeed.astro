@@ -1,0 +1,79 @@
+---
+import { site } from '../data/site';
+import { parseInstagramCaption, type InstagramPost } from '../lib/instagram';
+
+interface Props {
+  posts: InstagramPost[];
+  fetchError?: string | null;
+}
+
+const { posts, fetchError = null } = Astro.props;
+---
+
+{
+  posts.length > 0 ? (
+    <ul class="instagram-grid" role="list">
+      {posts.map((post) => {
+        const { description, hashtags } = parseInstagramCaption(post.caption);
+        const hasOverlay = Boolean(description || hashtags.length > 0);
+        const ariaLabel = [
+          description,
+          hashtags.length > 0 ? hashtags.join(' ') : '',
+          'View on Instagram',
+        ]
+          .filter(Boolean)
+          .join('. ');
+
+        return (
+          <li>
+            <a
+              class="instagram-grid__link"
+              href={post.permalink}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={ariaLabel}
+            >
+              <img
+                class="instagram-grid__img"
+                src={post.imageSrc}
+                alt={post.alt}
+                width="400"
+                height="400"
+                loading="lazy"
+                decoding="async"
+              />
+              {hasOverlay && (
+                <span class="instagram-grid__overlay">
+                  {description && (
+                    <span class="instagram-grid__caption">{description}</span>
+                  )}
+                  {hashtags.length > 0 && (
+                    <span class="instagram-grid__tags">
+                      {hashtags.map((tag) => (
+                        <span class="instagram-grid__tag">{tag}</span>
+                      ))}
+                    </span>
+                  )}
+                </span>
+              )}
+              {post.isVideo && <span class="instagram-grid__badge" aria-hidden="true">▶</span>}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  ) : (
+    <div class="instagram-embed instagram-embed--fallback">
+      <p>
+        {fetchError
+          ? 'Instagram feed is temporarily unavailable.'
+          : 'No recent posts to show.'}{' '}
+        Follow us on{' '}
+        <a href={site.instagram} target="_blank" rel="noopener noreferrer">
+          {site.instagramHandle}
+        </a>
+        .
+      </p>
+    </div>
+  )
+}

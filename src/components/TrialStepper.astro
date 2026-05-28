@@ -11,7 +11,7 @@ const steps = [
 ];
 ---
 
-<nav class="stepper" aria-label="Trial sign-up progress">
+<nav class="stepper" data-current={current} aria-label="Trial sign-up progress">
   {
     steps.map((step, i) => (
       <>
@@ -26,12 +26,65 @@ const steps = [
           >
             {step.num}
           </span>
-          <span class="stepper__label">{step.label}</span>
+          <span
+            class:list={[
+              'stepper__label',
+              step.num === current && 'stepper__label--active',
+              step.num < current && 'stepper__label--done',
+            ]}
+          >
+            {step.label}
+          </span>
         </div>
         {i < steps.length - 1 && (
-          <div class:list={['stepper__line', step.num < current && 'stepper__line--done']} aria-hidden="true" />
+          <div class="stepper__line" data-segment={step.num} aria-hidden="true">
+            <span
+              class="stepper__line-fill"
+              style={`--scale: ${step.num < current ? 1 : 0}`}
+            />
+          </div>
         )}
       </>
     ))
   }
 </nav>
+
+<script is:inline define:vars={{ current }}>
+  (function () {
+    const nav = document.currentScript?.previousElementSibling;
+    if (!nav || !nav.matches?.('.stepper')) return;
+
+    const storageKey = 'nw_wushu_trial_stepper';
+    const stored = sessionStorage.getItem(storageKey);
+    const prev = stored !== null ? Number(stored) : current;
+    const direction =
+      current > prev ? 'forward' : current < prev ? 'back' : 'none';
+
+    if (direction === 'none') return;
+
+    nav.dataset.direction = direction;
+
+    nav.querySelectorAll('.stepper__line[data-segment]').forEach((line) => {
+      const seg = Number(line.dataset.segment);
+      const fill = line.querySelector('.stepper__line-fill');
+      if (!fill) return;
+
+      let initialScale = seg < current ? 1 : 0;
+      if (direction === 'forward') {
+        if (seg < prev) initialScale = 1;
+        else if (seg === prev) initialScale = 0;
+        else initialScale = 0;
+      } else if (seg < current) {
+        initialScale = 1;
+      } else if (seg === prev - 1) {
+        initialScale = 1;
+      } else {
+        initialScale = 0;
+      }
+
+      fill.style.setProperty('--scale', String(initialScale));
+    });
+  })();
+</script>
+
+<script type="module" src="/scripts/trial-stepper.js"></script>

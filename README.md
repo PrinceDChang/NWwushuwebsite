@@ -39,14 +39,13 @@ PUBLIC_FORMSPREE_TRIAL_ID=efgh5678
 4. At your domain registrar, add DNS records GitHub shows (usually `A` + `CNAME` for `www`).
 5. `public/CNAME` already contains `northwestwushu.com`.
 
-## Instagram embed
+## Instagram feed
 
-The homepage has a placeholder block. Options:
+The homepage loads recent posts from **@northwestwushu** at build time. Thumbnails are downloaded into `public/images/instagram/` so they display reliably (Instagram’s CDN blocks hotlinking and URLs expire quickly).
 
-- [SnapWidget](https://snapwidget.com/) — paste embed HTML into `src/pages/index.astro`
-- [Elfsight](https://elfsight.com/instagram-feed/) — free tier
+After new Instagram posts, run `npm run build` or `npm run sync:instagram` and redeploy. Commit the cached images if you want the site to build without hitting Instagram’s API.
 
-Use account **@northwestwushu**.
+If the feed is empty in CI, Instagram may be rate-limiting the build — re-run the deploy or try again later.
 
 ## Content to replace before launch
 
