@@ -1,9 +1,8 @@
 import { defineConfig } from 'astro/config';
 
-// https://docs.astro.build/en/guides/deploy/github/
+// Custom domain — site is served from https://northwestwushu.com (not /NWwushuwebsite/)
 export default defineConfig({
-  site: 'https://princedchang.github.io',
-  base: '/NWwushuwebsite/',
+  site: 'https://northwestwushu.com',
   output: 'static',
   build: {
     format: 'directory',
