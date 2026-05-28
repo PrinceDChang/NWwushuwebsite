@@ -36,8 +36,11 @@ const pageTitle = title === site.shortName ? title : `${title} | ${site.shortNam
     <title>{pageTitle}</title>
   </head>
   <body class:list={[showStickyCta && 'has-sticky-cta', bodyClass]}>
-    <script is:inline define:vars={{ basePath: import.meta.env.BASE_URL }}>
-      window.NW_BASE = basePath;
+    <script is:inline>
+      window.NW_BASE = (function () {
+        var match = location.pathname.match(/^(.*\/NWwushuwebsite\/)/);
+        return match ? match[1] : '/';
+      })();
     </script>
     <a class="skip-link" href="#main">Skip to main content</a>
     <TrialBanner />
