@@ -32,10 +32,13 @@ const pageTitle = title === site.shortName ? title : `${title} | ${site.shortNam
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
     <title>{pageTitle}</title>
   </head>
   <body class:list={[showStickyCta && 'has-sticky-cta', bodyClass]}>
+    <script is:inline define:vars={{ basePath: import.meta.env.BASE_URL }}>
+      window.NW_BASE = basePath;
+    </script>
     <a class="skip-link" href="#main">Skip to main content</a>
     <TrialBanner />
     <SiteHeader currentPath={currentPath} />

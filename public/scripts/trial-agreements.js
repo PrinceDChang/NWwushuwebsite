@@ -1,5 +1,7 @@
 import { requireStep, saveTrialData, getTrialData } from './trial-storage.js';
 
+const nwBase = () => (typeof window !== 'undefined' && window.NW_BASE) || '/';
+
 if (!requireStep(1)) {
   /* redirected */
 } else {
@@ -24,10 +26,10 @@ if (!requireStep(1)) {
       waiverAccepted: true,
       photoRelease: photo,
     });
-    window.location.href = '/trial/booking/';
+    window.location.href = `${nwBase()}trial/booking/`;
   });
 
   document.getElementById('back-btn')?.addEventListener('click', () => {
-    window.location.href = '/trial/';
+    window.location.href = `${nwBase()}trial/`;
   });
 }

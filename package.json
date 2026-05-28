@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "sync:instagram": "astro build",
-    "build": "astro build",
+    "build": "astro build && node scripts/fix-base-path.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

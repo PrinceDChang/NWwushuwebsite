@@ -1,5 +1,7 @@
 const STORAGE_KEY = 'nw_wushu_trial';
 
+const nwBase = () => (typeof window !== 'undefined' && window.NW_BASE) || '/';
+
 export function getTrialData() {
   try {
     return JSON.parse(sessionStorage.getItem(STORAGE_KEY) || '{}');
@@ -21,8 +23,8 @@ export function clearTrialData() {
 export function requireStep(minStep) {
   const data = getTrialData();
   if (!data.step || data.step < minStep) {
-    const routes = { 2: '/trial/', 3: '/trial/agreements/' };
-    window.location.href = routes[minStep] || '/trial/';
+    const routes = { 2: `${nwBase()}trial/`, 3: `${nwBase()}trial/agreements/` };
+    window.location.href = routes[minStep] || `${nwBase()}trial/`;
     return null;
   }
   return data;

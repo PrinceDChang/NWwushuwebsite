@@ -1,5 +1,7 @@
 import { saveTrialData, getTrialData } from './trial-storage.js';
 
+const nwBase = () => (typeof window !== 'undefined' && window.NW_BASE) || '/';
+
 const params = new URLSearchParams(window.location.search);
 const classPref = params.get('class');
 if (classPref === 'kids' || classPref === 'adult') {
@@ -44,5 +46,5 @@ form?.addEventListener('submit', (e) => {
     guardianRelation: fd.get('guardianRelation'),
   });
 
-  window.location.href = '/trial/agreements/';
+  window.location.href = `${nwBase()}trial/agreements/`;
 });

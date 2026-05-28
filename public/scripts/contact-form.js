@@ -1,5 +1,6 @@
 const form = document.getElementById('contact-form');
 const formId = form?.dataset.formspreeId;
+const nwBase = () => (typeof window !== 'undefined' && window.NW_BASE) || '/';
 
 form?.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -24,7 +25,7 @@ form?.addEventListener('submit', async (e) => {
       body: JSON.stringify(body),
     });
     if (!res.ok) throw new Error('fail');
-    window.location.href = '/contact/thank-you/';
+    window.location.href = `${nwBase()}contact/thank-you/`;
   } catch {
     alert('Could not send your message. Please email northwestwushu.2008@gmail.com directly.');
     submit.disabled = false;

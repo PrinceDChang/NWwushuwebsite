@@ -1,5 +1,7 @@
 import { saveTrialData, getTrialData, clearTrialData } from './trial-storage.js';
 
+const nwBase = () => (typeof window !== 'undefined' && window.NW_BASE) || '/';
+
 const SLOTS = {
   kids: { label: 'Kids Wushu', time: '10:00 AM – 11:00 AM' },
   adult: { label: 'Teen & Adult Wushu', time: '11:00 AM – 1:00 PM' },
@@ -21,7 +23,7 @@ const trialData = getTrialData();
 const hasAccess = Boolean(trialData.step && trialData.step >= 2);
 
 if (!hasAccess) {
-  window.location.href = '/trial/agreements/';
+  window.location.href = `${nwBase()}trial/agreements/`;
 }
 
 const form = document.getElementById('trial-booking-form');
@@ -175,12 +177,12 @@ if (!form) {
   }
 
   document.getElementById('back-btn')?.addEventListener('click', () => {
-    window.location.href = '/trial/agreements/';
+    window.location.href = `${nwBase()}trial/agreements/`;
   });
 
   submitBtn?.addEventListener('click', async () => {
     if (!hasAccess) {
-      window.location.href = '/trial/agreements/';
+      window.location.href = `${nwBase()}trial/agreements/`;
       return;
     }
 
@@ -242,7 +244,7 @@ if (!form) {
       };
       sessionStorage.setItem('nw_wushu_trial_confirm', JSON.stringify(confirm));
       clearTrialData();
-      window.location.href = '/trial/confirmation/';
+      window.location.href = `${nwBase()}trial/confirmation/`;
     } catch (err) {
       alert('Something went wrong. Please try again or email us directly.');
       submitBtn.disabled = false;
