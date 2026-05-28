@@ -1,8 +1,10 @@
 import { defineConfig } from 'astro/config';
 
-// Custom domain — site is served from https://northwestwushu.com (not /NWwushuwebsite/)
+// GitHub project Pages URL: https://princedchang.github.io/NWwushuwebsite/
+// When northwestwushu.com DNS is pointed at GitHub, switch site + remove base (see README).
 export default defineConfig({
-  site: 'https://northwestwushu.com',
+  site: 'https://princedchang.github.io',
+  base: '/NWwushuwebsite/',
   output: 'static',
   build: {
     format: 'directory',
