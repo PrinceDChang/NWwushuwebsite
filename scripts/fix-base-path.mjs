@@ -39,6 +39,13 @@ function fixCssUrls(content, prefix) {
   return content.replace(/url\(\/(?!\/)([^)]+)\)/g, (_, path) => `url(${prefix}${path})`);
 }
 
+function fixInlineStyles(content, prefix) {
+  return content.replace(/style="([^"]*)"/g, (_, styles) => {
+    const fixed = styles.replace(/url\(\/(?!\/)([^)]+)\)/g, (__, path) => `url(${prefix}${path})`);
+    return `style="${fixed}"`;
+  });
+}
+
 let count = 0;
 for (const file of walk(DIST)) {
   const ext = file.slice(file.lastIndexOf('.'));
@@ -48,6 +55,7 @@ for (const file of walk(DIST)) {
   const prefix = relPrefix(depth);
   let content = readFileSync(file, 'utf8');
   content = fixAttributes(content, prefix);
+  if (ext === '.html') content = fixInlineStyles(content, prefix);
   if (ext === '.css') content = fixCssUrls(content, prefix);
   writeFileSync(file, content);
   count += 1;
