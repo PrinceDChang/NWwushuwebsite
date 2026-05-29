@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://northwestwushu.com',
+  site: 'https://nwwushu.com',
   output: 'static',
   build: {
     format: 'directory',

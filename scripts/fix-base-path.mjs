@@ -1,7 +1,7 @@
 /**
  * Rewrite root-absolute paths to relative paths so assets work on:
  * - https://princedchang.github.io/NWwushuwebsite/
- * - https://northwestwushu.com/ (custom domain at repo root)
+ * - https://nwwushu.com/ (custom domain at repo root)
  */
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, relative, sep } from 'node:path';

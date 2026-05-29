@@ -1,6 +1,6 @@
 # Northwest Wushu Academy Website
 
-Modern marketing site for [Northwest Wushu](https://northwestwushu.com) — class info, contact, and multi-step **free trial** sign-up.
+Modern marketing site for [Northwest Wushu](https://nwwushu.com) — class info, contact, and multi-step **free trial** sign-up.
 
 Built with [Astro](https://astro.build) and deployed to **GitHub Pages**.
 
@@ -35,9 +35,9 @@ PUBLIC_FORMSPREE_TRIAL_ID=efgh5678
 
 1. Push to `main` — the workflow in `.github/workflows/deploy.yml` builds and deploys.
 2. In the repo: **Settings → Pages → Build and deployment** → Source: **GitHub Actions**.
-3. **Settings → Pages → Custom domain** → `northwestwushu.com`.
+3. **Settings → Pages → Custom domain** → `nwwushu.com`.
 4. At your domain registrar, add DNS records GitHub shows (usually `A` + `CNAME` for `www`).
-5. `public/CNAME` already contains `northwestwushu.com`.
+5. `public/CNAME` contains `nwwushu.com`.
 
 ## Instagram feed
 
