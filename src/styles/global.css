@@ -24,6 +24,28 @@
     rgb(208 74 69 / 0.085) 45%,
     rgb(185 21 20 / 0.1) 100%
   );
+  /* Stepper — radial on dots and horizontal on lines to avoid banding at small sizes */
+  --gradient-stepper-dot: radial-gradient(
+    circle at 34% 28%,
+    #eeb06a 0%,
+    #e0886e 38%,
+    #d5524c 62%,
+    #c92822 82%,
+    #b91514 100%
+  );
+  --gradient-stepper-line: linear-gradient(
+    90deg,
+    #e59a4d 0%,
+    #d87457 35%,
+    #d04a45 62%,
+    #b91514 100%
+  );
+  --gradient-stepper-idle: radial-gradient(
+    circle at 50% 32%,
+    #fffdfc 0%,
+    #fff5f4 52%,
+    #fdeae8 100%
+  );
   --color-brand: #d04a45;
   --color-brand-dark: #b91514;
   --color-brand-mid: #c92822;
@@ -833,11 +855,11 @@ fieldset.form-field input[type='checkbox'] {
   justify-content: center;
   font-weight: 700;
   font-size: 0.875rem;
-  background: var(--color-brand-light);
+  background: var(--gradient-stepper-idle);
   color: var(--color-brand-mid);
-  border: 2px solid var(--color-brand-light-strong);
+  border: 2px solid rgb(253 234 232 / 0.9);
   transition:
-    background-color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.45s cubic-bezier(0.4, 0, 0.2, 1),
     border-color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
     color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.5s cubic-bezier(0.34, 1.4, 0.64, 1),
@@ -846,13 +868,15 @@ fieldset.form-field input[type='checkbox'] {
 
 .stepper__dot--active,
 .stepper__dot--done {
-  background: var(--gradient-brand);
+  background: var(--gradient-stepper-dot);
   color: #fff;
   border-color: transparent;
 }
 
 .stepper__dot--active {
-  box-shadow: 0 0 0 4px var(--color-brand-light-strong);
+  box-shadow:
+    0 0 0 3px rgb(253 234 232 / 0.92),
+    0 2px 10px rgb(185 21 20 / 0.14);
 }
 
 .stepper--animate .stepper__dot--enter {
@@ -926,7 +950,7 @@ fieldset.form-field input[type='checkbox'] {
   display: block;
   width: 100%;
   height: 100%;
-  background: var(--gradient-brand);
+  background: var(--gradient-stepper-line);
   border-radius: inherit;
   transform: scaleX(var(--scale, 0));
   transform-origin: left center;
