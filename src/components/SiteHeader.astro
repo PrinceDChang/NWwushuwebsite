@@ -22,27 +22,7 @@ function isActive(href: string) {
 <header class="site-header" data-site-header>
   <div class="site-header__shape" aria-hidden="true">
     <div class="site-header__ambient"></div>
-    <svg class="site-header__shape-svg" viewBox="0 0 1200 112" preserveAspectRatio="none">
-      <defs>
-        <mask
-          id="site-header-bar-mask"
-          maskUnits="userSpaceOnUse"
-          x="0"
-          y="0"
-          width="1200"
-          height="112"
-        >
-          <path
-            fill="#fff"
-            d="M 0 0 H 1200 V 20 Q 1200 58 1184 58 H 16 Q 0 58 0 20 V 0 Z"
-          />
-        </mask>
-      </defs>
-      <path
-        class="site-header__shape-line"
-        d="M 16 58 H 1184"
-      />
-    </svg>
+    <div class="site-header__shape-line"></div>
   </div>
 
   <div class="container site-header__inner">
@@ -127,11 +107,14 @@ function isActive(href: string) {
     --header-logo-size: clamp(4.25rem, 11vw, 5.5rem);
     --header-logo-gap: 0.5rem;
     --header-logo-outer: calc(var(--header-logo-size) + 2 * var(--header-logo-gap));
+    --header-bar-height: calc(58 / 112 * 7.25rem);
     position: sticky;
     top: 0;
     z-index: 100;
     isolation: isolate;
     overflow: visible;
+    width: 100%;
+    max-width: none;
     padding-bottom: calc(var(--header-logo-outer) / 2 + 0.35rem);
     background: transparent;
     transition:
@@ -143,51 +126,60 @@ function isActive(href: string) {
     box-shadow: none;
   }
 
+  /* Full viewport bleed — avoids Safari SVG mask + percentage width gaps */
   .site-header__shape {
     position: absolute;
-    left: 0;
-    right: 0;
     top: 0;
+    left: 50%;
+    right: auto;
+    width: 100vw;
+    max-width: none;
     height: 7.25rem;
+    transform: translateX(-50%);
     pointer-events: none;
     z-index: 0;
     transition: filter 0.4s var(--ease-out);
   }
 
+  @supports (width: 100dvw) {
+    .site-header__shape {
+      width: 100dvw;
+    }
+  }
+
   .site-header__ambient {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-bar-height);
     z-index: 0;
     pointer-events: none;
     background: var(--site-ambient-bg);
-    background-attachment: fixed;
+    background-size: 100vw 100vh;
+    background-position: center top;
     opacity: 0.52;
-    -webkit-mask: url(#site-header-bar-mask);
-    mask: url(#site-header-bar-mask);
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
   }
 
-  .site-header__shape-svg {
-    position: relative;
-    z-index: 1;
-    display: block;
-    width: 100%;
-    height: 100%;
+  @supports (width: 100dvw) {
+    .site-header__ambient {
+      background-size: 100dvw 100dvh;
+    }
   }
 
   .site-header__shape-line {
-    fill: none;
-    stroke: rgb(229 154 77 / 0.22);
-    stroke-width: 1.5;
-    vector-effect: non-scaling-stroke;
-    transition: stroke 0.4s var(--ease-out);
+    position: absolute;
+    top: var(--header-bar-height);
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    margin-top: -0.75px;
+    background: rgb(229 154 77 / 0.22);
+    transition: background 0.4s var(--ease-out);
   }
 
   .site-header--scrolled .site-header__shape-line {
-    stroke: rgb(208 74 69 / 0.28);
+    background: rgb(208 74 69 / 0.28);
   }
 
   .site-header__inner {
@@ -381,11 +373,12 @@ function isActive(href: string) {
       top: auto;
       bottom: 0;
       height: 2.75rem;
+      --header-bar-height: 100%;
     }
 
     .site-header__ambient {
-      -webkit-mask: none;
-      mask: none;
+      height: 100%;
+      background-size: 100% 100%;
     }
 
     .site-header__shape-line {

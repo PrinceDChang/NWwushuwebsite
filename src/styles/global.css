@@ -105,11 +105,8 @@
 
 html {
   scroll-behavior: smooth;
-}
-
-html {
-  scroll-behavior: smooth;
   background: var(--site-ambient-bg);
+  overflow-x: clip;
 }
 
 body {
