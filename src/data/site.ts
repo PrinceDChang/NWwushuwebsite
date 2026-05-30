@@ -7,8 +7,8 @@ export const site = {
   email: 'northwestwushu.2008@gmail.com',
   instagram: 'https://www.instagram.com/northwestwushu/',
   instagramHandle: '@northwestwushu',
-  discord: 'https://discord.com/',
-  youtube: 'https://www.youtube.com/',
+  discord: 'https://discord.gg/4PrbsZTfH',
+  youtube: 'https://www.youtube.com/channel/UCG1h4jxhNG5Fqjy8IydpqqQ',
   replyTime: '1–2 business days',
   address: {
     name: 'Seattle Armory',
@@ -26,5 +26,6 @@ export const site = {
 
 export const trialBanner = {
   text: 'Sign up for your free trial class',
+  buttonText: 'Free trial',
   href: '/trial/',
 } as const;

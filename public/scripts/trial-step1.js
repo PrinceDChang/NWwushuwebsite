@@ -1,6 +1,9 @@
 import { saveTrialData, getTrialData } from './trial-storage.js';
+import { initEmailAutocomplete } from './email-autocomplete.js';
 
 const nwBase = () => (typeof window !== 'undefined' && window.NW_BASE) || '/';
+
+initEmailAutocomplete(document.getElementById('guardianEmail'));
 
 const params = new URLSearchParams(window.location.search);
 const classPref = params.get('class');

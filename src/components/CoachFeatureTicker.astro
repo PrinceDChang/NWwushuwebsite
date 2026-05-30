@@ -13,22 +13,84 @@ const slideDurationMs = 9000;
   aria-roledescription="carousel"
   aria-label={`About ${featuredCoach.name}`}
 >
-  <div class="coach-ticker__viewport">
-    {
-      featuredCoachSlides.map((slide, index) => (
-        <article
-          class:list={['coach-ticker__slide', index === 0 && 'coach-ticker__slide--active']}
-          data-slide={index}
-          aria-hidden={index === 0 ? 'false' : 'true'}
-        >
-          <img
-            src={slide.image}
-            alt={slide.imageAlt}
-            width="400"
-            height="500"
-            loading={index === 0 ? 'eager' : 'lazy'}
-          />
-          <div class="coach-ticker__content">
+  <div class="coach-ticker__layout">
+    <div class="coach-ticker__photos">
+      {
+        featuredCoachSlides.map((slide, index) => (
+          <div
+            class:list={['coach-ticker__photo', index === 0 && 'coach-ticker__photo--active']}
+            data-slide={index}
+            aria-hidden={index === 0 ? 'false' : 'true'}
+          >
+            <img
+              src={slide.image}
+              alt={slide.imageAlt}
+              width="400"
+              height="500"
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="coach-ticker__controls">
+      <button
+        type="button"
+        class="coach-ticker__play-pause is-playing"
+        aria-label="Pause slideshow"
+        aria-pressed="false"
+      >
+        <svg class="coach-ticker__icon-defs" aria-hidden="true" width="0" height="0" focusable="false">
+          <defs>
+            <linearGradient id="coach-ctrl-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#e59a4d"></stop>
+              <stop offset="22%" stop-color="#d87457"></stop>
+              <stop offset="50%" stop-color="#d04a45"></stop>
+              <stop offset="78%" stop-color="#c92822"></stop>
+              <stop offset="100%" stop-color="#b91514"></stop>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="coach-ticker__icon coach-ticker__icon--pause" aria-hidden="true">
+          <svg viewBox="0 0 14 14" aria-hidden="true">
+            <rect x="2.5" y="1.5" width="3" height="11" rx="0.75" fill="url(#coach-ctrl-gradient)"></rect>
+            <rect x="8.5" y="1.5" width="3" height="11" rx="0.75" fill="url(#coach-ctrl-gradient)"></rect>
+          </svg>
+        </span>
+        <span class="coach-ticker__icon coach-ticker__icon--play" aria-hidden="true">
+          <svg viewBox="0 0 14 14" aria-hidden="true">
+            <path d="M4 2.5 11.5 7 4 11.5V2.5z" fill="url(#coach-ctrl-gradient)"></path>
+          </svg>
+        </span>
+      </button>
+
+      <div class="coach-ticker__timers" role="tablist" aria-label="Slide progress">
+        {
+          featuredCoachSlides.map((slide, index) => (
+            <button
+              type="button"
+              class:list={['coach-timer', index === 0 && 'coach-timer--active']}
+              data-slide={index}
+              role="tab"
+              aria-selected={index === 0 ? 'true' : 'false'}
+              aria-label={slide.aspect}
+            >
+              <span class="coach-timer__circle" aria-hidden="true"></span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="coach-ticker__content-stack">
+      {
+        featuredCoachSlides.map((slide, index) => (
+          <article
+            class:list={['coach-ticker__content-panel', index === 0 && 'coach-ticker__content-panel--active']}
+            data-slide={index}
+            aria-hidden={index === 0 ? 'false' : 'true'}
+          >
             {featuredCoach.role && <p class="coach-role-label">{featuredCoach.role}</p>}
             <h3 class="coach-feature__name">{featuredCoach.name}</h3>
             <p class="coach-ticker__aspect">{slide.aspect}</p>
@@ -46,26 +108,7 @@ const slideDurationMs = 9000;
                 <p class="coach-ticker__video-placeholder">YouTube video link coming soon.</p>
               ) : null
             }
-          </div>
-        </article>
-      ))
-    }
-  </div>
-
-  <div class="coach-ticker__controls">
-    <div class="coach-ticker__timers" role="tablist" aria-label="Slide progress">
-      {
-        featuredCoachSlides.map((slide, index) => (
-          <button
-            type="button"
-            class:list={['coach-timer', index === 0 && 'coach-timer--active']}
-            data-slide={index}
-            role="tab"
-            aria-selected={index === 0 ? 'true' : 'false'}
-            aria-label={slide.aspect}
-          >
-            <span class="coach-timer__circle" aria-hidden="true"></span>
-          </button>
+          </article>
         ))
       }
     </div>
@@ -83,17 +126,67 @@ const slideDurationMs = 9000;
 
   .coach-ticker {
     margin-bottom: 2rem;
+    --coach-circle-gradient: var(--gradient-brand);
   }
 
-  .coach-ticker__viewport {
-    position: relative;
-    min-height: 16rem;
-  }
-
-  .coach-ticker__slide {
+  .coach-ticker__layout {
     display: grid;
-    gap: 2rem;
+    gap: 0.875rem 2rem;
     align-items: start;
+    grid-template-columns: min(100%, 280px) 1fr;
+    grid-template-areas:
+      'photo content'
+      'timers content';
+  }
+
+  @media (max-width: 767px) {
+    .coach-ticker__layout {
+      grid-template-columns: min(100%, 280px);
+      grid-template-areas:
+        'photo'
+        'timers'
+        'content';
+    }
+  }
+
+  .coach-ticker__photos {
+    grid-area: photo;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+  }
+
+  .coach-ticker__photo {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+      visibility 0.55s;
+  }
+
+  .coach-ticker__photo--active {
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+  }
+
+  .coach-ticker__photo img {
+    display: block;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .coach-ticker__content-stack {
+    grid-area: content;
+    position: relative;
+    min-height: 12rem;
+  }
+
+  .coach-ticker__content-panel {
     opacity: 0;
     visibility: hidden;
     position: absolute;
@@ -104,24 +197,11 @@ const slideDurationMs = 9000;
     pointer-events: none;
   }
 
-  .coach-ticker__slide--active {
+  .coach-ticker__content-panel--active {
     opacity: 1;
     visibility: visible;
     position: relative;
     pointer-events: auto;
-  }
-
-  @media (min-width: 768px) {
-    .coach-ticker__slide {
-      grid-template-columns: 280px 1fr;
-    }
-  }
-
-  .coach-ticker__slide img {
-    border-radius: var(--radius-lg);
-    width: 100%;
-    object-fit: cover;
-    aspect-ratio: 4 / 5;
   }
 
   .coach-ticker__aspect {
@@ -131,11 +211,11 @@ const slideDurationMs = 9000;
     font-size: 1rem;
   }
 
-  .coach-ticker__content p:not(.coach-role-label):not(.coach-ticker__aspect) {
+  .coach-ticker__content-panel p:not(.coach-role-label):not(.coach-ticker__aspect) {
     margin: 0 0 0.75rem;
   }
 
-  .coach-ticker__content > p:last-of-type:not(.coach-role-label):not(.coach-ticker__aspect) {
+  .coach-ticker__content-panel > p:last-of-type:not(.coach-role-label):not(.coach-ticker__aspect) {
     margin-bottom: 0;
   }
 
@@ -165,10 +245,69 @@ const slideDurationMs = 9000;
   }
 
   .coach-ticker__controls {
+    grid-area: timers;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 1.25rem;
+    gap: 0.625rem;
+    justify-self: stretch;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .coach-ticker__play-pause {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 0.859375rem;
+    height: 0.859375rem;
+    padding: 0.1875rem;
+    border: 1px solid var(--color-brand-light-strong);
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    line-height: 0;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .coach-ticker__play-pause:hover {
+    box-shadow: var(--shadow-sm), var(--shadow-brand);
+  }
+
+  .coach-ticker__play-pause:focus-visible {
+    outline: 2px solid var(--color-brand-mid);
+    outline-offset: 2px;
+  }
+
+  .coach-ticker__icon-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .coach-ticker__icon {
+    display: none;
+    width: 100%;
+    height: 100%;
+  }
+
+  .coach-ticker__icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .coach-ticker__play-pause.is-playing .coach-ticker__icon--pause {
+    display: block;
+  }
+
+  .coach-ticker__play-pause:not(.is-playing) .coach-ticker__icon--play {
+    display: block;
   }
 
   .coach-ticker__timers {
@@ -201,22 +340,39 @@ const slideDurationMs = 9000;
     background: conic-gradient(
       from -90deg,
       #e59a4d 0deg,
-      var(--color-brand-mid) var(--coach-timer-fill),
+      #d87457 calc(var(--coach-timer-fill) * 0.35),
+      #d04a45 calc(var(--coach-timer-fill) * 0.68),
+      #b91514 var(--coach-timer-fill),
       var(--color-brand-light) var(--coach-timer-fill)
     );
   }
 
-  .coach-timer:not(.coach-timer--active) .coach-timer__circle {
+  .coach-timer--complete .coach-timer__circle {
+    --coach-timer-fill: 360deg;
+    animation: none;
+    box-shadow: var(--shadow-sm), var(--shadow-brand);
+    background: var(--coach-circle-gradient);
+  }
+
+  .coach-timer:not(.coach-timer--active):not(.coach-timer--complete) .coach-timer__circle {
     --coach-timer-fill: 0deg;
     animation: none;
+  }
+
+  .coach-timer--active .coach-timer__circle {
+    animation: coach-timer-fill var(--coach-timer-duration, 9s) linear forwards;
   }
 
   .coach-ticker.is-paused .coach-timer--active .coach-timer__circle {
     animation-play-state: paused;
   }
 
-  .coach-timer--active .coach-timer__circle {
-    animation: coach-timer-fill var(--coach-timer-duration, 9s) linear forwards;
+  .coach-ticker.is-manually-paused .coach-timer__circle {
+    animation: none;
+    --coach-timer-fill: 360deg;
+    border-color: transparent;
+    background: var(--coach-circle-gradient);
+    box-shadow: var(--shadow-sm), var(--shadow-brand);
   }
 
   @keyframes coach-timer-fill {
@@ -226,13 +382,18 @@ const slideDurationMs = 9000;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .coach-ticker__slide {
+    .coach-ticker__photo,
+    .coach-ticker__content-panel {
       transition: none;
     }
 
     .coach-timer--active .coach-timer__circle {
       animation: none;
-      background: var(--gradient-brand);
+      background: var(--coach-circle-gradient);
+    }
+
+    .coach-timer--complete .coach-timer__circle {
+      background: var(--coach-circle-gradient);
     }
   }
 </style>

@@ -76,14 +76,17 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_TRIAL_ID || 'your_trial_for
 
   .trial-booking__columns {
     display: grid;
-    gap: 2rem;
+    gap: 1.25rem;
     flex: 1;
     align-content: start;
+    grid-template-columns: 1fr;
   }
 
-  @media (min-width: 960px) {
+  @media (min-width: 768px) {
     .trial-booking__columns {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+      align-items: start;
     }
   }
 

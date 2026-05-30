@@ -2,11 +2,12 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import FAQSection from '../../components/FAQSection.astro';
+import ConfirmCardIcon from '../../components/ConfirmCardIcon.astro';
 import { site } from '../../data/site';
 import { faqItems } from '../../data/faq';
 ---
 
-<BaseLayout title="Thank You" currentPath="/contact" showStickyCta={false}>
+<BaseLayout title="Message Received" currentPath="/contact" showStickyCta={false}>
   <PageHero
     title="Contact Us"
     variant="image"
@@ -17,12 +18,111 @@ import { faqItems } from '../../data/faq';
   />
 
   <section class="section">
-    <div class="container container--narrow text-center">
-      <h2 class="section__title">Thank you for contacting us!</h2>
-      <p>We will reach out within {site.replyTime}.</p>
-      <a href="/" class="btn btn--primary" style="margin-top: 1.5rem">Go back to homepage</a>
+    <div class="container container--narrow contact-thank-you">
+      <p class="contact-thank-you__lead">We received your message!</p>
+      <p class="contact-thank-you__intro text-muted text-center">
+        Thank you for reaching out to Northwest Wushu. A member of our team will review your question
+        and get back to you within <strong>{site.replyTime}</strong>.
+      </p>
+
+      <div class="confirm-card">
+        <ConfirmCardIcon />
+        <h2 class="contact-thank-you__card-title">Your message is on its way</h2>
+        <p class="contact-thank-you__email text-muted" id="confirm-email" hidden>
+          A confirmation email has been sent to <strong id="confirm-email-value"></strong>.
+        </p>
+        <p class="contact-thank-you__email-fallback text-muted">
+          If you included an email address, you should receive a confirmation shortly.
+        </p>
+        <ul class="contact-thank-you__next">
+          <li>Check your inbox &amp; spam for our reply.</li>
+          <li>Add <a href={`mailto:${site.email}`}>{site.email}</a> to your contacts so our emails reach you.</li>
+        </ul>
+      </div>
+
+      <div class="contact-thank-you__actions">
+        <a href="/" class="btn btn--primary">Go back to homepage</a>
+        <a href="/contact/" class="btn btn--outline">Send another message</a>
+      </div>
     </div>
   </section>
 
   <FAQSection items={faqItems.slice(0, 6)} variant="dark" />
 </BaseLayout>
+
+<script is:inline>
+  (() => {
+    const params = new URLSearchParams(window.location.search);
+    const isLocalDev =
+      window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const email =
+      params.get('email')?.trim() ||
+      (isLocalDev && params.get('preview') === '1' ? 'demo@example.com' : '');
+    const block = document.getElementById('confirm-email');
+    const value = document.getElementById('confirm-email-value');
+    const fallback = document.querySelector('.contact-thank-you__email-fallback');
+
+    if (!email || !block || !value) return;
+
+    value.textContent = email;
+    block.hidden = false;
+    fallback?.remove();
+  })();
+</script>
+
+<style>
+  .contact-thank-you {
+    text-align: center;
+  }
+
+  .contact-thank-you__lead {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 3vw, 1.625rem);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .contact-thank-you__intro {
+    max-width: 34rem;
+    margin: 0 auto 2rem;
+    line-height: 1.65;
+  }
+
+  .contact-thank-you__card-title {
+    margin: 0 0 0.75rem;
+    font-size: 1.125rem;
+  }
+
+  .contact-thank-you__email,
+  .contact-thank-you__email-fallback {
+    margin: 0 0 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .contact-thank-you__next {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+    font-size: 0.9375rem;
+    color: var(--color-muted);
+    line-height: 1.55;
+  }
+
+  .contact-thank-you__next li + li {
+    margin-top: 0.5rem;
+  }
+
+  .contact-thank-you__next a {
+    font-weight: 600;
+  }
+
+  .contact-thank-you__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+</style>

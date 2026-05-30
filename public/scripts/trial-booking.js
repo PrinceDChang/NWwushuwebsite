@@ -2,6 +2,30 @@ import { saveTrialData, getTrialData, clearTrialData } from './trial-storage.js'
 
 const nwBase = () => (typeof window !== 'undefined' && window.NW_BASE) || '/';
 
+const isLocalDev =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
+function finishTrialBooking({ current, type, slot, selectedDate }) {
+  saveTrialData({
+    step: 3,
+    classType: type,
+    submittedAt: new Date().toISOString(),
+  });
+  const confirm = {
+    ...getTrialData(),
+    selectedDate,
+    classType: type,
+    time: slot.time,
+    classLabel: slot.label,
+    guardianEmail: current.guardianEmail,
+    fullName: current.fullName,
+  };
+  sessionStorage.setItem('nw_wushu_trial_confirm', JSON.stringify(confirm));
+  clearTrialData();
+  window.location.href = `${nwBase()}trial/confirmation/`;
+}
+
 const SLOTS = {
   kids: { label: 'Kids Wushu', time: '10:00 AM – 11:00 AM' },
   adult: { label: 'Teen & Adult Wushu', time: '11:00 AM – 1:00 PM' },
@@ -192,7 +216,9 @@ if (!form) {
       alert('Please select a Saturday for your trial.');
       return;
     }
-    if (!formId || formId.startsWith('your_')) {
+
+    const formMissing = !formId || formId.startsWith('your_');
+    if (formMissing && !isLocalDev) {
       alert('Trial form is not configured yet. Add PUBLIC_FORMSPREE_TRIAL_ID to your .env file.');
       return;
     }
@@ -201,6 +227,12 @@ if (!form) {
     submitBtn.textContent = 'Sending…';
 
     const slot = SLOTS[type];
+
+    if (formMissing && isLocalDev) {
+      finishTrialBooking({ current, type, slot, selectedDate });
+      return;
+    }
+
     const payload = {
       _subject: `Trial request: ${current.fullName}`,
       form_type: 'trial',
@@ -231,20 +263,7 @@ if (!form) {
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error('Submit failed');
-      saveTrialData({
-        step: 3,
-        classType: type,
-        submittedAt: new Date().toISOString(),
-      });
-      const confirm = {
-        ...getTrialData(),
-        selectedDate,
-        time: slot.time,
-        classLabel: slot.label,
-      };
-      sessionStorage.setItem('nw_wushu_trial_confirm', JSON.stringify(confirm));
-      clearTrialData();
-      window.location.href = `${nwBase()}trial/confirmation/`;
+      finishTrialBooking({ current, type, slot, selectedDate });
     } catch (err) {
       alert('Something went wrong. Please try again or email us directly.');
       submitBtn.disabled = false;

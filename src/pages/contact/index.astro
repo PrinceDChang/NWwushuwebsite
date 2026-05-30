@@ -23,8 +23,7 @@ const honeypot = import.meta.env.PUBLIC_FORMSPREE_HONEYPOT || '_gotcha';
   <section class="section">
     <div class="container container--narrow">
       <p class="text-muted text-center" style="margin-bottom: 2rem">
-        We typically reply within <strong>{site.replyTime}</strong>. For trial sign-ups, use our
-        <a href="/trial/">free trial form</a> for faster scheduling.
+        We typically reply within <strong>{site.replyTime}</strong>.
       </p>
 
       <h2 class="section__title">Send a message</h2>
@@ -51,6 +50,7 @@ const honeypot = import.meta.env.PUBLIC_FORMSPREE_HONEYPOT || '_gotcha';
         <div class="form-field">
           <label class="required" for="interest">Interest</label>
           <select id="interest" name="interest" required>
+            <option value="" disabled selected hidden>Select a topic</option>
             <option value="Free Trial Class">Free Trial Class</option>
             <option value="General Question">General Question</option>
             <option value="Schedule / Classes">Schedule / Classes</option>

@@ -14,6 +14,7 @@ import { coaches } from '../data/coaches';
     variant="image"
     imageSrc="/images/about-group-outdoor.jpg"
     imagePosition="center 60%"
+    heroScale={1.2}
   />
 
   <nav class="about-subnav" aria-label="About sections">
@@ -47,7 +48,6 @@ import { coaches } from '../data/coaches';
           the Seattle Armory. Whether you are exploring martial arts for fitness, culture, or
           competition, you are welcome here.
         </p>
-        <p class="text-muted">(Additional history and forms content — placeholder for approved copy.)</p>
       </div>
     </div>
   </section>
@@ -64,19 +64,46 @@ import { coaches } from '../data/coaches';
     <div class="container coach-grid">
       {
         coaches.map((coach) => (
-          <article class="coach-card">
-            {coach.image && (
-              <div class="coach-card__media">
-                <img
-                  src={coach.image}
-                  alt={coach.name}
-                  width="600"
-                  height="400"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            )}
+          <article class:list={['coach-card', coach.comingSoon && 'coach-card--coming-soon']}>
+            {
+              coach.comingSoon ? (
+                <div class="coach-card__media coach-card__media--placeholder" aria-hidden="true">
+                  <svg
+                    class="coach-card__silhouette"
+                    viewBox="0 0 120 160"
+                    preserveAspectRatio="xMidYMax meet"
+                    aria-hidden="true"
+                  >
+                    <defs>
+                      <linearGradient id="coach-placeholder-gradient" x1="15%" y1="0%" x2="85%" y2="100%">
+                        <stop offset="0%" stop-color="#e59a4d"></stop>
+                        <stop offset="50%" stop-color="#d04a45"></stop>
+                        <stop offset="100%" stop-color="#b91514"></stop>
+                      </linearGradient>
+                    </defs>
+                    <circle cx="60" cy="36" r="18" fill="url(#coach-placeholder-gradient)"></circle>
+                    <path
+                      d="M60 56c-20 0-36 14-40 36v68h80V92c-4-22-20-36-40-36z"
+                      fill="url(#coach-placeholder-gradient)"
+                    ></path>
+                  </svg>
+                  <span class="coach-card__placeholder-label">Coming Soon</span>
+                </div>
+              ) : (
+                coach.image && (
+                  <div class="coach-card__media">
+                    <img
+                      src={coach.image}
+                      alt={coach.name}
+                      width="600"
+                      height="400"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                )
+              )
+            }
             <div class="coach-card__body">
               {coach.role && <p class="coach-role-label">{coach.role}</p>}
               <h3 class="coach-card__name">{coach.name}</h3>
@@ -292,25 +319,40 @@ import { coaches } from '../data/coaches';
   .coach-grid {
     display: grid;
     gap: 1.25rem;
-    justify-items: start;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .coach-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .coach-card {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: stretch;
-    width: min(100%, 42rem);
-    max-width: 50%;
+    width: 100%;
     gap: 1rem;
     padding: 1.25rem;
     overflow: visible;
     background: var(--color-surface);
     border: 1px solid var(--color-border-subtle);
     border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow);
     transition:
       box-shadow 0.35s var(--ease-out),
       transform 0.35s var(--ease-out);
+  }
+
+  .coach-card--coming-soon {
+    border-color: var(--color-border-subtle);
+    background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-brand-light) 100%);
+  }
+
+  .coach-card--coming-soon:hover {
+    transform: none;
+    box-shadow: var(--shadow);
   }
 
   .coach-card:hover {
@@ -339,6 +381,37 @@ import { coaches } from '../data/coaches';
     border-radius: var(--radius-lg);
   }
 
+  .coach-card__media--placeholder {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--gradient-brand-soft);
+  }
+
+  .coach-card__silhouette {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 72%;
+    height: auto;
+    max-height: 94%;
+    opacity: 0.42;
+    transform: translateX(-50%);
+  }
+
+  .coach-card__placeholder-label {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-brand-mid);
+  }
+
   .coach-card__body {
     display: flex;
     flex-direction: column;
@@ -361,7 +434,6 @@ import { coaches } from '../data/coaches';
 
   @media (max-width: 768px) {
     .coach-card {
-      max-width: 100%;
       width: 100%;
     }
   }

@@ -114,7 +114,7 @@ const heroStyle =
         const offset = maxShift - progress * 2 * maxShift;
         const img = parallaxLayer.querySelector('img');
         if (img) {
-          img.style.transform = \`translate3d(0, calc(15% + \${offset}px), 0)\`;
+          img.style.transform = \`translate3d(0, calc(5% + \${offset}px), 0)\`;
         }
       });
     };
@@ -194,13 +194,8 @@ const heroStyle =
     color: #fff;
   }
 
-  /* Parallax image hero */
+  /* Parallax — same height as other image heroes (.page-hero--image sets min-height/padding) */
   .page-hero--parallax {
-    position: relative;
-    overflow: hidden;
-    min-height: clamp(18rem, 44vw, 26rem);
-    padding: clamp(3.5rem, 10vw, 5rem) 0;
-    display: block;
     background: #fff;
   }
 
@@ -230,9 +225,8 @@ const heroStyle =
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 35%;
     display: block;
-    transform: translateY(15%);
+    transform: translateY(5%);
   }
 
   .page-hero__overlay {

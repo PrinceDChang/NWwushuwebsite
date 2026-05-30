@@ -3,16 +3,27 @@ function initCoachTicker() {
   if (!root || root.dataset.tickerReady === 'true') return;
   root.dataset.tickerReady = 'true';
 
-  const slides = [...root.querySelectorAll('.coach-ticker__slide')];
+  const photos = [...root.querySelectorAll('.coach-ticker__photo')];
+  const panels = [...root.querySelectorAll('.coach-ticker__content-panel')];
   const timers = [...root.querySelectorAll('.coach-timer')];
   const intervalMs = Number(root.dataset.interval) || 10000;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  let index = slides.findIndex((slide) => slide.classList.contains('coach-ticker__slide--active'));
+  let index = photos.findIndex((photo) => photo.classList.contains('coach-ticker__photo--active'));
   if (index < 0) index = 0;
 
   let isPaused = false;
+  let manualPaused = false;
+  let interactionPaused = false;
   let fallbackTimer = null;
+
+  function resetTimerStates() {
+    timers.forEach((timer) => timer.classList.remove('coach-timer--complete'));
+  }
+
+  function allTimersComplete() {
+    return timers.every((timer) => timer.classList.contains('coach-timer--complete'));
+  }
 
   function restartActiveTimerAnimation() {
     const active = timers[index];
@@ -27,12 +38,18 @@ function initCoachTicker() {
   }
 
   function setSlide(nextIndex) {
-    index = (nextIndex + slides.length) % slides.length;
+    index = (nextIndex + photos.length) % photos.length;
 
-    slides.forEach((slide, i) => {
+    photos.forEach((photo, i) => {
       const active = i === index;
-      slide.classList.toggle('coach-ticker__slide--active', active);
-      slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+      photo.classList.toggle('coach-ticker__photo--active', active);
+      photo.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+
+    panels.forEach((panel, i) => {
+      const active = i === index;
+      panel.classList.toggle('coach-ticker__content-panel--active', active);
+      panel.setAttribute('aria-hidden', active ? 'false' : 'true');
     });
 
     timers.forEach((timer, i) => {
@@ -44,8 +61,21 @@ function initCoachTicker() {
     restartActiveTimerAnimation();
   }
 
+  function advanceFromTimer(completedIndex) {
+    const timer = timers[completedIndex];
+    if (timer) timer.classList.add('coach-timer--complete');
+
+    if (allTimersComplete()) {
+      resetTimerStates();
+      setSlide(0);
+      return;
+    }
+
+    setSlide(completedIndex + 1);
+  }
+
   function next() {
-    setSlide(index + 1);
+    advanceFromTimer(index);
   }
 
   function stopFallback() {
@@ -57,7 +87,7 @@ function initCoachTicker() {
 
   function startFallback() {
     stopFallback();
-    if (reducedMotion && !isPaused && slides.length > 1) {
+    if (reducedMotion && !isPaused && photos.length > 1) {
       fallbackTimer = setInterval(next, intervalMs);
     }
   }
@@ -73,12 +103,26 @@ function initCoachTicker() {
     }
   }
 
+  function updatePlayPauseButton() {
+    const playPauseBtn = root.querySelector('.coach-ticker__play-pause');
+    if (!playPauseBtn) return;
+    playPauseBtn.classList.toggle('is-playing', !manualPaused);
+    playPauseBtn.setAttribute('aria-pressed', manualPaused ? 'true' : 'false');
+    playPauseBtn.setAttribute('aria-label', manualPaused ? 'Play slideshow' : 'Pause slideshow');
+    root.classList.toggle('is-manually-paused', manualPaused);
+  }
+
+  function syncPauseState() {
+    setPaused(manualPaused || interactionPaused);
+  }
+
   timers.forEach((timer) => {
     const circle = timer.querySelector('.coach-timer__circle');
 
     timer.addEventListener('click', () => {
       const target = Number(timer.dataset.slide);
       if (!Number.isNaN(target)) {
+        resetTimerStates();
         setSlide(target);
         if (!isPaused) restartActiveTimerAnimation();
       }
@@ -88,17 +132,38 @@ function initCoachTicker() {
       if (event.target !== circle) return;
       if (isPaused || reducedMotion) return;
       if (!timer.classList.contains('coach-timer--active')) return;
-      next();
+      advanceFromTimer(index);
     });
   });
 
-  root.addEventListener('mouseenter', () => setPaused(true));
-  root.addEventListener('mouseleave', () => setPaused(false));
-  root.addEventListener('focusin', () => setPaused(true));
-  root.addEventListener('focusout', (e) => {
-    if (!root.contains(e.relatedTarget)) setPaused(false);
+  root.addEventListener('click', (event) => {
+    if (!event.target.closest('.coach-ticker__play-pause')) return;
+    manualPaused = !manualPaused;
+    updatePlayPauseButton();
+    syncPauseState();
   });
 
+  root.addEventListener('mouseenter', () => {
+    interactionPaused = true;
+    syncPauseState();
+  });
+  root.addEventListener('mouseleave', () => {
+    interactionPaused = false;
+    syncPauseState();
+  });
+  root.addEventListener('focusin', (event) => {
+    if (event.target.closest('.coach-ticker__play-pause')) return;
+    interactionPaused = true;
+    syncPauseState();
+  });
+  root.addEventListener('focusout', (e) => {
+    if (!root.contains(e.relatedTarget)) {
+      interactionPaused = false;
+      syncPauseState();
+    }
+  });
+
+  updatePlayPauseButton();
   setSlide(index);
   startFallback();
 }

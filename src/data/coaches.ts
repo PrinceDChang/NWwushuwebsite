@@ -3,6 +3,7 @@ export interface Coach {
   role?: string;
   bio: string;
   image?: string;
+  comingSoon?: boolean;
 }
 
 export interface CoachFeatureSlide {
@@ -58,5 +59,11 @@ export const coaches: Coach[] = [
     bio:
       "Jim was one of Master Li's first students when she started her school in Yokohama, Japan. Now based in Seattle, Jim continues Master Li's legacy and passes down traditional Wushu techniques to a new generation.",
     image: '/images/coach-jim.jpg',
+  },
+  {
+    name: 'Coming Soon',
+    role: 'Assistant Coach',
+    bio: 'We are preparing to welcome a new assistant coach to Northwest Wushu. Check back soon for an introduction.',
+    comingSoon: true,
   },
 ];
