@@ -35,6 +35,14 @@ const pageTitle = title === site.shortName ? title : `${title} | ${site.shortNam
     <title>{pageTitle}</title>
   </head>
   <body class:list={[showStickyCta && 'has-sticky-cta', bodyClass]}>
+    <div class="site-bg" aria-hidden="true">
+      <div class="site-bg__ambient"></div>
+      <div class="site-bg__glow site-bg__glow--1"></div>
+      <div class="site-bg__glow site-bg__glow--2"></div>
+      <div class="site-bg__glow site-bg__glow--3"></div>
+      <div class="site-bg__glow site-bg__glow--4"></div>
+      <div class="site-bg__grain"></div>
+    </div>
     <script is:inline>
       window.NW_BASE = (function () {
         var match = location.pathname.match(/^(.*\/NWwushuwebsite\/)/);

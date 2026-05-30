@@ -101,11 +101,12 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_TRIAL_ID || 'your_trial_for
   }
 
   .trial-booking__col {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border-subtle);
+    background: var(--color-surface-elevated);
+    border: 1px solid rgb(255 255 255 / 0.72);
     border-radius: var(--radius-xl);
     padding: 1.5rem;
     box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(10px);
   }
 
   .trial-booking__step-label {

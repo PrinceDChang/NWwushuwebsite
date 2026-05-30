@@ -134,7 +134,11 @@ const heroStyle =
 
 <style>
   .page-hero {
-    background: linear-gradient(180deg, var(--color-surface-alt) 0%, var(--color-surface) 100%);
+    background: linear-gradient(
+      180deg,
+      rgb(255 248 244 / 0.55) 0%,
+      rgb(255 248 244 / 0) 100%
+    );
     padding: 3.5rem 0;
   }
 
@@ -196,7 +200,7 @@ const heroStyle =
 
   /* Parallax — same height as other image heroes (.page-hero--image sets min-height/padding) */
   .page-hero--parallax {
-    background: #fff;
+    background: var(--color-page-bg);
   }
 
   .page-hero__bg {
