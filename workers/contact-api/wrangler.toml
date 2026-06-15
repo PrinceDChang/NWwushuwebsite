@@ -1,0 +1,13 @@
+name = "nw-wushu-contact-api"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+[vars]
+OWNER_EMAIL = "northwestwushu.2008@gmail.com"
+FROM_EMAIL = "Northwest Wushu <contact@nwwushu.com>"
+ALLOWED_ORIGINS = "http://localhost:4321,http://localhost:4322,http://127.0.0.1:4321,https://princedchang.github.io,https://nwwushu.com,https://www.nwwushu.com"
+
+# Set via: wrangler secret put RESEND_API_KEY
+
+[dev]
+port = 8787

@@ -26,7 +26,7 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          PUBLIC_FORMSPREE_CONTACT_ID: ${{ secrets.PUBLIC_FORMSPREE_CONTACT_ID }}
+          PUBLIC_CONTACT_API_URL: ${{ secrets.PUBLIC_CONTACT_API_URL }}
           PUBLIC_FORMSPREE_TRIAL_ID: ${{ secrets.PUBLIC_FORMSPREE_TRIAL_ID }}
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -2,9 +2,9 @@
 /// <reference types="astro/client" />
 
 interface ImportMetaEnv {
-  readonly PUBLIC_FORMSPREE_CONTACT_ID: string;
+  readonly PUBLIC_CONTACT_API_URL: string;
+  readonly PUBLIC_CONTACT_HONEYPOT?: string;
   readonly PUBLIC_FORMSPREE_TRIAL_ID: string;
-  readonly PUBLIC_FORMSPREE_HONEYPOT?: string;
 }
 
 interface ImportMeta {

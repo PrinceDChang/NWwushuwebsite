@@ -15,21 +15,45 @@ npm run dev
 
 Open [http://localhost:4321](http://localhost:4321).
 
-## Formspree setup
+## Contact form backend
 
-1. Create a free account at [formspree.io](https://formspree.io).
-2. Create two forms:
-   - **Contact** → notifications to `northwestwushu.2008@gmail.com`
-   - **Trial signup** → same inbox
-3. Enable **auto-reply** on both (Settings → Autoresponse) so parents get confirmation.
-4. Copy each form’s ID into `.env`:
+The contact page uses a **Cloudflare Worker** API (not Formspree) to send:
+
+- A confirmation email to the person who submitted the form
+- A notification to `northwestwushu.2008@gmail.com` with **Reply-To** set so you can answer directly
+
+See [`workers/contact-api/README.md`](workers/contact-api/README.md) for deploy steps.
+
+Quick start:
+
+```bash
+cd workers/contact-api
+npm install
+npx wrangler login
+npx wrangler secret put RESEND_API_KEY
+npm run deploy
+```
+
+Add the Worker URL to `.env`:
 
 ```env
-PUBLIC_FORMSPREE_CONTACT_ID=abcd1234
+PUBLIC_CONTACT_API_URL=https://your-worker.workers.dev
+```
+
+For local API testing, run `npm run dev` inside `workers/contact-api` and set `PUBLIC_CONTACT_API_URL=http://localhost:8787`.
+
+## Formspree setup (trial flow only)
+
+1. Create a free account at [formspree.io](https://formspree.io).
+2. Create a form for **Trial signup** → notifications to `northwestwushu.2008@gmail.com`
+3. Enable **auto-reply** (Settings → Autoresponse) so parents get confirmation.
+4. Copy the form ID into `.env`:
+
+```env
 PUBLIC_FORMSPREE_TRIAL_ID=efgh5678
 ```
 
-5. For production, add the same keys as GitHub repository **Secrets** (Settings → Secrets → Actions).
+5. For production, add the same key as a GitHub repository **Secret** (Settings → Secrets → Actions).
 
 ## GitHub Pages + custom domain
 

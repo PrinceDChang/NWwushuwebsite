@@ -6,8 +6,8 @@ import CTABand from '../../components/CTABand.astro';
 import { site } from '../../data/site';
 import { faqItems } from '../../data/faq';
 
-const formspreeId = import.meta.env.PUBLIC_FORMSPREE_CONTACT_ID || 'your_contact_form_id';
-const honeypot = import.meta.env.PUBLIC_FORMSPREE_HONEYPOT || '_gotcha';
+const contactApiUrl = import.meta.env.PUBLIC_CONTACT_API_URL || 'your_contact_api_url';
+const honeypot = import.meta.env.PUBLIC_CONTACT_HONEYPOT || '_gotcha';
 ---
 
 <BaseLayout title="Contact" currentPath="/contact">
@@ -27,7 +27,7 @@ const honeypot = import.meta.env.PUBLIC_FORMSPREE_HONEYPOT || '_gotcha';
       </p>
 
       <h2 class="section__title">Send a message</h2>
-      <form id="contact-form" class="form-grid" data-formspree-id={formspreeId} novalidate>
+      <form id="contact-form" class="form-grid" data-contact-api-url={contactApiUrl} novalidate>
         <input type="text" name={honeypot} tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
         <div class="form-grid form-grid--2">
           <div class="form-field">
