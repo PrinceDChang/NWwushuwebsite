@@ -40,6 +40,7 @@ export const site = {
       imageAlt:
         'Northwest Wushu training studio at the Seattle Armory with open floor space and mirrors',
       spaceTitle: 'Our Training Space',
+      season: '',
       tips: [
         {
           title: 'Parking',
@@ -71,6 +72,7 @@ export const site = {
       imageSrc: '/images/location-jefferson-park.png',
       imageAlt: 'Jefferson Park in Seattle, with playground, spray park, and open lawns on Beacon Hill',
       spaceTitle: 'Summer Training Space',
+      season: 'June – September',
       tips: [
         {
           title: 'Parking',

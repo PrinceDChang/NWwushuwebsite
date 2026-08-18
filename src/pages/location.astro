@@ -22,6 +22,7 @@ const locations = [site.locations.regular, site.locations.summer];
             tabindex={index === 0 ? 0 : -1}
             data-location={location.id}
             data-address={location.full}
+            data-season={location.season}
           >
             {location.label}
           </button>
@@ -40,7 +41,11 @@ const locations = [site.locations.regular, site.locations.summer];
     imagePosition="center 25%"
     imageParallax
     heroScale={1.25}
-  />
+  >
+    <p class="location-hero-season" id="location-hero-season" hidden>
+      <em>June – September</em>
+    </p>
+  </PageHero>
 
   {
     locations.map((location, index) => (
@@ -104,6 +109,7 @@ const locations = [site.locations.regular, site.locations.summer];
     const tabs = Array.from(document.querySelectorAll('[data-location]'));
     const panels = Array.from(document.querySelectorAll('.location-panel'));
     const address = document.getElementById('location-hero-address');
+    const season = document.getElementById('location-hero-season');
     if (!tabs.length || !panels.length) return;
 
     const setLocation = (id, { updateHash = true } = {}) => {
@@ -112,6 +118,9 @@ const locations = [site.locations.regular, site.locations.summer];
         tab.setAttribute('aria-selected', selected ? 'true' : 'false');
         tab.tabIndex = selected ? 0 : -1;
         if (selected && address) address.textContent = tab.dataset.address || '';
+        if (selected && season) {
+          season.hidden = !(tab.dataset.season || '').trim();
+        }
       });
 
       panels.forEach((panel) => {
@@ -159,6 +168,23 @@ const locations = [site.locations.regular, site.locations.summer];
 </script>
 
 <style>
+  .location-hero-season {
+    text-align: center;
+    margin: 0.4rem 0 0;
+    font-size: 1rem;
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+  }
+
+  .location-hero-season em {
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .location-hero-season[hidden] {
+    display: none;
+  }
+
   .location-tabs {
     background: linear-gradient(180deg, var(--color-surface-alt) 0%, var(--color-surface) 100%);
     padding: 1rem 0;
