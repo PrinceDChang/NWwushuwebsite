@@ -13,7 +13,13 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_TRIAL_ID || 'your_trial_for
   <div class="container">
     <TrialStepper current={3} />
 
-    <form id="trial-booking-form" class="trial-booking" data-formspree-id={formspreeId}>
+    <form
+      id="trial-booking-form"
+      class="trial-booking"
+      data-formspree-id={formspreeId}
+      data-class-capacity={site.maxClassSize}
+      data-reply-time={site.replyTime}
+    >
       <div class="trial-booking__columns">
       <div class="trial-booking__col">
         <p class="trial-booking__step-label"><span>1</span> Confirm lesson</p>
@@ -50,8 +56,11 @@ const formspreeId = import.meta.env.PUBLIC_FORMSPREE_TRIAL_ID || 'your_trial_for
         <p class="trial-booking__step-label"><span>3</span> Time slot</p>
         <h2 class="section__title">Selected date</h2>
         <p id="selected-date-label" class="text-muted">Select a date above to continue</p>
-        <button type="button" class="time-slot" id="time-slot" disabled aria-pressed="false">10:00 AM – 11:00 AM</button>
-        <p class="text-muted trial-booking__note">
+        <button type="button" class="time-slot" id="time-slot" disabled aria-pressed="false">
+          <span class="time-slot__time" id="time-slot-time">10:00 AM – 11:00 AM</span>
+          <span class="time-slot__spots" id="time-slot-spots">Select a date to see remaining spots</span>
+        </button>
+        <p class="text-muted trial-booking__note" id="trial-spots-note">
           We will confirm your spot within {site.replyTime}. Max {site.maxClassSize} students per class.
         </p>
       </div>

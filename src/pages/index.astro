@@ -11,12 +11,19 @@ const heroVideoPoster = `https://i.ytimg.com/vi/${heroVideoId}/maxresdefault.jpg
 
 <BaseLayout title={site.shortName} currentPath="/">
   <section class="home-hero">
-    <div
-      class="home-hero__video"
-      aria-hidden="true"
-      data-video-id={heroVideoId}
-      style={`background-image: url(${heroVideoPoster})`}
-    ></div>
+    <div class="home-hero__video" aria-hidden="true">
+      <video
+        class="home-hero__media"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        poster={heroVideoPoster}
+      >
+        <source src="/videos/hero-showreel.mp4" type="video/mp4" />
+      </video>
+    </div>
     <div class="home-hero__overlay" aria-hidden="true"></div>
     <div class="container home-hero__inner">
       <h1 class="home-hero__title">Northwest Wushu</h1>
@@ -31,8 +38,6 @@ const heroVideoPoster = `https://i.ytimg.com/vi/${heroVideoId}/maxresdefault.jpg
       </div>
     </div>
   </section>
-
-  <script type="module" src="/scripts/home-hero-video.js"></script>
 
   <section class="section">
     <div class="container">
@@ -114,26 +119,14 @@ const heroVideoPoster = `https://i.ytimg.com/vi/${heroVideoId}/maxresdefault.jpg
     background-position: center;
   }
 
-  /* Injected by home-hero-video.js — must be :global for Astro scoped styles */
-  .home-hero__video :global(.home-hero__video-inner) {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  .home-hero__video :global(.home-hero__video-inner iframe) {
+  .home-hero__media {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 100vw;
-    height: 56.25vw;
-    min-width: 177.78vh;
-    min-height: 100%;
-    /*
-      YouTube sometimes flashes a control/progress UI at the start of loops.
-      Crop more aggressively (slightly upward) so those overlays remain off-screen.
-    */
-    transform: translate(-50%, -54%) scale(1.32);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%) scale(1.08);
     border: 0;
     pointer-events: none;
   }

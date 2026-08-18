@@ -57,7 +57,9 @@ if (!form) {
   const formId = form.dataset.formspreeId;
   const classType = trialData.classType || 'kids';
   const classRadios = form.querySelectorAll('input[name="classType"]');
+  const defaultCapacity = Number(form.dataset.classCapacity) || 25;
 
+  let spotsData = { capacity: defaultCapacity, booked: { kids: {}, adult: {} } };
   let viewYear = new Date().getFullYear();
   let viewMonth = new Date().getMonth();
   let selectedDate = trialData.selectedDate || null;
@@ -67,12 +69,55 @@ if (!form) {
   const selectedLabel = document.getElementById('selected-date-label');
   const selectedInput = document.getElementById('selected-date-input');
   const timeSlotBtn = document.getElementById('time-slot');
+  const timeSlotTime = document.getElementById('time-slot-time');
+  const timeSlotSpots = document.getElementById('time-slot-spots');
+  const spotsNote = document.getElementById('trial-spots-note');
   const submitBtn = document.getElementById('submit-trial');
   const step3Col = document.getElementById('trial-step-3');
 
+  const spotsUrl = `${nwBase()}data/trial-spots.json`;
+  fetch(spotsUrl)
+    .then((res) => (res.ok ? res.json() : Promise.reject()))
+    .then((data) => {
+      spotsData = {
+        capacity: Number(data.capacity) || defaultCapacity,
+        booked: {
+          kids: data.booked?.kids || {},
+          adult: data.booked?.adult || {},
+        },
+      };
+      renderCalendar();
+      updateSpotsUI();
+      updateStep3State();
+    })
+    .catch(() => {
+      /* keep default empty bookings — all spots open */
+    });
+
+  function currentClassType() {
+    return form.querySelector('input[name="classType"]:checked')?.value || 'kids';
+  }
+
+  function spotsLeft(iso, type = currentClassType()) {
+    if (!iso) return spotsData.capacity;
+    const booked = Number(spotsData.booked?.[type]?.[iso] || 0);
+    return Math.max(0, spotsData.capacity - booked);
+  }
+
+  function spotsLabel(left) {
+    if (left <= 0) return 'Class full';
+    if (left === 1) return '1 spot left';
+    return `${left} spots left`;
+  }
+
   classRadios.forEach((r) => {
     if (r.value === classType) r.checked = true;
-    r.addEventListener('change', () => updateSlotLabel(r.value));
+    r.addEventListener('change', () => {
+      updateSlotLabel(r.value);
+      renderCalendar();
+      updateSpotsUI();
+      updateStep3State();
+    });
   });
 
   updateSlotLabel(classType);
@@ -98,22 +143,48 @@ if (!form) {
 
   function updateSlotLabel(type) {
     const slot = SLOTS[type] || SLOTS.kids;
-    if (timeSlotBtn) {
-      timeSlotBtn.textContent = slot.time;
-      timeSlotBtn.dataset.time = slot.time;
-    }
+    if (timeSlotTime) timeSlotTime.textContent = slot.time;
+    if (timeSlotBtn) timeSlotBtn.dataset.time = slot.time;
     saveTrialData({ classType: type });
+    updateSpotsUI();
+  }
+
+  function updateSpotsUI() {
+    const left = spotsLeft(selectedDate);
+    const cap = spotsData.capacity;
+
+    if (timeSlotSpots) {
+      timeSlotSpots.textContent = selectedDate
+        ? spotsLabel(left)
+        : 'Select a date to see remaining spots';
+      timeSlotSpots.dataset.level =
+        !selectedDate ? 'idle' : left <= 0 ? 'full' : left <= 5 ? 'low' : 'open';
+    }
+
+    timeSlotBtn?.classList.toggle('time-slot--full', Boolean(selectedDate) && left <= 0);
+
+    if (spotsNote) {
+      if (!selectedDate) {
+        spotsNote.textContent = `We will confirm your spot within ${form.dataset.replyTime || '1–2 business days'}. Max ${cap} students per class.`;
+      } else if (left <= 0) {
+        spotsNote.textContent = `This class is full (${cap} of ${cap} spots taken). Please pick another Saturday.`;
+      } else {
+        spotsNote.textContent = `${left} of ${cap} spots left this Saturday. We will confirm your request within ${form.dataset.replyTime || '1–2 business days'}.`;
+      }
+    }
   }
 
   function updateStep3State() {
     const locked = !selectedDate;
+    const left = spotsLeft(selectedDate);
+    const full = Boolean(selectedDate) && left <= 0;
     step3Col?.classList.toggle('trial-booking__col--locked', locked);
     step3Col?.setAttribute('aria-disabled', locked ? 'true' : 'false');
 
-    if (submitBtn) submitBtn.disabled = locked;
+    if (submitBtn) submitBtn.disabled = locked || full;
     if (timeSlotBtn) {
-      timeSlotBtn.disabled = locked;
-      timeSlotBtn.setAttribute('aria-pressed', locked ? 'false' : 'true');
+      timeSlotBtn.disabled = locked || full;
+      timeSlotBtn.setAttribute('aria-pressed', locked || full ? 'false' : 'true');
     }
 
     if (selectedInput) selectedInput.value = selectedDate || '';
@@ -121,6 +192,8 @@ if (!form) {
     if (locked && selectedLabel) {
       selectedLabel.textContent = 'Select a date above to continue';
     }
+
+    updateSpotsUI();
   }
 
   function renderCalendar() {
@@ -162,16 +235,23 @@ if (!form) {
       const isFuture = date >= today;
 
       if (isSaturday && isFuture) {
+        const left = spotsLeft(iso);
         btn.classList.add('calendar__day--sat');
         btn.dataset.date = iso;
-        btn.setAttribute('aria-label', date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }));
+        btn.innerHTML = `<span class="calendar__day-num">${day}</span><span class="calendar__day-spots">${left <= 0 ? 'Full' : left}</span>`;
+        const pretty = date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+        btn.setAttribute('aria-label', `${pretty}, ${spotsLabel(left)}`);
+        if (left <= 0) {
+          btn.classList.add('calendar__day--full');
+          btn.disabled = true;
+        }
         if (iso === selectedDate) {
           btn.classList.add('calendar__day--selected');
           btn.setAttribute('aria-pressed', 'true');
         } else {
           btn.setAttribute('aria-pressed', 'false');
         }
-        btn.onclick = () => selectDate(iso, date);
+        if (left > 0) btn.onclick = () => selectDate(iso, date);
       } else {
         btn.disabled = true;
         btn.setAttribute('aria-hidden', 'true');
@@ -214,6 +294,11 @@ if (!form) {
     const type = form.querySelector('input[name="classType"]:checked')?.value || 'kids';
     if (!selectedDate) {
       alert('Please select a Saturday for your trial.');
+      return;
+    }
+
+    if (spotsLeft(selectedDate, type) <= 0) {
+      alert('That class is full. Please pick another Saturday.');
       return;
     }
 

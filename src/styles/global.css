@@ -1042,6 +1042,34 @@ fieldset.form-field input[type='checkbox'] {
   cursor: pointer;
   color: var(--color-ink);
   font-weight: 600;
+  flex-direction: column;
+  gap: 0.05rem;
+  line-height: 1.05;
+}
+
+.calendar__day-num {
+  font-size: 0.875rem;
+}
+
+.calendar__day-spots {
+  font-size: 0.5625rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-brand-mid);
+  text-transform: uppercase;
+}
+
+.calendar__day--selected .calendar__day-spots {
+  color: #fff;
+}
+
+.calendar__day--full {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.calendar__day--full .calendar__day-spots {
+  color: var(--color-muted);
 }
 
 .calendar__day--sat:hover:not(:disabled) {
@@ -1066,7 +1094,10 @@ fieldset.form-field input[type='checkbox'] {
 }
 
 .time-slot {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
   width: 100%;
   padding: 1rem 1.25rem;
   margin-top: 0.75rem;
@@ -1082,6 +1113,34 @@ fieldset.form-field input[type='checkbox'] {
     border-color 0.25s var(--ease-out),
     background 0.25s var(--ease-out),
     box-shadow 0.25s var(--ease-out);
+}
+
+.time-slot__time {
+  font-size: 1rem;
+}
+
+.time-slot__spots {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-brand-mid);
+}
+
+.time-slot__spots[data-level='idle'] {
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+.time-slot__spots[data-level='low'] {
+  color: var(--color-brand-dark);
+}
+
+.time-slot__spots[data-level='full'] {
+  color: var(--color-muted);
+}
+
+.time-slot--full {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .time-slot--selected,

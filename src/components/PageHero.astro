@@ -2,6 +2,7 @@
 interface Props {
   title: string;
   subtitle?: string;
+  subtitleId?: string;
   variant?: 'default' | 'image';
   imageSrc?: string;
   imageAlt?: string;
@@ -16,6 +17,7 @@ interface Props {
 const {
   title,
   subtitle,
+  subtitleId,
   variant = 'default',
   imageSrc,
   imageAlt = '',
@@ -83,7 +85,7 @@ const heroStyle =
     <h1 class:list={[variant === 'default' && 'hero-title', variant === 'image' && 'page-hero__title-image']}>
       {title}
     </h1>
-    {subtitle && <p class="page-hero__subtitle">{subtitle}</p>}
+    {subtitle && <p class="page-hero__subtitle" id={subtitleId}>{subtitle}</p>}
   </div>
 </section>
 
