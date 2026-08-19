@@ -41,7 +41,9 @@ export const instagramPosts: InstagramPost[] = Object.entries(postsMeta as Posts
   ([shortcode, meta]) => ({
     id: shortcode,
     shortcode,
-    permalink: `https://www.instagram.com/p/${shortcode}/`,
+    permalink: meta.isVideo
+      ? `https://www.instagram.com/reel/${shortcode}/`
+      : `https://www.instagram.com/p/${shortcode}/`,
     imageSrc: `/images/instagram/${shortcode}.jpg`,
     alt: meta.caption || `Instagram post ${shortcode}`,
     caption: meta.caption,

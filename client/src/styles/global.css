@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@500;600;700&display=swap');
-
 :root {
   /* Brand gradient — warm orange through coral to deep red (#b91514) */
   --gradient-brand: linear-gradient(
@@ -78,8 +76,8 @@
     radial-gradient(ellipse 55% 45% at 18% 88%, var(--site-glow-orange) 0%, transparent 52%),
     radial-gradient(ellipse 45% 35% at 50% 105%, var(--site-glow-amber) 0%, transparent 48%),
     var(--site-bg-base);
-  --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
-  --font-display: 'Outfit', var(--font-sans);
+  --font-sans: 'Source Sans 3', system-ui, sans-serif;
+  --font-display: 'Shippori Mincho', 'Noto Serif', Georgia, serif;
   --radius-sm: 0.5rem;
   --radius: 0.75rem;
   --radius-lg: 1rem;
@@ -112,11 +110,14 @@ html {
 body {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 1rem;
-  line-height: 1.65;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.68;
+  letter-spacing: 0.005em;
   color: var(--color-ink);
   background: transparent;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 #root {
@@ -288,16 +289,22 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.22;
   margin-top: 0;
+}
+
+h3,
+h4 {
+  font-weight: 600;
 }
 
 .coach-role-label {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1rem;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.08em;
   margin: 0 0 0.25rem;
   background: var(--gradient-brand);
   -webkit-background-clip: text;
@@ -313,10 +320,10 @@ h4 {
   gap: 0.5rem;
   padding: 0.8125rem 1.5rem;
   border-radius: var(--radius-pill);
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 0.9375rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
   text-decoration: none;
   border: 1px solid transparent;
   cursor: pointer;
@@ -435,6 +442,7 @@ h4 {
 
 .section__title {
   font-size: clamp(1.5rem, 3vw, 2rem);
+  letter-spacing: 0.04em;
   margin-bottom: 1.5rem;
 }
 

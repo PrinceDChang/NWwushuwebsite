@@ -13,7 +13,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Open [http://127.0.0.1:5173](http://127.0.0.1:5173). Vite proxies `/api` to Express on port 3000.
+Open [http://127.0.0.1:4321](http://127.0.0.1:4321). Vite proxies `/api` to Express on port 3000.
 
 ## Production (Render)
 

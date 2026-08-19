@@ -48,15 +48,8 @@
   }
 
 /* src/components/CoachFeatureTicker.astro */
-@property --coach-timer-fill {
-    syntax: '<angle>';
-    inherits: false;
-    initial-value: 0deg;
-  }
-
-  .coach-ticker {
+.coach-ticker {
     margin-bottom: 2rem;
-    --coach-circle-gradient: var(--gradient-brand);
   }
 
   .coach-ticker__layout {
@@ -181,38 +174,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.625rem;
+    gap: 0.5rem;
     justify-self: stretch;
     width: 100%;
     max-width: 280px;
-  }
-
-  .coach-ticker__play-pause {
     position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    box-sizing: border-box;
-    width: 0.859375rem;
-    height: 0.859375rem;
-    padding: 0.1875rem;
-    border: 1px solid var(--color-brand-light-strong);
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: var(--shadow-sm);
-    cursor: pointer;
-    line-height: 0;
-    transition: box-shadow 0.2s ease;
-  }
-
-  .coach-ticker__play-pause:hover {
-    box-shadow: var(--shadow-sm), var(--shadow-brand);
-  }
-
-  .coach-ticker__play-pause:focus-visible {
-    outline: 2px solid var(--color-brand-mid);
-    outline-offset: 2px;
   }
 
   .coach-ticker__icon-defs {
@@ -222,95 +188,54 @@
     overflow: hidden;
   }
 
-  .coach-ticker__icon {
-    display: none;
-    width: 100%;
-    height: 100%;
-  }
-
-  .coach-ticker__icon svg {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-
-  .coach-ticker__play-pause.is-playing .coach-ticker__icon--pause {
-    display: block;
-  }
-
-  .coach-ticker__play-pause:not(.is-playing) .coach-ticker__icon--play {
-    display: block;
-  }
-
-  .coach-ticker__timers {
-    display: flex;
+  .coach-ticker__nav {
+    display: inline-flex;
     align-items: center;
-    gap: 0.625rem;
-  }
-
-  .coach-timer {
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 2.25rem;
+    height: 2.25rem;
     padding: 0;
-    border: none;
-    background: transparent;
+    border: 1px solid var(--color-brand-light-strong);
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: var(--shadow-sm);
     cursor: pointer;
     line-height: 0;
+    transition:
+      box-shadow 0.2s ease,
+      transform 0.15s ease;
   }
 
-  .coach-timer__circle {
+  .coach-ticker__nav:hover {
+    box-shadow: var(--shadow-sm), var(--shadow-brand);
+    transform: translateY(-1px);
+  }
+
+  .coach-ticker__nav:active {
+    transform: translateY(0);
+  }
+
+  .coach-ticker__nav:focus-visible {
+    outline: 2px solid var(--color-brand-mid);
+    outline-offset: 2px;
+  }
+
+  .coach-ticker__nav svg {
     display: block;
-    box-sizing: border-box;
-    width: 0.859375rem;
-    height: 0.859375rem;
-    border-radius: 50%;
-    border: 1px solid var(--color-brand-light-strong);
-    background: var(--color-brand-light);
-    box-shadow: var(--shadow-sm);
+    width: 0.9rem;
+    height: 0.9rem;
   }
 
-  .coach-timer--active .coach-timer__circle {
-    box-shadow: var(--shadow-sm), var(--shadow-brand);
-    background: conic-gradient(
-      from -90deg,
-      #e59a4d 0deg,
-      #d87457 calc(var(--coach-timer-fill) * 0.35),
-      #d04a45 calc(var(--coach-timer-fill) * 0.68),
-      #b91514 var(--coach-timer-fill),
-      var(--color-brand-light) var(--coach-timer-fill)
-    );
-  }
-
-  .coach-timer--complete .coach-timer__circle {
-    --coach-timer-fill: 360deg;
-    animation: none;
-    box-shadow: var(--shadow-sm), var(--shadow-brand);
-    background: var(--coach-circle-gradient);
-  }
-
-  .coach-timer:not(.coach-timer--active):not(.coach-timer--complete) .coach-timer__circle {
-    --coach-timer-fill: 0deg;
-    animation: none;
-  }
-
-  .coach-timer--active .coach-timer__circle {
-    animation: coach-timer-fill var(--coach-timer-duration, 9s) linear forwards;
-  }
-
-  .coach-ticker.is-paused .coach-timer--active .coach-timer__circle {
-    animation-play-state: paused;
-  }
-
-  .coach-ticker.is-manually-paused .coach-timer__circle {
-    animation: none;
-    --coach-timer-fill: 360deg;
-    border-color: transparent;
-    background: var(--coach-circle-gradient);
-    box-shadow: var(--shadow-sm), var(--shadow-brand);
-  }
-
-  @keyframes coach-timer-fill {
-    to {
-      --coach-timer-fill: 360deg;
-    }
+  .coach-ticker__status {
+    margin: 0;
+    min-width: 2.75rem;
+    text-align: center;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-brand-mid);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -319,13 +244,10 @@
       transition: none;
     }
 
-    .coach-timer--active .coach-timer__circle {
-      animation: none;
-      background: var(--coach-circle-gradient);
-    }
-
-    .coach-timer--complete .coach-timer__circle {
-      background: var(--coach-circle-gradient);
+    .coach-ticker__nav,
+    .coach-ticker__nav:hover,
+    .coach-ticker__nav:active {
+      transform: none;
     }
   }
 
@@ -399,7 +321,8 @@
   .page-hero__title-image {
     color: #fff;
     font-size: clamp(2rem, 5vw, 3rem);
-    font-weight: 700;
+    font-weight: 800;
+    letter-spacing: 0.06em;
     text-align: center;
     margin: 0;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
@@ -931,9 +854,9 @@
     color: var(--color-ink);
     text-decoration: none;
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 700;
     font-size: 1rem;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.06em;
     padding: 0.4375rem 1rem;
     border-radius: var(--radius-pill);
     border: 1px solid transparent;
@@ -1150,8 +1073,9 @@
   .about-subnav a {
     color: var(--color-muted);
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 700;
     font-size: 0.9375rem;
+    letter-spacing: 0.06em;
     text-decoration: none;
     padding: 0.5rem 1.125rem;
     border-radius: var(--radius-pill);
@@ -1692,11 +1616,16 @@
 
   .home-hero__title {
     font-size: clamp(2.25rem, 6vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: 0.06em;
     margin-bottom: 0.5rem;
   }
 
   .home-hero__tagline {
+    font-family: var(--font-display);
     font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     opacity: 0.9;
     margin-bottom: 1rem;
   }
@@ -1780,6 +1709,7 @@
   .location-tabs__tab {
     color: var(--color-muted);
     font-family: var(--font-display);
+    letter-spacing: 0.06em;
     font-weight: 600;
     font-size: 0.9375rem;
     background: transparent;
