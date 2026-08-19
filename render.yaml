@@ -4,14 +4,12 @@ services:
     runtime: node
     plan: free
     region: oregon
-    buildCommand: npm ci && npm run build
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
         value: "22"
-      - key: NODE_ENV
-        value: production
       - key: OWNER_EMAIL
         value: northwestwushu.2008@gmail.com
       - key: FROM_EMAIL
