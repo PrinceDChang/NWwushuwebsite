@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: nwwushu-website
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: OWNER_EMAIL
+        value: northwestwushu.2008@gmail.com
+      - key: FROM_EMAIL
+        value: Northwest Wushu <onboarding@resend.dev>
+      - key: RESEND_API_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false

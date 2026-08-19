@@ -6,8 +6,12 @@ dist/
 
 # env
 .env
-.env.*
+.env.local
+.env.*.local
+!.env.example
 .dev.vars
+.astro/
+.wrangler/
 
 # logs
 npm-debug.log*
@@ -16,5 +20,3 @@ npm-debug.log*
 .DS_Store
 
 # IDE
-.astro/
-.wrangler/
