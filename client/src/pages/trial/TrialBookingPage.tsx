@@ -61,6 +61,7 @@ export default function TrialBookingPage() {
   const [viewMonth, setViewMonth] = useState(now.getMonth());
   const [selectedDate, setSelectedDate] = useState<string | null>(trialData.selectedDate || null);
   const [sending, setSending] = useState(false);
+  const [formError, setFormError] = useState('');
 
   useEffect(() => {
     if (!hasAccess) navigate('/trial/agreements/', { replace: true });
@@ -146,16 +147,17 @@ export default function TrialBookingPage() {
 
   async function submit() {
     const current = getTrialData();
+    setFormError('');
     if (!current.step || current.step < 2) {
       navigate('/trial/agreements/');
       return;
     }
     if (!selectedDate) {
-      alert('Please select a Saturday for your trial.');
+      setFormError('Please select a Saturday for your trial.');
       return;
     }
     if (spotsLeft(selectedDate, classType) <= 0) {
-      alert('That class is full. Please pick another Saturday.');
+      setFormError('That class is full. Please pick another Saturday.');
       return;
     }
 
@@ -200,7 +202,7 @@ export default function TrialBookingPage() {
       clearTrialData();
       navigate('/trial/confirmation/');
     } catch {
-      alert('Something went wrong. Please try again or email us directly.');
+      setFormError('Something went wrong. Please try again or email us directly.');
       setSending(false);
     }
   }
@@ -215,6 +217,11 @@ export default function TrialBookingPage() {
         <TrialStepper current={3} />
 
         <form id="trial-booking-form" className="trial-booking">
+          {formError && (
+            <p className="form-error" role="alert">
+              {formError}
+            </p>
+          )}
           <div className="trial-booking__columns">
             <div className="trial-booking__col">
               <p className="trial-booking__step-label">
@@ -303,7 +310,7 @@ export default function TrialBookingPage() {
                     }
                     if (!cell.iso) {
                       return (
-                        <button key={`d-${i}`} type="button" className="calendar__day" disabled aria-hidden="true">
+                        <button key={`d-${i}`} type="button" className="calendar__day" disabled>
                           {cell.day}
                         </button>
                       );
@@ -321,6 +328,7 @@ export default function TrialBookingPage() {
                         )}
                         disabled={cell.disabled}
                         aria-pressed={selected}
+                        aria-current={selected ? 'date' : undefined}
                         aria-label={`${new Date(`${cell.iso}T12:00:00`).toLocaleDateString('en-US', {
                           weekday: 'long',
                           month: 'long',
@@ -328,6 +336,7 @@ export default function TrialBookingPage() {
                         })}, ${spotsLabel(cell.left ?? 0)}`}
                         onClick={() => {
                           setSelectedDate(cell.iso!);
+                          setFormError('');
                           saveTrialData({ selectedDate: cell.iso });
                         }}
                       >
@@ -354,11 +363,10 @@ export default function TrialBookingPage() {
               <p id="selected-date-label" className="text-muted">
                 {selectedLabel()}
               </p>
-              <button
-                type="button"
-                className={cx('time-slot', full && 'time-slot--full')}
-                disabled={locked || full}
-                aria-pressed={!(locked || full)}
+              <div
+                className={cx('time-slot', !locked && !full && 'time-slot--available', full && 'time-slot--full')}
+                role="status"
+                aria-live="polite"
               >
                 <span className="time-slot__time">{slot.time}</span>
                 <span
@@ -367,7 +375,7 @@ export default function TrialBookingPage() {
                 >
                   {selectedDate ? spotsLabel(left) : 'Select a date to see remaining spots'}
                 </span>
-              </button>
+              </div>
               <p className="text-muted trial-booking__note">{noteText()}</p>
             </div>
           </div>

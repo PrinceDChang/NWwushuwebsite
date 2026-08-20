@@ -11,10 +11,18 @@ import { site } from '../../data/site';
 export default function ContactPage() {
   const navigate = useNavigate();
   const [sending, setSending] = useState(false);
+  const [formError, setFormError] = useState('');
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
+    setFormError('');
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
     const fd = new FormData(form);
     const body = Object.fromEntries(fd.entries());
     setSending(true);
@@ -33,7 +41,7 @@ export default function ContactPage() {
         err instanceof Error && err.message && err.message !== 'fail'
           ? err.message
           : 'Could not send your message. Please email northwestwushu.2008@gmail.com directly.';
-      alert(message);
+      setFormError(message);
       setSending(false);
     }
   }
@@ -56,7 +64,13 @@ export default function ContactPage() {
           </p>
 
           <h2 className="section__title">Send a message</h2>
-          <form id="contact-form" className="form-grid" onSubmit={onSubmit} noValidate>
+          <p className="form-required-note">Required fields are marked with an asterisk (*).</p>
+          <form id="contact-form" className="form-grid" onSubmit={onSubmit}>
+            {formError && (
+              <p className="form-error" role="alert">
+                {formError}
+              </p>
+            )}
             <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" className="hp" aria-hidden="true" />
             <div className="form-grid form-grid--2">
               <div className="form-field">

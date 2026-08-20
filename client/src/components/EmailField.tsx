@@ -67,6 +67,8 @@ export default function EmailField({
     return () => document.removeEventListener('click', onDocClick);
   }, []);
 
+  const activeOptionId = activeIndex >= 0 ? `${listId}-opt-${activeIndex}` : undefined;
+
   return (
     <div className="email-autocomplete" ref={wrapperRef}>
       <input
@@ -78,9 +80,12 @@ export default function EmailField({
         autoComplete={autoComplete}
         placeholder={placeholder}
         defaultValue={defaultValue}
+        role="combobox"
         aria-autocomplete="list"
         aria-controls={listId}
         aria-expanded={open}
+        aria-haspopup="listbox"
+        aria-activedescendant={activeOptionId}
         onInput={(event) => renderFromValue((event.target as HTMLInputElement).value)}
         onFocus={(event) => renderFromValue(event.currentTarget.value)}
         onKeyDown={(event) => {
@@ -95,11 +100,14 @@ export default function EmailField({
             event.preventDefault();
             if (inputRef.current) inputRef.current.value = suggestions[activeIndex].value;
             setOpen(false);
+            setActiveIndex(-1);
           } else if (event.key === 'Tab' && activeIndex >= 0) {
             if (inputRef.current) inputRef.current.value = suggestions[activeIndex].value;
             setOpen(false);
+            setActiveIndex(-1);
           } else if (event.key === 'Escape') {
             setOpen(false);
+            setActiveIndex(-1);
           }
         }}
       />
@@ -110,9 +118,8 @@ export default function EmailField({
         hidden={!open}
       >
         {suggestions.map((suggestion, index) => (
-          <button
+          <div
             key={suggestion.value}
-            type="button"
             className={
               index === activeIndex
                 ? 'email-autocomplete__chip email-autocomplete__chip--active'
@@ -125,10 +132,11 @@ export default function EmailField({
               event.preventDefault();
               if (inputRef.current) inputRef.current.value = suggestion.value;
               setOpen(false);
+              setActiveIndex(-1);
             }}
           >
             {suggestion.label}
-          </button>
+          </div>
         ))}
       </div>
     </div>

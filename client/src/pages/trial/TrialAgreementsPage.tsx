@@ -1,4 +1,4 @@
-import { FormEvent, useEffect } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout';
 import PageHero from '../../components/PageHero';
@@ -9,6 +9,7 @@ import { getTrialData, saveTrialData } from '../../lib/trialStorage';
 export default function TrialAgreementsPage() {
   const navigate = useNavigate();
   const data = getTrialData();
+  const [formError, setFormError] = useState('');
 
   useEffect(() => {
     if (!data.step || data.step < 1) {
@@ -21,14 +22,15 @@ export default function TrialAgreementsPage() {
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
+    setFormError('');
     const waiver = form.querySelector<HTMLInputElement>('input[name="waiverAccepted"]');
     const photo = form.querySelector<HTMLInputElement>('input[name="photoRelease"]:checked');
     if (!waiver?.checked) {
-      alert('You must accept the waiver to continue.');
+      setFormError('You must accept the waiver to continue.');
       return;
     }
     if (!photo?.value) {
-      alert('Please choose a photo release option.');
+      setFormError('Please choose a photo release option.');
       return;
     }
     saveTrialData({
@@ -47,6 +49,11 @@ export default function TrialAgreementsPage() {
         <TrialStepper current={2} />
 
         <form id="trial-agreements-form" className="form-grid" onSubmit={onSubmit}>
+          {formError && (
+            <p className="form-error" role="alert">
+              {formError}
+            </p>
+          )}
           <h2 className="section__title">Waiver</h2>
           <div className="legal-scroll" tabIndex={0} role="region" aria-label="Waiver text">
             {waiverText.split('\n').map((line, i) => (

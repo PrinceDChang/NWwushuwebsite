@@ -133,26 +133,28 @@ export default function AboutPage() {
               className={cx('coach-card', coach.comingSoon && 'coach-card--coming-soon')}
             >
               {coach.comingSoon ? (
-                <div className="coach-card__media coach-card__media--placeholder" aria-hidden="true">
-                  <svg
-                    className="coach-card__silhouette"
-                    viewBox="0 0 120 160"
-                    preserveAspectRatio="xMidYMax meet"
-                    aria-hidden="true"
-                  >
-                    <defs>
-                      <linearGradient id="coach-placeholder-gradient" x1="15%" y1="0%" x2="85%" y2="100%">
-                        <stop offset="0%" stopColor="#e59a4d" />
-                        <stop offset="50%" stopColor="#d04a45" />
-                        <stop offset="100%" stopColor="#b91514" />
-                      </linearGradient>
-                    </defs>
-                    <circle cx="60" cy="36" r="18" fill="url(#coach-placeholder-gradient)" />
-                    <path
-                      d="M60 56c-20 0-36 14-40 36v68h80V92c-4-22-20-36-40-36z"
-                      fill="url(#coach-placeholder-gradient)"
-                    />
-                  </svg>
+                <div className="coach-card__media coach-card__media--placeholder">
+                  <div aria-hidden="true">
+                    <svg
+                      className="coach-card__silhouette"
+                      viewBox="0 0 120 160"
+                      preserveAspectRatio="xMidYMax meet"
+                      focusable="false"
+                    >
+                      <defs>
+                        <linearGradient id="coach-placeholder-gradient" x1="15%" y1="0%" x2="85%" y2="100%">
+                          <stop offset="0%" stopColor="#e59a4d" />
+                          <stop offset="50%" stopColor="#d04a45" />
+                          <stop offset="100%" stopColor="#b91514" />
+                        </linearGradient>
+                      </defs>
+                      <circle cx="60" cy="36" r="18" fill="url(#coach-placeholder-gradient)" />
+                      <path
+                        d="M60 56c-20 0-36 14-40 36v68h80V92c-4-22-20-36-40-36z"
+                        fill="url(#coach-placeholder-gradient)"
+                      />
+                    </svg>
+                  </div>
                   <span className="coach-card__placeholder-label">Coming Soon</span>
                 </div>
               ) : (

@@ -68,7 +68,12 @@ export default function InstagramSection() {
           {posts.map((post) => {
             const { description, hashtags } = parseInstagramCaption(post.caption);
             const hasOverlay = Boolean(description || hashtags.length > 0);
-            const ariaLabel = [description, hashtags.length > 0 ? hashtags.join(' ') : '', 'View on Instagram']
+            const ariaLabel = [
+              description,
+              hashtags.length > 0 ? hashtags.join(' ') : '',
+              post.isVideo ? 'Video' : '',
+              'View on Instagram',
+            ]
               .filter(Boolean)
               .join('. ');
 

@@ -1,4 +1,4 @@
-import { FormEvent, useMemo } from 'react';
+import { FormEvent, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import EmailField from '../../components/EmailField';
 import Layout from '../../components/Layout';
@@ -9,6 +9,7 @@ import { getTrialData, saveTrialData } from '../../lib/trialStorage';
 export default function TrialStep1Page() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
+  const [formError, setFormError] = useState('');
   const existing = useMemo(() => {
     const classPref = params.get('class');
     if (classPref === 'kids' || classPref === 'adult') {
@@ -20,11 +21,12 @@ export default function TrialStep1Page() {
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
+    setFormError('');
     const fd = new FormData(form);
     const isMinor = Boolean(form.querySelector<HTMLInputElement>('#isMinor')?.checked);
 
     if (isMinor && fd.get('guardianRelation')?.toString().toLowerCase() === 'self') {
-      alert('For participants under 18, emergency contact must be a parent or guardian.');
+      setFormError('For participants under 18, emergency contact must be a parent or guardian.');
       return;
     }
 
@@ -53,6 +55,12 @@ export default function TrialStep1Page() {
         <TrialStepper current={1} />
 
         <form id="trial-step1-form" className="form-grid" onSubmit={onSubmit}>
+          <p className="form-required-note">Required fields are marked with an asterisk (*).</p>
+          {formError && (
+            <p className="form-error" role="alert">
+              {formError}
+            </p>
+          )}
           <h2 className="section__title">Personal information</h2>
           <div className="form-field">
             <label className="required" htmlFor="fullName">

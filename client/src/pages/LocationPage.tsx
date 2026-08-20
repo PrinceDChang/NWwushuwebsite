@@ -55,6 +55,9 @@ export default function LocationPage() {
             if (next === current) return;
             event.preventDefault();
             setLocation(tabs[next]);
+            window.requestAnimationFrame(() => {
+              document.getElementById(`location-tab-${tabs[next]}`)?.focus();
+            });
           }}
         >
           {locations.map((item) => {

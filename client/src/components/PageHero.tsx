@@ -21,7 +21,7 @@ export default function PageHero({
   subtitleId,
   variant = 'default',
   imageSrc,
-  imageAlt = '',
+  imageAlt: _imageAlt = '',
   imagePosition = 'center',
   imageParallax = false,
   heroScale = 1,
@@ -86,7 +86,7 @@ export default function PageHero({
           <img
             className="page-hero__bg-img"
             src={imageSrc}
-            alt={imageAlt}
+            alt=""
             width={1600}
             height={900}
             loading="eager"
@@ -102,7 +102,7 @@ export default function PageHero({
             <div className="page-hero__parallax" data-page-hero-parallax>
               <img
                 src={imageSrc}
-                alt={imageAlt}
+                alt=""
                 width={1600}
                 height={900}
                 loading="eager"
