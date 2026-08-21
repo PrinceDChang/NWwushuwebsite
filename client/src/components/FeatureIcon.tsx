@@ -19,34 +19,38 @@ export default function FeatureIcon({ variant }: FeatureIconProps) {
     <div className="feature__icon" aria-hidden="true">
       {variant === 'levels' && (
         <svg {...svgAttrs}>
-          <circle cx="7" cy="8.5" r="2.25" />
-          <path d="M7 11v5.5" />
-          <circle cx="12" cy="6.25" r="2.25" />
-          <path d="M12 8.75v7.75" />
-          <circle cx="17" cy="9.75" r="2.25" />
-          <path d="M17 12.25v4.25" />
-          <path d="M4.5 18.5h15" />
-          <path d="M9 15.5h6" />
+          {/* Three people standing side by side */}
+          <circle cx="6.5" cy="6.5" r="2.1" />
+          <path d="M6.5 9.1v5.4" />
+          <path d="M6.5 14.5l-2.4 5" />
+          <path d="M6.5 14.5l2.4 5" />
+          <path d="M4.6 11.4h3.8" />
+
+          <circle cx="12" cy="5.75" r="2.25" />
+          <path d="M12 8.5v6.2" />
+          <path d="M12 14.7l-2.55 5.05" />
+          <path d="M12 14.7l2.55 5.05" />
+          <path d="M9.85 11.1h4.3" />
+
+          <circle cx="17.5" cy="6.5" r="2.1" />
+          <path d="M17.5 9.1v5.4" />
+          <path d="M17.5 14.5l-2.4 5" />
+          <path d="M17.5 14.5l2.4 5" />
+          <path d="M15.6 11.4h3.8" />
         </svg>
       )}
       {variant === 'tradition' && (
         <svg {...svgAttrs}>
-          <circle cx="12" cy="12" r="8.5" />
-          <path d="M12 3.5v17" />
-          <path d="M7.25 9.25c-1.6 1.35-2.25 3.1-2.25 4.75s.65 3.4 2.25 4.75" />
-          <path d="M8.75 12c-1.35 1.1-1.85 2.45-1.85 3.75" />
-          <path d="M14 9.25h5.25" />
-          <path d="M14 12h5.25" />
-          <path d="M14 14.75h5.25" />
-          <path d="M16.75 9.25v5.5" />
+          {/* 中 — shorter central frame with a through vertical stroke */}
+          <rect x="6.5" y="8" width="11" height="8" rx="0.5" />
+          <path d="M12 3.25v17.5" />
         </svg>
       )}
       {variant === 'location' && (
         <svg {...svgAttrs}>
-          <path d="M12 21.5s6.5-4.35 6.5-10.25a6.5 6.5 0 1 0-13 0c0 5.9 6.5 10.25 6.5 10.25z" />
-          <circle cx="12" cy="11.25" r="2.25" />
-          <path d="M12 6.75V9" />
-          <path d="M10.15 9h3.7l-.85 2.35h-2L10.15 9z" />
+          {/* Classic map pin */}
+          <path d="M12 21.25s6.75-5.1 6.75-11a6.75 6.75 0 1 0-13.5 0c0 5.9 6.75 11 6.75 11z" />
+          <circle cx="12" cy="10.25" r="2.5" />
         </svg>
       )}
     </div>

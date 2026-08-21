@@ -108,8 +108,8 @@ export default function AboutPage() {
               discipline.
             </p>
             <p>
-              At Northwest Wushu Academy, we train kids, teens, and adults in a supportive community at the Seattle
-              Armory. Whether you are exploring martial arts for fitness, culture, or competition, you are welcome here.
+              Whether you are exploring martial arts for fitness, culture, or competition, here at Northwest Wushu
+              Academy, we train kids, teens, and adults of all levels and bring them into our supportive community.
             </p>
           </div>
         </div>
@@ -210,7 +210,7 @@ export default function AboutPage() {
               Our Programs
             </h2>
             <p className="programs-showcase__lead">
-              Training for kids, teens, and adults at the Seattle Armory — from first steps in wushu to forms, weapons,
+              Training for kids, teens, and adults at Northwest Wushu — from first steps in wushu to forms, weapons,
               and competition-ready conditioning.
             </p>
           </header>
