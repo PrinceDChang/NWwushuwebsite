@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 import { site } from '../data/site';
 import { cx } from '../lib/cx';
 import SiteFooter from './SiteFooter';
@@ -21,6 +22,8 @@ export default function Layout({
   bodyClass = '',
   children,
 }: LayoutProps) {
+  useScrollReveal();
+
   useEffect(() => {
     document.title = title === site.shortName ? title : `${title} | ${site.shortName}`;
     const meta = document.querySelector('meta[name="description"]');

@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState, type HTMLAttributes } from 'react';
+import { useEffect, useId, useRef, useState, type CSSProperties, type HTMLAttributes, type MouseEvent } from 'react';
 import { classes, type ClassType, type WushuClass } from '../data/classes';
 import { cx } from '../lib/cx';
 import ClassCard from './ClassCard';
@@ -6,19 +6,47 @@ import ClassCard from './ClassCard';
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
 const timeSlots = ['8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM'] as const;
 
-const HOVER_DELAY_MS = 2000;
+const HOVER_DELAY_MS = 600;
+const LEAVE_GRACE_MS = 200;
+const SUPPRESS_AFTER_CLOSE_MS = 180;
+const RING_SIZE = 36;
+const RING_RADIUS = 14;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 
 const classById = Object.fromEntries(classes.map((c) => [c.id, c])) as Record<ClassType, WushuClass>;
+
+type HoverRingState = {
+  id: ClassType;
+  x: number;
+  y: number;
+  key: number;
+};
 
 export default function ScheduleHero({ title, subtitle }: { title: string; subtitle?: string }) {
   const [animateIn, setAnimateIn] = useState(false);
   const [overlayId, setOverlayId] = useState<ClassType | null>(null);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [hoverRing, setHoverRing] = useState<HoverRingState | null>(null);
   const hoverTimer = useRef<number | null>(null);
+  const leaveTimer = useRef<number | null>(null);
   const titleId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement | null>(null);
+  /** Brief lockout after overlay closes so it doesn't reopen instantly. */
+  const suppressUntilRef = useRef(0);
+  const overlayOpenRef = useRef(false);
+  const activeHoverIdRef = useRef<ClassType | null>(null);
+
+  useEffect(() => {
+    overlayOpenRef.current = overlayId != null;
+    if (overlayId != null) {
+      clearHoverTimer();
+      clearLeaveTimer();
+      clearHoverRing();
+      activeHoverIdRef.current = null;
+    }
+  }, [overlayId]);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -43,6 +71,12 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
 
     const onKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
+        event.preventDefault();
+        suppressUntilRef.current = Date.now() + SUPPRESS_AFTER_CLOSE_MS;
+        clearHoverTimer();
+        clearLeaveTimer();
+        setHoverRing(null);
+        activeHoverIdRef.current = null;
         setOverlayId(null);
         return;
       }
@@ -66,7 +100,7 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
     window.addEventListener('keydown', onKey);
     return () => {
       window.removeEventListener('keydown', onKey);
-      previouslyFocused?.focus();
+      previouslyFocused?.focus({ preventScroll: true });
     };
   }, [overlayId]);
 
@@ -77,25 +111,87 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
     }
   }
 
-  function startHoverReveal(id: ClassType, trigger?: HTMLButtonElement | null) {
-    clearHoverTimer();
-    if (trigger) triggerRef.current = trigger;
-    if (reduceMotion) {
-      openOverlay(id);
+  function clearLeaveTimer() {
+    if (leaveTimer.current != null) {
+      window.clearTimeout(leaveTimer.current);
+      leaveTimer.current = null;
+    }
+  }
+
+  function clearHoverRing() {
+    setHoverRing(null);
+  }
+
+  function isHoverSuppressed() {
+    return Date.now() < suppressUntilRef.current;
+  }
+
+  function startHoverReveal(
+    id: ClassType,
+    trigger: HTMLButtonElement,
+    point: { x: number; y: number },
+  ) {
+    if (overlayOpenRef.current || isHoverSuppressed()) return;
+
+    clearLeaveTimer();
+
+    // Already counting down for this class — keep progress, just update cursor.
+    if (activeHoverIdRef.current === id && hoverTimer.current != null) {
+      triggerRef.current = trigger;
+      setHoverRing((current) =>
+        current ? { ...current, x: point.x, y: point.y } : current,
+      );
       return;
     }
+
+    clearHoverTimer();
+    triggerRef.current = trigger;
+    activeHoverIdRef.current = id;
+
+    if (reduceMotion) {
+      clearHoverRing();
+      openOverlay(id, trigger);
+      return;
+    }
+
+    setHoverRing({ id, x: point.x, y: point.y, key: Date.now() });
+
     hoverTimer.current = window.setTimeout(() => {
-      openOverlay(id);
       hoverTimer.current = null;
+      activeHoverIdRef.current = null;
+      if (overlayOpenRef.current || isHoverSuppressed()) {
+        clearHoverRing();
+        return;
+      }
+      clearHoverRing();
+      openOverlay(id, trigger);
     }, HOVER_DELAY_MS);
   }
 
-  function cancelHoverReveal() {
-    clearHoverTimer();
+  function moveHoverRing(event: MouseEvent<HTMLElement>) {
+    if (overlayOpenRef.current || isHoverSuppressed()) return;
+    clearLeaveTimer();
+    setHoverRing((current) =>
+      current ? { ...current, x: event.clientX, y: event.clientY } : current,
+    );
+  }
+
+  function scheduleCancelHoverReveal() {
+    clearLeaveTimer();
+    leaveTimer.current = window.setTimeout(() => {
+      leaveTimer.current = null;
+      clearHoverTimer();
+      clearHoverRing();
+      activeHoverIdRef.current = null;
+    }, LEAVE_GRACE_MS);
   }
 
   function openOverlay(id: ClassType, trigger?: HTMLButtonElement | null) {
     clearHoverTimer();
+    clearLeaveTimer();
+    clearHoverRing();
+    activeHoverIdRef.current = null;
+    suppressUntilRef.current = Date.now() + SUPPRESS_AFTER_CLOSE_MS;
     if (trigger) triggerRef.current = trigger;
     else if (document.activeElement instanceof HTMLButtonElement) {
       triggerRef.current = document.activeElement;
@@ -105,7 +201,24 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
 
   function closeOverlay() {
     clearHoverTimer();
+    clearLeaveTimer();
+    clearHoverRing();
+    activeHoverIdRef.current = null;
+    suppressUntilRef.current = Date.now() + SUPPRESS_AFTER_CLOSE_MS;
     setOverlayId(null);
+  }
+
+  function bindClassHover(id: ClassType) {
+    return {
+      onMouseEnter: (event: MouseEvent<HTMLElement>) => {
+        const trigger =
+          event.currentTarget.querySelector<HTMLButtonElement>('.schedule-calendar__event') ??
+          (event.currentTarget as HTMLButtonElement);
+        startHoverReveal(id, trigger, { x: event.clientX, y: event.clientY });
+      },
+      onMouseMove: moveHoverRing,
+      onMouseLeave: scheduleCancelHoverReveal,
+    };
   }
 
   const activeClass = overlayId ? classById[overlayId] : null;
@@ -169,6 +282,7 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
                           'schedule-calendar__cell--event',
                           overlayId === 'kids' && 'schedule-calendar__cell--active',
                         )}
+                        {...bindClassHover('kids')}
                       >
                         <button
                           type="button"
@@ -176,10 +290,6 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
                           style={{ ['--schedule-delay' as string]: '1100ms' }}
                           aria-expanded={overlayId === 'kids'}
                           aria-controls="schedule-class-overlay"
-                          onMouseEnter={(event) => startHoverReveal('kids', event.currentTarget)}
-                          onMouseLeave={cancelHoverReveal}
-                          onFocus={(event) => startHoverReveal('kids', event.currentTarget)}
-                          onBlur={cancelHoverReveal}
                           onClick={(event) => openOverlay('kids', event.currentTarget)}
                         >
                           <span>Kids Class</span>
@@ -200,6 +310,7 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
                           overlayId === 'adult' && 'schedule-calendar__cell--active',
                         )}
                         rowSpan={2}
+                        {...bindClassHover('adult')}
                       >
                         <button
                           type="button"
@@ -207,10 +318,6 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
                           style={{ ['--schedule-delay' as string]: '1240ms' }}
                           aria-expanded={overlayId === 'adult'}
                           aria-controls="schedule-class-overlay"
-                          onMouseEnter={(event) => startHoverReveal('adult', event.currentTarget)}
-                          onMouseLeave={cancelHoverReveal}
-                          onFocus={(event) => startHoverReveal('adult', event.currentTarget)}
-                          onBlur={cancelHoverReveal}
                           onClick={(event) => openOverlay('adult', event.currentTarget)}
                         >
                           <span>Adult Class</span>
@@ -238,13 +345,59 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
 
       <p className="schedule-calendar__note">*more lessons may be added in the future</p>
       <p className="schedule-calendar__hint">
-        Select a class to see details · keyboard: Enter or Space, Escape to close
+        Hover a class — when the ring fills, details open · tap or press Enter to open now
       </p>
 
       <div className="container page-hero__content" aria-hidden="true">
         <p className="hero-title hero-title--watermark">{title}</p>
         {subtitle && <p className="page-hero__subtitle">{subtitle}</p>}
       </div>
+
+      {hoverRing && (
+        <div
+          className={cx(
+            'schedule-hover-ring',
+            hoverRing.id === 'kids' && 'schedule-hover-ring--kids',
+            hoverRing.id === 'adult' && 'schedule-hover-ring--adult',
+          )}
+          style={{
+            left: hoverRing.x,
+            top: hoverRing.y,
+            width: RING_SIZE,
+            height: RING_SIZE,
+          }}
+          aria-hidden="true"
+        >
+          <svg
+            key={hoverRing.key}
+            className="schedule-hover-ring__svg"
+            viewBox={`0 0 ${RING_SIZE} ${RING_SIZE}`}
+            width={RING_SIZE}
+            height={RING_SIZE}
+          >
+            <circle
+              className="schedule-hover-ring__track"
+              cx={RING_SIZE / 2}
+              cy={RING_SIZE / 2}
+              r={RING_RADIUS}
+              fill="none"
+            />
+            <circle
+              className="schedule-hover-ring__progress"
+              cx={RING_SIZE / 2}
+              cy={RING_SIZE / 2}
+              r={RING_RADIUS}
+              fill="none"
+              style={
+                {
+                  ['--ring-circumference' as string]: RING_CIRCUMFERENCE,
+                  ['--ring-duration' as string]: `${HOVER_DELAY_MS}ms`,
+                } as CSSProperties
+              }
+            />
+          </svg>
+        </div>
+      )}
 
       <div
         className={cx('schedule-overlay', activeClass && 'schedule-overlay--open')}
@@ -260,7 +413,12 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
           aria-modal="true"
           aria-label={activeClass?.title ?? 'Class details'}
           hidden={!activeClass}
-          onMouseEnter={clearHoverTimer}
+          onMouseEnter={() => {
+            clearHoverTimer();
+            clearLeaveTimer();
+            clearHoverRing();
+            activeHoverIdRef.current = null;
+          }}
         >
           {activeClass && (
             <>
