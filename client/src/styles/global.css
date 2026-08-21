@@ -912,7 +912,65 @@ fieldset.form-field input[type='checkbox'] {
   }
 
   body.has-sticky-cta {
-    padding-bottom: 4.5rem;
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .container,
+  .container--narrow {
+    width: min(100% - 1.5rem, var(--max-width));
+  }
+
+  .container--narrow {
+    width: min(100% - 1.5rem, 40rem);
+  }
+
+  .section {
+    padding: 3.25rem 0;
+  }
+
+  .section__title {
+    font-size: clamp(1.55rem, 7vw, 2.15rem);
+    letter-spacing: 0.08em;
+    margin-bottom: 1.35rem;
+  }
+
+  .features {
+    gap: 1.15rem;
+  }
+
+  .feature {
+    padding: 1.35rem 1rem;
+  }
+
+  .form-field input:not([type='radio']):not([type='checkbox']),
+  .form-field select,
+  .form-field textarea {
+    font-size: 1rem; /* avoid iOS zoom on focus */
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .stepper {
+    margin: 1.25rem 0;
+    padding: 0 0.25rem;
+  }
+
+  .stepper__dot {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.8125rem;
+  }
+
+  .stepper__label {
+    font-size: 0.6875rem;
   }
 }
 
