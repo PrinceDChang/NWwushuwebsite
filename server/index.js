@@ -139,6 +139,14 @@ app.post('/api/contact', async (req, res) => {
       subject: `Contact: ${interest} — ${fullName}`,
       html: ownerContactHtml(data),
     });
+  } catch {
+    return res.status(502).json({
+      error: 'Could not send your message. Please try again or email us directly.',
+    });
+  }
+
+  // Confirmation to the visitor is best-effort (Resend sandbox / domain limits).
+  try {
     await sendResendEmail({
       apiKey,
       from,
@@ -147,10 +155,8 @@ app.post('/api/contact', async (req, res) => {
       subject: 'We received your message — Northwest Wushu Academy',
       html: visitorContactHtml(data),
     });
-  } catch {
-    return res.status(502).json({
-      error: 'Could not send your message. Please try again or email us directly.',
-    });
+  } catch (err) {
+    console.error('Visitor contact confirmation email failed', err);
   }
 
   return res.json({ ok: true });
@@ -214,6 +220,14 @@ app.post('/api/trial', async (req, res) => {
       subject: `Trial request: ${student_name}`,
       html: ownerTrialHtml(data),
     });
+  } catch {
+    return res.status(502).json({
+      error: 'Something went wrong. Please try again or email us directly.',
+    });
+  }
+
+  // Confirmation to the visitor is best-effort (Resend sandbox / domain limits).
+  try {
     await sendResendEmail({
       apiKey,
       from,
@@ -222,10 +236,8 @@ app.post('/api/trial', async (req, res) => {
       subject: 'We received your trial request — Northwest Wushu Academy',
       html: visitorTrialHtml(data),
     });
-  } catch {
-    return res.status(502).json({
-      error: 'Something went wrong. Please try again or email us directly.',
-    });
+  } catch (err) {
+    console.error('Visitor trial confirmation email failed', err);
   }
 
   return res.json({ ok: true });
@@ -248,6 +260,15 @@ app.use((err, _req, res, _next) => {
   res.status(500).json({ error: 'Server error.' });
 });
 
-app.listen(port, '0.0.0.0', () => {
+const server = app.listen(port, '0.0.0.0', () => {
   console.log(`Northwest Wushu server listening on ${port} (${isProd ? 'production' : 'api-only'})`);
+});
+
+server.on('error', (err) => {
+  if (err?.code === 'EADDRINUSE') {
+    console.error(`Port ${port} is already in use. Stop the other process or set PORT in .env.`);
+    process.exit(1);
+  }
+  console.error(err);
+  process.exit(1);
 });

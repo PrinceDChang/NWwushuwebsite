@@ -7,6 +7,8 @@ import { site } from '../../data/site';
 import { cx } from '../../lib/cx';
 import { clearTrialData, getTrialData, saveTrialConfirm, saveTrialData } from '../../lib/trialStorage';
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const SLOTS = {
   kids: { label: 'Kids Wushu', time: '10:00 AM – 11:00 AM' },
   adult: { label: 'Teen & Adult Wushu', time: '11:00 AM – 1:00 PM' },
@@ -152,6 +154,14 @@ export default function TrialBookingPage() {
       navigate('/trial/agreements/');
       return;
     }
+    if (!current.fullName?.trim() || !current.guardianEmail?.trim()) {
+      setFormError('Your earlier form details are missing. Please start again from step 1.');
+      return;
+    }
+    if (!EMAIL_RE.test(current.guardianEmail.trim())) {
+      setFormError('Please go back and enter a valid emergency contact email.');
+      return;
+    }
     if (!selectedDate) {
       setFormError('Please select a Saturday for your trial.');
       return;
@@ -188,7 +198,14 @@ export default function TrialBookingPage() {
         headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      if (!res.ok) throw new Error('Submit failed');
+      const result = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(
+          typeof result.error === 'string' && result.error
+            ? result.error
+            : 'Something went wrong. Please try again or email us directly.',
+        );
+      }
       saveTrialData({ step: 3, classType });
       saveTrialConfirm({
         ...getTrialData(),
@@ -201,8 +218,12 @@ export default function TrialBookingPage() {
       });
       clearTrialData();
       navigate('/trial/confirmation/');
-    } catch {
-      setFormError('Something went wrong. Please try again or email us directly.');
+    } catch (err) {
+      const message =
+        err instanceof Error && err.message
+          ? err.message
+          : 'Something went wrong. Please try again or email us directly.';
+      setFormError(message);
       setSending(false);
     }
   }
