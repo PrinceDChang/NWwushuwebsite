@@ -233,9 +233,12 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
       aria-label={title}
       aria-labelledby={titleId}
     >
-      <h1 id={titleId} className="visually-hidden">
-        {title}
-      </h1>
+      <div className="container page-hero__content page-hero__content--schedule">
+        <h1 id={titleId} className="hero-title hero-title--schedule">
+          {title}
+        </h1>
+        {subtitle && <p className="page-hero__subtitle">{subtitle}</p>}
+      </div>
 
       <div
         className="schedule-calendar"
@@ -350,11 +353,6 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
         </span>
         <span className="schedule-calendar__hint-mobile">Tap a class for details</span>
       </p>
-
-      <div className="container page-hero__content" aria-hidden="true">
-        <p className="hero-title hero-title--watermark">{title}</p>
-        {subtitle && <p className="page-hero__subtitle">{subtitle}</p>}
-      </div>
 
       {hoverRing && (
         <div
