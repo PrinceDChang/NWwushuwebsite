@@ -18,7 +18,7 @@ type LayoutProps = {
 export default function Layout({
   title,
   description = site.description,
-  showStickyCta = true,
+  showStickyCta = false,
   bodyClass = '',
   children,
 }: LayoutProps) {

@@ -255,6 +255,27 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <section className="section section--alt programs-pricing" aria-labelledby="pricing-heading">
+        <div className="container container--narrow programs-pricing__inner">
+          <h2 id="pricing-heading" className="section__title">
+            Class Pricing
+          </h2>
+          <p className="programs-pricing__lead">
+            After your free trial, continue with drop-in classes or a quarterly package.
+          </p>
+          <ul className="programs-pricing__rates">
+            <li>
+              <span className="programs-pricing__amount">$30</span>
+              <span className="programs-pricing__label">per class</span>
+            </li>
+            <li>
+              <span className="programs-pricing__amount">$300</span>
+              <span className="programs-pricing__label">per quarter (10 classes)</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
       <CTABand />
     </Layout>
   );

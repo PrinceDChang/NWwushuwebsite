@@ -907,14 +907,6 @@ fieldset.form-field input[type='checkbox'] {
 }
 
 @media (max-width: 767px) {
-  .sticky-cta {
-    display: block;
-  }
-
-  body.has-sticky-cta {
-    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom, 0px));
-  }
-
   .container,
   .container--narrow {
     width: min(100% - 1.5rem, var(--max-width));
