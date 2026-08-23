@@ -30,6 +30,10 @@ export const faqItems: FAQItem[] = [
       'Use our Free Trial sign-up flow to choose Kids or Teen & Adult, pick a Saturday, and submit your information. We will confirm your spot by email within 1–2 business days.',
   },
   {
+    question: 'How much are classes after your free trial?',
+    answer: '$30 per class or $300 for 10 classes',
+  },
+  {
     question: 'Are classes only on Saturdays?',
     answer:
       'Yes — at this time all group classes meet on Saturdays at the Seattle Armory. Kids meet 10:00–11:00 AM; Teen & Adult meet 11:00 AM–1:00 PM.',
