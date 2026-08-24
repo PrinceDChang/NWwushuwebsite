@@ -102,7 +102,8 @@
   --duration: 0.32s;
   --duration-slow: 0.48s;
   --max-width: 72rem;
-  --header-height: 5.25rem;
+  --header-height: 4rem;
+  --header-bar-height: 4rem;
   --banner-height: 2.75rem;
   --focus-ring-color: var(--color-brand-dark);
   --focus-ring: 0 0 0 2px #fff, 0 0 0 4px var(--focus-ring-color);

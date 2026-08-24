@@ -28,6 +28,8 @@ function collectRevealElements(root: HTMLElement): HTMLElement[] {
     // Calendar hero has its own entrance animation.
     if (el.classList.contains('page-hero--schedule-calendar')) return;
     if (el.closest('.page-hero--schedule-calendar')) return;
+    // Sticky subnav can't use transform (breaks position: sticky).
+    if (el.classList.contains('about-subnav')) return;
     seen.add(el);
     elements.push(el);
   };

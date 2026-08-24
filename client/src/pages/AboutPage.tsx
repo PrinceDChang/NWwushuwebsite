@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CoachFeatureTicker from '../components/CoachFeatureTicker';
 import CTABand from '../components/CTABand';
@@ -8,8 +8,71 @@ import { coaches } from '../data/coaches';
 import { site } from '../data/site';
 import { cx } from '../lib/cx';
 
+const ABOUT_SECTIONS = [
+  { id: 'what-is-wushu', label: 'Wushu' },
+  { id: 'coaches', label: 'Coaches' },
+  { id: 'programs', label: 'Programs' },
+] as const;
+
+type AboutSectionId = (typeof ABOUT_SECTIONS)[number]['id'];
+
 export default function AboutPage() {
   const programsRef = useRef<HTMLElement>(null);
+  const subnavRef = useRef<HTMLElement>(null);
+  const [activeSection, setActiveSection] = useState<AboutSectionId>('what-is-wushu');
+  const [subnavStuck, setSubnavStuck] = useState(false);
+
+  useEffect(() => {
+    const nav = subnavRef.current;
+    if (!nav) return;
+
+    const updateStuck = () => {
+      const header = document.querySelector('.site-header');
+      const headerBottom = header instanceof HTMLElement ? header.getBoundingClientRect().bottom : 64;
+      // Treat as stuck once the bar has docked under the header (Wushu and below).
+      setSubnavStuck(nav.getBoundingClientRect().top <= headerBottom + 1);
+    };
+
+    updateStuck();
+    window.addEventListener('scroll', updateStuck, { passive: true });
+    window.addEventListener('resize', updateStuck);
+    return () => {
+      window.removeEventListener('scroll', updateStuck);
+      window.removeEventListener('resize', updateStuck);
+    };
+  }, []);
+
+  useEffect(() => {
+    const sectionIds = ABOUT_SECTIONS.map((s) => s.id);
+
+    const updateActive = () => {
+      const header = document.querySelector('.site-header');
+      const subnav = subnavRef.current;
+      const headerH = header instanceof HTMLElement ? header.getBoundingClientRect().height : 64;
+      const subnavH = subnav ? subnav.getBoundingClientRect().height : 0;
+      const probe = headerH + subnavH + 12;
+
+      let current: AboutSectionId = sectionIds[0];
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top <= probe) {
+          current = id;
+        }
+      }
+      setActiveSection((prev) => (prev === current ? prev : current));
+    };
+
+    updateActive();
+    window.addEventListener('scroll', updateActive, { passive: true });
+    window.addEventListener('resize', updateActive);
+    window.addEventListener('hashchange', updateActive);
+    return () => {
+      window.removeEventListener('scroll', updateActive);
+      window.removeEventListener('resize', updateActive);
+      window.removeEventListener('hashchange', updateActive);
+    };
+  }, []);
 
   useEffect(() => {
     const section = programsRef.current;
@@ -81,11 +144,26 @@ export default function AboutPage() {
         heroScale={1.2}
       />
 
-      <nav className="about-subnav" aria-label="About sections">
+      <nav
+        ref={subnavRef}
+        className={cx('about-subnav', subnavStuck && 'about-subnav--stuck')}
+        aria-label="About sections"
+      >
         <div className="container">
-          <a href="#what-is-wushu">Wushu</a>
-          <a href="#coaches">Coaches</a>
-          <a href="#programs">Programs</a>
+          {ABOUT_SECTIONS.map(({ id, label }) => {
+            const isActive = activeSection === id;
+            return (
+              <a
+                key={id}
+                href={`#${id}`}
+                className={cx(isActive && 'about-subnav__link--active')}
+                aria-current={isActive ? 'true' : undefined}
+                onClick={() => setActiveSection(id)}
+              >
+                {label}
+              </a>
+            );
+          })}
         </div>
       </nav>
 

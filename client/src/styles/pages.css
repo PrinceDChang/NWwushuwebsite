@@ -1225,7 +1225,6 @@
     --header-logo-size: 2.75rem;
     --header-logo-gap: 0;
     --header-logo-outer: var(--header-logo-size);
-    --header-bar-height: calc(58 / 112 * 7.25rem);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -1242,6 +1241,11 @@
 
   .site-header--scrolled {
     box-shadow: none;
+    background: var(--color-surface);
+  }
+
+  .site-header--scrolled .site-header__ambient {
+    opacity: 0.88;
   }
 
   /* Full viewport bleed — avoids Safari SVG mask + percentage width gaps */
@@ -1297,7 +1301,7 @@
   }
 
   .site-header--scrolled .site-header__shape-line {
-    background: rgb(208 74 69 / 0.28);
+    background: transparent;
   }
 
   .site-header__inner {
@@ -1495,6 +1499,7 @@
   @media (max-width: 640px) {
     :root {
       --header-height: 4.25rem;
+      --header-bar-height: 4.25rem;
     }
 
     .site-header {
@@ -1511,7 +1516,6 @@
       top: 0;
       bottom: auto;
       height: 100%;
-      --header-bar-height: 100%;
     }
 
     .site-header__ambient {
@@ -1752,39 +1756,115 @@
 
 /* src/pages/about.astro */
 .about-subnav {
-    background: linear-gradient(180deg, var(--color-surface-alt) 0%, var(--color-surface) 100%);
-    padding: 1rem 0;
-    border-bottom: 1px solid var(--color-border-subtle);
+  position: sticky;
+  top: calc(var(--header-bar-height) - 2px);
+  z-index: 90;
+  overflow: hidden;
+  background: #fff;
+  padding: 1rem 0;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 0.45s var(--ease-out),
+    border-color 0.45s var(--ease-out),
+    box-shadow 0.45s var(--ease-out);
+}
+
+.about-subnav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--site-ambient-bg);
+  background-size: 100vw 100vh;
+  background-position: center top;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition:
+    opacity 0.5s var(--ease-apple),
+    transform 0.55s var(--ease-apple);
+}
+
+@supports (width: 100dvw) {
+  .about-subnav::before {
+    background-size: 100dvw 100dvh;
+  }
+}
+
+.about-subnav--stuck {
+  background-color: var(--color-surface);
+  border-bottom-color: var(--color-border-subtle);
+  box-shadow: 0 1px 0 rgb(0 0 0 / 0.04);
+}
+
+.about-subnav--stuck::before {
+  opacity: 0.88;
+  transform: scaleY(1);
+}
+
+.about-subnav .container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.about-subnav a {
+  color: var(--color-muted);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  letter-spacing: -0.014em;
+  text-decoration: none;
+  padding: 0.5rem 1.125rem;
+  border-radius: var(--radius-pill);
+  transition:
+    color 0.2s ease,
+    background 0.25s var(--ease-out);
+}
+
+.about-subnav a:hover {
+  color: var(--color-ink);
+  background: rgb(255 255 255 / 0.8);
+  box-shadow: var(--shadow-sm);
+}
+
+.about-subnav a.about-subnav__link--active,
+.about-subnav a[aria-current='true'] {
+  color: var(--color-brand-dark);
+  background: rgb(255 247 242 / 0.95);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+.about-subnav a.about-subnav__link--active:hover,
+.about-subnav a[aria-current='true']:hover {
+  color: var(--color-brand-dark);
+  background: rgb(255 247 242 / 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-subnav::before {
+    transition: opacity 0.2s ease;
+    transform: none;
   }
 
-  .about-subnav .container {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+  .about-subnav--stuck::before {
+    transform: none;
   }
+}
 
-  .about-subnav a {
-    color: var(--color-muted);
-    font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: 0.9375rem;
-    letter-spacing: -0.014em;
-    text-decoration: none;
-    padding: 0.5rem 1.125rem;
-    border-radius: var(--radius-pill);
-    transition:
-      color 0.2s ease,
-      background 0.25s var(--ease-out);
-  }
+#what-is-wushu,
+#coaches,
+#programs {
+  scroll-margin-top: calc(var(--header-height) + 4.5rem);
+}
 
-  .about-subnav a:hover {
-    color: var(--color-ink);
-    background: rgb(255 255 255 / 0.8);
-    box-shadow: var(--shadow-sm);
-  }
-
-  .about-split {
+.about-split {
     display: grid;
     gap: 2rem;
     align-items: stretch;
