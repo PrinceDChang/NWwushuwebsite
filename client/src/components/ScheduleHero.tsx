@@ -349,7 +349,7 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
       <p className="schedule-calendar__note">*more lessons may be added in the future</p>
       <p className="schedule-calendar__hint">
         <span className="schedule-calendar__hint-desktop">
-          Hover a class — when the ring fills, details open · tap or press Enter to open now
+          Hover or click on class to open for more information
         </span>
         <span className="schedule-calendar__hint-mobile">Tap a class for details</span>
       </p>
