@@ -6,7 +6,7 @@ import ClassCard from './ClassCard';
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
 const timeSlots = ['8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM'] as const;
 
-const HOVER_DELAY_MS = 600;
+const HOVER_DELAY_MS = 4000;
 const LEAVE_GRACE_MS = 200;
 const SUPPRESS_AFTER_CLOSE_MS = 180;
 const RING_SIZE = 36;
