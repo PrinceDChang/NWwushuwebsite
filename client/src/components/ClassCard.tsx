@@ -16,6 +16,7 @@ export default function ClassCard({
         <p className="text-muted">
           <strong>{classInfo.ages}</strong>
         </p>
+        <p className="class-card__instructor text-muted">Instructor: {classInfo.instructor}</p>
         <p>{classInfo.description}</p>
         <p className="class-card__price">{classInfo.priceNote}</p>
       </div>

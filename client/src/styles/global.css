@@ -781,6 +781,11 @@ fieldset.form-field input[type='checkbox'] {
   text-align: left;
 }
 
+.class-card__instructor {
+  margin: -0.35rem 0 0.65rem;
+  font-size: 0.9375rem;
+}
+
 @media (min-width: 768px) {
   .class-card__schedule {
     text-align: right;
@@ -885,6 +890,12 @@ fieldset.form-field input[type='checkbox'] {
   width: 1.625rem;
   height: 1.625rem;
   flex-shrink: 0;
+}
+
+.feature__icon-svg--glyph {
+  width: 1.75rem;
+  height: 1.75rem;
+  overflow: visible;
 }
 
 /* Sticky mobile CTA */

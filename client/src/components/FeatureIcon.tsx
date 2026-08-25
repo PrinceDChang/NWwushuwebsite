@@ -40,10 +40,25 @@ export default function FeatureIcon({ variant }: FeatureIconProps) {
         </svg>
       )}
       {variant === 'tradition' && (
-        <svg {...svgAttrs}>
-          {/* 中 — shorter central frame with a through vertical stroke */}
-          <rect x="6.5" y="8" width="11" height="8" rx="0.5" />
-          <path d="M12 3.25v17.5" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          className="feature__icon-svg feature__icon-svg--glyph"
+          aria-hidden="true"
+        >
+          {/* Real 武 glyph — stroke approximations were illegible at icon size */}
+          <text
+            x="12"
+            y="12.2"
+            textAnchor="middle"
+            dominantBaseline="central"
+            fill="currentColor"
+            fontSize="17"
+            fontWeight="700"
+            fontFamily="'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC', 'Microsoft YaHei', 'Source Han Sans SC', sans-serif"
+          >
+            武
+          </text>
         </svg>
       )}
       {variant === 'location' && (

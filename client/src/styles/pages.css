@@ -2749,7 +2749,38 @@
   }
 
   .location-tips li + li {
-    margin-top: 1rem;
+    margin-top: 1.15rem;
+  }
+
+  .location-tips__logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem 0.85rem;
+    margin: 0.5rem 0 0.45rem;
+  }
+
+  .location-tips__logo {
+    display: block;
+    width: auto;
+    height: 1.55rem;
+    max-width: 7.5rem;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .location-tips__logo[src*='monorail'] {
+    height: 2.35rem;
+    max-width: 2.35rem;
+  }
+
+  .location-tips__logo[src*='rapidride'] {
+    height: 1.35rem;
+    max-width: 8.5rem;
+  }
+
+  .location-tips__text {
+    margin: 0.15rem 0 0;
   }
 
 /* src/pages/policy.astro */

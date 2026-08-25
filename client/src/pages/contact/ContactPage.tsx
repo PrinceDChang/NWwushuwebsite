@@ -59,8 +59,12 @@ export default function ContactPage() {
 
       <section className="section">
         <div className="container container--narrow">
-          <p className="text-muted text-center" style={{ marginBottom: '2rem' }}>
+          <p className="text-muted text-center" style={{ marginBottom: '0.35rem' }}>
             We typically reply within <strong>{site.replyTime}</strong>.
+          </p>
+          <p className="text-muted text-center" style={{ marginBottom: '2rem' }}>
+            or email us direct at{' '}
+            <a href={`mailto:${site.email}`}>{site.email}</a>
           </p>
 
           <h2 className="section__title">Send a message</h2>

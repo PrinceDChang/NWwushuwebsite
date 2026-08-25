@@ -4,6 +4,7 @@ export interface WushuClass {
   id: ClassType;
   title: string;
   ages: string;
+  instructor: string;
   description: string;
   day: string;
   time: string;
@@ -16,6 +17,7 @@ export const classes: WushuClass[] = [
     id: 'kids',
     title: 'Kids Wushu',
     ages: 'Ages 6–12',
+    instructor: 'Jim Kirk',
     description:
       'Foundational movements, flexibility, coordination, and discipline through fun exercises.',
     day: 'Saturday',
@@ -27,6 +29,7 @@ export const classes: WushuClass[] = [
     id: 'adult',
     title: 'Teen & Adult Wushu',
     ages: 'Ages 13+',
+    instructor: 'Jim Kirk',
     description:
       'Traditional forms, weapons training, and conditioning for all skill levels.',
     day: 'Saturday',

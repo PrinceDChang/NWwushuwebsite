@@ -3,6 +3,7 @@ import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/contact/ContactPage';
 import ContactThankYouPage from './pages/contact/ThankYouPage';
+import FAQPage from './pages/FAQPage';
 import HomePage from './pages/HomePage';
 import LocationPage from './pages/LocationPage';
 import PolicyPage from './pages/PolicyPage';
@@ -56,6 +57,7 @@ export default function App() {
         <Route path="/trial/*" element={<TrialStep1Page />} />
         <Route path="/policy/*" element={<PolicyPage />} />
         <Route path="/waivers/*" element={<WaiversPage />} />
+        <Route path="/faq/*" element={<FAQPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

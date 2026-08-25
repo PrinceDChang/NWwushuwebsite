@@ -21,6 +21,9 @@ export default function SiteFooter() {
               <Link to="/waivers/">Waivers</Link>
             </li>
             <li>
+              <Link to="/faq/">FAQ</Link>
+            </li>
+            <li>
               <Link to="/contact/">Contact Us</Link>
             </li>
             <li>

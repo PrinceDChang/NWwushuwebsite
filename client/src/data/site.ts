@@ -39,6 +39,9 @@ export const site = {
       imageSrc: '/images/location-studio-interior.jpg',
       imageAlt:
         'Northwest Wushu training studio at the Seattle Armory with open floor space and mirrors',
+      heroImageSrc: '/images/location-seattle-skyline.png',
+      heroImageAlt: 'Seattle skyline with the Space Needle at sunset',
+      heroImagePosition: 'center 25%',
       spaceTitle: 'Our Training Space',
       season: '',
       tips: [
@@ -48,7 +51,13 @@ export const site = {
         },
         {
           title: 'Getting here',
-          text: 'The Armory is in the Seattle Center area, accessible by Monorail, bus, and rideshare. Allow extra time during events.',
+          text: 'Seattle Center Monorail from Westlake Center (connects to Link 1 Line at Westlake Station). Metro buses 1, 2, 4, 8, 13, 24, 33, and RapidRide D Line stop near Seattle Center; RapidRide E Line and routes 5 and 28 run along Aurora Ave N. Allow extra time during events.',
+          logos: [
+            { src: '/images/transit/monorail.svg', alt: 'Seattle Center Monorail' },
+            { src: '/images/transit/link.svg', alt: 'Link light rail' },
+            { src: '/images/transit/metro.svg', alt: 'King County Metro' },
+            { src: '/images/transit/rapidride.svg', alt: 'RapidRide' },
+          ],
         },
         {
           title: 'When you arrive',
@@ -71,6 +80,9 @@ export const site = {
       mapsLink: 'https://maps.google.com/?q=Jefferson+Park+3801+Beacon+Ave+S+Seattle+WA+98108',
       imageSrc: '/images/location-jefferson-park.png',
       imageAlt: 'Jefferson Park in Seattle, with playground, spray park, and open lawns on Beacon Hill',
+      heroImageSrc: '/images/location-jefferson-park-hero.jpg',
+      heroImageAlt: 'Jefferson Park overlooking Lake Washington on a sunny day',
+      heroImagePosition: 'center 40%',
       spaceTitle: 'Summer Training Space',
       season: 'June – September',
       tips: [
@@ -80,7 +92,11 @@ export const site = {
         },
         {
           title: 'Getting here',
-          text: 'Jefferson Park is on Beacon Hill, near Link light rail, bus routes, and rideshare drop-off.',
+          text: 'Link 1 Line to Beacon Hill Station (about a 15-minute walk or short ride south on Beacon Ave). Metro Route 36 stops along Beacon Ave S at Jefferson Park; routes 50, 60, and 107 also serve the Beacon Hill corridor. Rideshare drop-off is available at the park.',
+          logos: [
+            { src: '/images/transit/link.svg', alt: 'Link light rail' },
+            { src: '/images/transit/metro.svg', alt: 'King County Metro' },
+          ],
         },
         {
           title: 'When you arrive',

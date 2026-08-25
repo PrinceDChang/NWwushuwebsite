@@ -38,6 +38,23 @@ export default function LocationPage() {
 
   return (
     <Layout title="Location">
+      <PageHero
+        key={active.id}
+        title="Location"
+        subtitle={active.full}
+        subtitleId="location-hero-address"
+        variant="image"
+        imageSrc={active.heroImageSrc}
+        imageAlt={active.heroImageAlt}
+        imagePosition={active.heroImagePosition}
+        imageParallax
+        heroScale={1.25}
+      >
+        <p className="location-hero-season" id="location-hero-season" hidden={!active.season}>
+          <em>June – September</em>
+        </p>
+      </PageHero>
+
       <nav className="location-tabs" aria-label="Training locations">
         <div
           className="container location-tabs__inner"
@@ -82,22 +99,6 @@ export default function LocationPage() {
         </div>
       </nav>
 
-      <PageHero
-        title="Location"
-        subtitle={active.full}
-        subtitleId="location-hero-address"
-        variant="image"
-        imageSrc="/images/location-seattle-skyline.png"
-        imageAlt="Seattle skyline with the Space Needle at sunset"
-        imagePosition="center 25%"
-        imageParallax
-        heroScale={1.25}
-      >
-        <p className="location-hero-season" id="location-hero-season" hidden={!active.season}>
-          <em>June – September</em>
-        </p>
-      </PageHero>
-
       {locations.map((item) => {
         const isActive = item.id === activeId;
         return (
@@ -134,11 +135,35 @@ export default function LocationPage() {
                     <img src={item.imageSrc} alt={item.imageAlt} width={800} height={600} loading="lazy" />
                   </div>
                   <ul className="location-tips">
-                    {item.tips.map((tip) => (
-                      <li key={tip.title}>
-                        <strong>{tip.title}</strong> — {tip.text}
-                      </li>
-                    ))}
+                    {item.tips.map((tip) => {
+                      const logos = 'logos' in tip ? tip.logos : [];
+                      return (
+                        <li key={tip.title}>
+                          <strong>{tip.title}</strong>
+                          {logos.length > 0 ? (
+                            <>
+                              <span className="location-tips__logos" aria-label="Transit services">
+                                {logos.map((logo) => (
+                                  <img
+                                    key={logo.src}
+                                    className="location-tips__logo"
+                                    src={logo.src}
+                                    alt={logo.alt}
+                                    width={120}
+                                    height={28}
+                                    loading="lazy"
+                                    decoding="async"
+                                  />
+                                ))}
+                              </span>
+                              <p className="location-tips__text">{tip.text}</p>
+                            </>
+                          ) : (
+                            <> — {tip.text}</>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               </div>
