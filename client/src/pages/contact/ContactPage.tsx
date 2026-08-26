@@ -114,7 +114,7 @@ export default function ContactPage() {
             </div>
             <div className="form-field">
               <label className="required" htmlFor="interest">
-                Interest
+                Topic
               </label>
               <select id="interest" name="interest" required defaultValue="">
                 <option value="" disabled hidden>

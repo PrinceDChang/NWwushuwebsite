@@ -108,7 +108,12 @@ export default function TrialStep1Page() {
           </div>
           <div className="form-field">
             <label htmlFor="comment">Comment</label>
-            <textarea id="comment" name="comment" placeholder="Anything we should know?" defaultValue={existing.comment} />
+            <textarea
+              id="comment"
+              name="comment"
+              placeholder="Anything we should know? About experience, health issues, accommodation or anything we might need to know."
+              defaultValue={existing.comment}
+            />
           </div>
 
           <div className="form-field">

@@ -51,7 +51,7 @@ export default function LocationPage() {
         heroScale={1.25}
       >
         <p className="location-hero-season" id="location-hero-season" hidden={!active.season}>
-          <em>June – September</em>
+          <em>{active.season}</em>
         </p>
       </PageHero>
 
@@ -110,23 +110,6 @@ export default function LocationPage() {
             aria-labelledby={`location-tab-${item.id}`}
             hidden={!isActive}
           >
-            <section className="section">
-              <div className="container">
-                <div className="map-wrap">
-                  <iframe
-                    title={item.mapsTitle}
-                    src={item.mapsEmbed}
-                    width="100%"
-                    height={400}
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                </div>
-              </div>
-            </section>
-
             <section className="section section--alt">
               <div className="container">
                 <h2 className="section__title">{item.spaceTitle}</h2>
@@ -165,6 +148,23 @@ export default function LocationPage() {
                       );
                     })}
                   </ul>
+                </div>
+              </div>
+            </section>
+
+            <section className="section">
+              <div className="container">
+                <div className="map-wrap">
+                  <iframe
+                    title={item.mapsTitle}
+                    src={item.mapsEmbed}
+                    width="100%"
+                    height={400}
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
                 </div>
               </div>
             </section>

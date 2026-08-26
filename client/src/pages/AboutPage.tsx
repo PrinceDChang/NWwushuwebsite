@@ -4,6 +4,7 @@ import CoachFeatureTicker from '../components/CoachFeatureTicker';
 import CTABand from '../components/CTABand';
 import Layout from '../components/Layout';
 import PageHero from '../components/PageHero';
+import WushuAspectsCarousel from '../components/WushuAspectsCarousel';
 import { coaches } from '../data/coaches';
 import { site } from '../data/site';
 import { cx } from '../lib/cx';
@@ -12,6 +13,7 @@ const ABOUT_SECTIONS = [
   { id: 'what-is-wushu', label: 'Wushu' },
   { id: 'coaches', label: 'Coaches' },
   { id: 'programs', label: 'Programs' },
+  { id: 'pricing', label: 'Pricing' },
 ] as const;
 
 type AboutSectionId = (typeof ABOUT_SECTIONS)[number]['id'];
@@ -168,29 +170,7 @@ export default function AboutPage() {
       </nav>
 
       <section className="section" id="what-is-wushu">
-        <div className="container about-split">
-          <div className="about-split__media">
-            <img
-              src="/images/about-studio-group.jpg"
-              alt="Northwest Wushu students and coaches posing together in the Seattle Armory training studio"
-              width={1024}
-              height={576}
-              loading="lazy"
-            />
-          </div>
-          <div className="about-split__content">
-            <h2 className="section__title">What is Wushu</h2>
-            <p>
-              Wushu is a modern, standardized form of Chinese martial arts that combines traditional combat techniques
-              with athletic movement and acrobatics. Students develop strength, flexibility, coordination, and
-              discipline.
-            </p>
-            <p>
-              Whether you are exploring martial arts for fitness, culture, or competition, here at Northwest Wushu
-              Academy, we train kids, teens, and adults of all levels and bring them into our supportive community.
-            </p>
-          </div>
-        </div>
+        <WushuAspectsCarousel />
       </section>
 
       <section className="section coaches-banner" id="coaches" aria-labelledby="coaches-heading">
@@ -333,7 +313,11 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section section--alt programs-pricing" aria-labelledby="pricing-heading">
+      <section
+        className="section section--alt programs-pricing"
+        id="pricing"
+        aria-labelledby="pricing-heading"
+      >
         <div className="container container--narrow programs-pricing__inner">
           <h2 id="pricing-heading" className="section__title">
             Class Pricing

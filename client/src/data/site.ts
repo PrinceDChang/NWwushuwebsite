@@ -43,7 +43,7 @@ export const site = {
       heroImageAlt: 'Seattle skyline with the Space Needle at sunset',
       heroImagePosition: 'center 25%',
       spaceTitle: 'Our Training Space',
-      season: '',
+      season: 'October – April',
       tips: [
         {
           title: 'Parking',
@@ -100,7 +100,7 @@ export const site = {
         },
         {
           title: 'When you arrive',
-          text: 'Meet your coach at the designated outdoor training area. Bring water, sun protection, and check for weather updates.',
+          text: 'Meet your coach by the parking lot to go together to the designated outdoor training area. Bring water, sun protection, and check for weather updates.',
         },
       ],
     },

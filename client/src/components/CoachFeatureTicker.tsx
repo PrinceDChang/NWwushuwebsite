@@ -10,6 +10,10 @@ export default function CoachFeatureTicker() {
     setIndex((current) => (current + delta + count) % count);
   }
 
+  function goTo(slideIndex: number) {
+    setIndex(slideIndex);
+  }
+
   return (
     <div
       className="coach-ticker container"
@@ -17,6 +21,36 @@ export default function CoachFeatureTicker() {
       aria-roledescription="carousel"
       aria-label={`About ${featuredCoach.name}`}
     >
+      <svg className="coach-ticker__icon-defs" aria-hidden="true" width={0} height={0} focusable="false">
+        <defs>
+          <linearGradient id="coach-ctrl-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#e59a4d" />
+            <stop offset="22%" stopColor="#d87457" />
+            <stop offset="50%" stopColor="#d04a45" />
+            <stop offset="78%" stopColor="#c92822" />
+            <stop offset="100%" stopColor="#b91514" />
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <button
+        type="button"
+        className="coach-ticker__nav coach-ticker__nav--prev"
+        aria-label="Previous photo"
+        onClick={() => go(-1)}
+      >
+        <svg viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+          <path
+            d="M8.75 2.4 4.15 7l4.6 4.6"
+            fill="none"
+            stroke="url(#coach-ctrl-gradient)"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+
       <div className="coach-ticker__layout">
         <div className="coach-ticker__photos">
           {featuredCoachSlides.map((slide, slideIndex) => (
@@ -35,52 +69,6 @@ export default function CoachFeatureTicker() {
               />
             </div>
           ))}
-        </div>
-
-        <div className="coach-ticker__controls">
-          <svg className="coach-ticker__icon-defs" aria-hidden="true" width={0} height={0} focusable="false">
-            <defs>
-              <linearGradient id="coach-ctrl-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#e59a4d" />
-                <stop offset="22%" stopColor="#d87457" />
-                <stop offset="50%" stopColor="#d04a45" />
-                <stop offset="78%" stopColor="#c92822" />
-                <stop offset="100%" stopColor="#b91514" />
-              </linearGradient>
-            </defs>
-          </svg>
-          <button
-            type="button"
-            className="coach-ticker__nav"
-            aria-label="Previous photo"
-            onClick={() => go(-1)}
-          >
-            <svg viewBox="0 0 14 14" aria-hidden="true" focusable="false">
-              <path
-                d="M8.75 2.4 4.15 7l4.6 4.6"
-                fill="none"
-                stroke="url(#coach-ctrl-gradient)"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
-          <p className="coach-ticker__status" aria-live="polite">
-            {index + 1} / {count}
-          </p>
-          <button type="button" className="coach-ticker__nav" aria-label="Next photo" onClick={() => go(1)}>
-            <svg viewBox="0 0 14 14" aria-hidden="true" focusable="false">
-              <path
-                d="M5.25 2.4 9.85 7l-4.6 4.6"
-                fill="none"
-                stroke="url(#coach-ctrl-gradient)"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
         </div>
 
         <div className="coach-ticker__content-stack">
@@ -113,6 +101,43 @@ export default function CoachFeatureTicker() {
           ))}
         </div>
       </div>
+
+      <button
+        type="button"
+        className="coach-ticker__nav coach-ticker__nav--next"
+        aria-label="Next photo"
+        onClick={() => go(1)}
+      >
+        <svg viewBox="0 0 14 14" aria-hidden="true" focusable="false">
+          <path
+            d="M5.25 2.4 9.85 7l-4.6 4.6"
+            fill="none"
+            stroke="url(#coach-ctrl-gradient)"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+
+      <div className="coach-ticker__dots" role="tablist" aria-label="Coach photo slides">
+        {featuredCoachSlides.map((slide, slideIndex) => (
+          <button
+            key={slide.aspect}
+            type="button"
+            role="tab"
+            className={cx('coach-ticker__dot', slideIndex === index && 'coach-ticker__dot--active')}
+            aria-label={`Show slide ${slideIndex + 1} of ${count}: ${slide.aspect}`}
+            aria-selected={slideIndex === index}
+            tabIndex={slideIndex === index ? 0 : -1}
+            onClick={() => goTo(slideIndex)}
+          />
+        ))}
+      </div>
+
+      <p className="visually-hidden" aria-live="polite">
+        Slide {index + 1} of {count}
+      </p>
     </div>
   );
 }

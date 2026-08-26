@@ -10,6 +10,11 @@ export default function FAQPage() {
       <PageHero
         title="FAQ"
         subtitle="Answers to common questions about classes, trials, and training at Northwest Wushu."
+        variant="image"
+        imageSrc="/images/faq-hero.jpg"
+        imageAlt="Northwest Wushu students in traditional uniforms posing for a Lunar New Year performance"
+        imagePosition="center 10%"
+        imageParallax
       />
       <FAQSection items={faqItems} variant="light" id="faq" title="Frequently Asked Questions" />
     </Layout>
