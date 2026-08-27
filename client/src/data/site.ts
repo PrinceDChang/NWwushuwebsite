@@ -61,7 +61,7 @@ export const site = {
         },
         {
           title: 'When you arrive',
-          text: 'Check in with your coach and follow posted studio rules (e.g. shoes off the mats).',
+          text: 'Meet your coach at the front of the building and follow studio rules (e.g. shoes off the mats).',
         },
       ],
     },
