@@ -7,13 +7,13 @@ import { site } from '../data/site';
 export default function SchedulePage() {
   return (
     <Layout title="Schedule" bodyClass="page-schedule" showStickyCta={false}>
-      <ScheduleHero title="Schedule" />
+      <ScheduleHero title="Schedule" subtitle="Same class times every week" />
 
       <section className="section schedule-page__footnote">
         <div className="container" style={{ maxWidth: '40rem' }}>
           <p className="text-muted text-center" style={{ margin: 0 }}>
-            All group classes meet on <strong>Saturdays</strong> at the Seattle Armory. We will confirm trial bookings
-            within {site.replyTime}.
+            This weekly timetable repeats year-round. All group classes meet on <strong>Saturdays</strong> at the
+            Seattle Armory. We will confirm trial bookings within {site.replyTime}.
           </p>
         </div>
       </section>

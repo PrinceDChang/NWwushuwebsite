@@ -26,6 +26,9 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
   const [animateIn, setAnimateIn] = useState(false);
   const [overlayId, setOverlayId] = useState<ClassType | null>(null);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [isMobileSchedule, setIsMobileSchedule] = useState(
+    () => window.matchMedia('(max-width: 640px)').matches,
+  );
   const [hoverRing, setHoverRing] = useState<HoverRingState | null>(null);
   const hoverTimer = useRef<number | null>(null);
   const leaveTimer = useRef<number | null>(null);
@@ -49,18 +52,27 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
   }, [overlayId]);
 
   useEffect(() => {
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduceMotion(media.matches);
-    const onChange = () => setReduceMotion(media.matches);
-    media.addEventListener('change', onChange);
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const compact = window.matchMedia('(max-width: 640px)');
+    const onMotion = () => setReduceMotion(motion.matches);
+    const onCompact = () => setIsMobileSchedule(compact.matches);
+    onMotion();
+    onCompact();
+    motion.addEventListener('change', onMotion);
+    compact.addEventListener('change', onCompact);
 
-    const timer = window.setTimeout(() => setAnimateIn(true), media.matches ? 0 : 180);
+    const timer = window.setTimeout(() => setAnimateIn(true), motion.matches ? 0 : 180);
 
     return () => {
-      media.removeEventListener('change', onChange);
+      motion.removeEventListener('change', onMotion);
+      compact.removeEventListener('change', onCompact);
       window.clearTimeout(timer);
     };
   }, []);
+
+  useEffect(() => {
+    if (!isMobileSchedule && overlayId) setOverlayId(null);
+  }, [isMobileSchedule, overlayId]);
 
   useEffect(() => {
     if (!overlayId) return;
@@ -131,7 +143,7 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
     trigger: HTMLButtonElement,
     point: { x: number; y: number },
   ) {
-    if (overlayOpenRef.current || isHoverSuppressed()) return;
+    if (!isMobileSchedule || overlayOpenRef.current || isHoverSuppressed()) return;
 
     clearLeaveTimer();
 
@@ -187,6 +199,7 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
   }
 
   function openOverlay(id: ClassType, trigger?: HTMLButtonElement | null) {
+    if (!isMobileSchedule) return;
     clearHoverTimer();
     clearLeaveTimer();
     clearHoverRing();
@@ -209,6 +222,7 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
   }
 
   function bindClassHover(id: ClassType) {
+    if (!isMobileSchedule) return {};
     return {
       onMouseEnter: (event: MouseEvent<HTMLElement>) => {
         const trigger =
@@ -244,24 +258,35 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
         className="schedule-calendar"
         {...(overlayId ? ({ inert: '' } as HTMLAttributes<HTMLDivElement>) : {})}
       >
-        <table className="schedule-calendar__table">
-          <thead>
-            <tr>
-              <th className="schedule-calendar__corner" scope="col">
-                <span className="visually-hidden">Time</span>
-              </th>
-              {days.map((day, index) => (
-                <th
-                  key={day}
-                  scope="col"
-                  className={cx('schedule-calendar__day', `schedule-calendar__day--${day.toLowerCase()}`)}
-                  style={{ ['--schedule-delay' as string]: `${index * 70}ms` }}
-                >
-                  {day}
+        <div className="schedule-calendar__card">
+          <p className="schedule-calendar__recurrence">
+            <span className="schedule-calendar__recurrence-label">Every week</span>
+            <span className="schedule-calendar__recurrence-detail">
+              {isMobileSchedule ? 'Saturdays' : 'Sunday – Saturday'}
+            </span>
+          </p>
+          <table
+            className="schedule-calendar__table"
+            aria-label="Repeating weekly class schedule. Classes meet at the same times every week, not during a specific calendar week."
+          >
+            <thead>
+              <tr>
+                <th className="schedule-calendar__corner" scope="col">
+                  <span className="visually-hidden">Time</span>
                 </th>
-              ))}
-            </tr>
-          </thead>
+                {days.map((day, index) => (
+                  <th
+                    key={day}
+                    scope="col"
+                    className={cx('schedule-calendar__day', `schedule-calendar__day--${day.toLowerCase()}`)}
+                    style={{ ['--schedule-delay' as string]: `${index * 70}ms` }}
+                  >
+                    <span className="visually-hidden">Every </span>
+                    {day}
+                  </th>
+                ))}
+              </tr>
+            </thead>
           <tbody>
             {timeSlots.map((slot, rowIndex) => (
               <tr key={slot}>
@@ -284,20 +309,31 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
                           'schedule-calendar__cell--sat',
                           'schedule-calendar__cell--event',
                           overlayId === 'kids' && 'schedule-calendar__cell--active',
+                          !isMobileSchedule && 'schedule-calendar__cell--static',
                         )}
                         {...bindClassHover('kids')}
                       >
-                        <button
-                          type="button"
-                          className="schedule-calendar__event schedule-calendar__event--kids"
-                          style={{ ['--schedule-delay' as string]: '1100ms' }}
-                          aria-expanded={overlayId === 'kids'}
-                          aria-controls="schedule-class-overlay"
-                          onClick={(event) => openOverlay('kids', event.currentTarget)}
-                        >
-                          <span>Kids Class</span>
-                          <span className="schedule-calendar__event-time">10 – 11 AM</span>
-                        </button>
+                        {isMobileSchedule ? (
+                          <button
+                            type="button"
+                            className="schedule-calendar__event schedule-calendar__event--kids"
+                            style={{ ['--schedule-delay' as string]: '1100ms' }}
+                            aria-expanded={overlayId === 'kids'}
+                            aria-controls="schedule-class-overlay"
+                            onClick={(event) => openOverlay('kids', event.currentTarget)}
+                          >
+                            <span>Kids Class</span>
+                            <span className="schedule-calendar__event-time">10 – 11 AM</span>
+                          </button>
+                        ) : (
+                          <div
+                            className="schedule-calendar__event schedule-calendar__event--kids schedule-calendar__event--expanded"
+                            style={{ ['--schedule-delay' as string]: '1100ms' }}
+                          >
+                            <span>Kids Class</span>
+                            <span className="schedule-calendar__event-time">10 – 11 AM</span>
+                          </div>
+                        )}
                       </td>
                     );
                   }
@@ -311,21 +347,32 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
                           'schedule-calendar__cell--sat',
                           'schedule-calendar__cell--event',
                           overlayId === 'adult' && 'schedule-calendar__cell--active',
+                          !isMobileSchedule && 'schedule-calendar__cell--static',
                         )}
                         rowSpan={2}
                         {...bindClassHover('adult')}
                       >
-                        <button
-                          type="button"
-                          className="schedule-calendar__event schedule-calendar__event--adult"
-                          style={{ ['--schedule-delay' as string]: '1240ms' }}
-                          aria-expanded={overlayId === 'adult'}
-                          aria-controls="schedule-class-overlay"
-                          onClick={(event) => openOverlay('adult', event.currentTarget)}
-                        >
-                          <span>Adult Class</span>
-                          <span className="schedule-calendar__event-time">11 AM – 1 PM</span>
-                        </button>
+                        {isMobileSchedule ? (
+                          <button
+                            type="button"
+                            className="schedule-calendar__event schedule-calendar__event--adult"
+                            style={{ ['--schedule-delay' as string]: '1240ms' }}
+                            aria-expanded={overlayId === 'adult'}
+                            aria-controls="schedule-class-overlay"
+                            onClick={(event) => openOverlay('adult', event.currentTarget)}
+                          >
+                            <span>Adult Class</span>
+                            <span className="schedule-calendar__event-time">11 AM – 1 PM</span>
+                          </button>
+                        ) : (
+                          <div
+                            className="schedule-calendar__event schedule-calendar__event--adult schedule-calendar__event--expanded"
+                            style={{ ['--schedule-delay' as string]: '1240ms' }}
+                          >
+                            <span>Adult Class</span>
+                            <span className="schedule-calendar__event-time">11 AM – 1 PM</span>
+                          </div>
+                        )}
                       </td>
                     );
                   }
@@ -344,17 +391,25 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       <p className="schedule-calendar__note">*more lessons may be added in the future</p>
-      <p className="schedule-calendar__hint">
-        <span className="schedule-calendar__hint-desktop">
-          Hover or click on class to open for more information
-        </span>
-        <span className="schedule-calendar__hint-mobile">Tap a class for details</span>
-      </p>
+      {isMobileSchedule && (
+        <p className="schedule-calendar__hint">
+          <span className="schedule-calendar__hint-mobile">Tap a class for details</span>
+        </p>
+      )}
 
-      {hoverRing && (
+      {!isMobileSchedule && (
+        <div className="schedule-class-details">
+          {classes.map((classInfo) => (
+            <ClassCard key={classInfo.id} classInfo={classInfo} variant="schedule" />
+          ))}
+        </div>
+      )}
+
+      {isMobileSchedule && hoverRing && (
         <div
           className={cx(
             'schedule-hover-ring',
@@ -400,6 +455,7 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
         </div>
       )}
 
+      {isMobileSchedule && (
       <div
         className={cx('schedule-overlay', activeClass && 'schedule-overlay--open')}
         onClick={(event) => {
@@ -437,6 +493,7 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
           )}
         </div>
       </div>
+      )}
     </section>
   );
 }

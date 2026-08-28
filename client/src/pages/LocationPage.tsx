@@ -13,6 +13,32 @@ function isLocationId(value: string): value is LocationId {
   return locations.some((item) => item.id === value);
 }
 
+function mapsDirectionsUrl(address: string) {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
+}
+
+function MapsDirectionsLink({
+  address,
+  name,
+  className,
+}: {
+  address: string;
+  name: string;
+  className?: string;
+}) {
+  return (
+    <a
+      className={className}
+      href={mapsDirectionsUrl(address)}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Get directions to ${name}`}
+    >
+      Get directions
+    </a>
+  );
+}
+
 export default function LocationPage() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -52,6 +78,13 @@ export default function LocationPage() {
       >
         <p className="location-hero-season" id="location-hero-season" hidden={!active.season}>
           <em>{active.season}</em>
+        </p>
+        <p className="location-hero-directions">
+          <MapsDirectionsLink
+            address={active.full}
+            name={active.name}
+            className="location-hero-directions__link"
+          />
         </p>
       </PageHero>
 
@@ -154,17 +187,26 @@ export default function LocationPage() {
 
             <section className="section">
               <div className="container">
-                <div className="map-wrap">
-                  <iframe
-                    title={item.mapsTitle}
-                    src={item.mapsEmbed}
-                    width="100%"
-                    height={400}
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
+                <div className="map-block">
+                  <p className="map-block__actions">
+                    <MapsDirectionsLink
+                      address={item.full}
+                      name={item.name}
+                      className="map-directions-link"
+                    />
+                  </p>
+                  <div className="map-wrap">
+                    <iframe
+                      title={item.mapsTitle}
+                      src={item.mapsEmbed}
+                      width="100%"
+                      height={400}
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                  </div>
                 </div>
               </div>
             </section>

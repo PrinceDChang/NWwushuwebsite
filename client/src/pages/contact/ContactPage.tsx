@@ -1,5 +1,5 @@
-import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FormEvent, useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import CTABand from '../../components/CTABand';
 import EmailField from '../../components/EmailField';
 import FAQSection from '../../components/FAQSection';
@@ -8,10 +8,30 @@ import PageHero from '../../components/PageHero';
 import { faqItems } from '../../data/faq';
 import { site } from '../../data/site';
 
+const CONTACT_TOPICS = [
+  'Free Trial Class',
+  'General Question',
+  'Schedule / Classes',
+  'Location / Directions',
+  'Other',
+] as const;
+
 export default function ContactPage() {
   const navigate = useNavigate();
+  const [params] = useSearchParams();
   const [sending, setSending] = useState(false);
   const [formError, setFormError] = useState('');
+  const topicFromUrl = params.get('topic');
+  const defaultTopic =
+    topicFromUrl && (CONTACT_TOPICS as readonly string[]).includes(topicFromUrl)
+      ? topicFromUrl
+      : '';
+  const fromFaq = params.get('from') === 'faq';
+
+  useEffect(() => {
+    if (window.location.hash !== '#contact-form') return;
+    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -116,15 +136,15 @@ export default function ContactPage() {
               <label className="required" htmlFor="interest">
                 Topic
               </label>
-              <select id="interest" name="interest" required defaultValue="">
+              <select id="interest" name="interest" required defaultValue={defaultTopic}>
                 <option value="" disabled hidden>
                   Select a topic
                 </option>
-                <option value="Free Trial Class">Free Trial Class</option>
-                <option value="General Question">General Question</option>
-                <option value="Schedule / Classes">Schedule / Classes</option>
-                <option value="Location / Directions">Location / Directions</option>
-                <option value="Other">Other</option>
+                {CONTACT_TOPICS.map((topic) => (
+                  <option key={topic} value={topic}>
+                    {topic}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="form-field">
@@ -135,7 +155,11 @@ export default function ContactPage() {
                 id="message"
                 name="message"
                 required
-                placeholder="Tell us about your experience level and goals…"
+                placeholder={
+                  fromFaq
+                    ? 'What’s your question? Include any details that will help us reply.'
+                    : 'Tell us about your experience level and goals…'
+                }
               />
             </div>
             <div className="form-actions form-actions--end">

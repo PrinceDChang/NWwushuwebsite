@@ -20,7 +20,8 @@ export const site = {
   },
   mapsEmbed:
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2689.8!2d-122.3501!3d47.6205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54901545c4c8b8c1%3A0x305Harrison!2sSeattle%20Center%20Armory!5e0!3m2!1sen!2sus!4v1',
-  mapsLink: 'https://maps.google.com/?q=Seattle+Armory+305+Harrison+St+Seattle+WA+98109',
+  mapsLink:
+    'https://www.google.com/maps/dir/?api=1&destination=Seattle+Armory%2C+305+Harrison+St%2C+Seattle%2C+WA+98109',
   maxClassSize: 25,
   locations: {
     regular: {
@@ -35,7 +36,8 @@ export const site = {
       mapsTitle: 'Map to Seattle Armory',
       mapsEmbed:
         'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2689.589!2d-122.350!3d47.621!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54901545d8808c69%3A0x7c8f5f5f5f5f5f5f!2s305%20Harrison%20St%2C%20Seattle%2C%20WA%2098109!5e0!3m2!1sen!2sus!4v1',
-      mapsLink: 'https://maps.google.com/?q=Seattle+Armory+305+Harrison+St+Seattle+WA+98109',
+      mapsLink:
+        'https://www.google.com/maps/dir/?api=1&destination=Seattle+Armory%2C+305+Harrison+St%2C+Seattle%2C+WA+98109',
       imageSrc: '/images/location-studio-interior.jpg',
       imageAlt:
         'Northwest Wushu training studio at the Seattle Armory with open floor space and mirrors',
@@ -77,7 +79,8 @@ export const site = {
       mapsTitle: 'Map to Jefferson Park',
       mapsEmbed:
         'https://www.google.com/maps?q=3801+Beacon+Ave+S,+Seattle,+WA+98108&hl=en&z=16&output=embed',
-      mapsLink: 'https://maps.google.com/?q=Jefferson+Park+3801+Beacon+Ave+S+Seattle+WA+98108',
+      mapsLink:
+        'https://www.google.com/maps/dir/?api=1&destination=Jefferson+Park%2C+3801+Beacon+Ave+S%2C+Seattle%2C+WA+98108',
       imageSrc: '/images/location-jefferson-park.png',
       imageAlt: 'Jefferson Park in Seattle, with playground, spray park, and open lawns on Beacon Hill',
       heroImageSrc: '/images/location-jefferson-park-hero.jpg',

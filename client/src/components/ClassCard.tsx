@@ -7,10 +7,10 @@ export default function ClassCard({
   variant = 'default',
 }: {
   classInfo: WushuClass;
-  variant?: 'default' | 'overlay';
+  variant?: 'default' | 'overlay' | 'schedule';
 }) {
   return (
-    <article className={cx('card class-card', variant === 'overlay' && 'class-card--overlay')}>
+    <article className={cx('card class-card', variant === 'overlay' && 'class-card--overlay', variant === 'schedule' && 'class-card--schedule')}>
       <div className="class-card__meta">
         <h2 className="class-card__title">{classInfo.title}</h2>
         <p className="text-muted">

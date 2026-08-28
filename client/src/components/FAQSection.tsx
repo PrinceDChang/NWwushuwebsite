@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { FAQItem } from '../data/faq';
 import { cx } from '../lib/cx';
 
@@ -6,6 +7,7 @@ type FAQSectionProps = {
   title?: string;
   variant?: 'dark' | 'light';
   id?: string;
+  afterList?: ReactNode;
 };
 
 export default function FAQSection({
@@ -13,6 +15,7 @@ export default function FAQSection({
   title = 'Frequently Asked Questions',
   variant = 'dark',
   id = 'faq',
+  afterList,
 }: FAQSectionProps) {
   return (
     <section
@@ -31,6 +34,7 @@ export default function FAQSection({
             </details>
           ))}
         </div>
+        {afterList}
       </div>
     </section>
   );
