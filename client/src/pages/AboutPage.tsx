@@ -282,10 +282,13 @@ export default function AboutPage() {
                 height={400}
                 loading="lazy"
               />
-              <h3>Kids Class</h3>
+              <h3>
+                Kids Class
+                <span className="program-card__ages">Ages 6–12</span>
+              </h3>
               <p>
-                Saturday 10:00–11:00 AM · Ages 6–12. Foundations, coordination, and confidence in a supportive group
-                setting.
+                <strong className="program-card__when">Saturday 10:00–11:00 AM</strong>
+                Foundations, coordination, and confidence in a supportive group setting.
               </p>
               <Link to="/trial/?class=kids" className="btn btn--primary btn--small">
                 Sign up for free trial
@@ -300,10 +303,13 @@ export default function AboutPage() {
                 height={400}
                 loading="lazy"
               />
-              <h3>Teen &amp; Adult</h3>
+              <h3>
+                Teen &amp; Adult
+                <span className="program-card__ages">Ages 13+</span>
+              </h3>
               <p>
-                Saturday 11:00 AM–1:00 PM · Ages 13+. Forms, weapons, and conditioning for beginners through experienced
-                athletes.
+                <strong className="program-card__when">Saturday 11:00 AM–1:00 PM</strong>
+                Forms, weapons, and conditioning for beginners through experienced athletes.
               </p>
               <Link to="/trial/?class=adult" className="btn btn--primary btn--small">
                 Sign up for free trial

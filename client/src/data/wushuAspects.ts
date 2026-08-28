@@ -23,8 +23,8 @@ export const wushuAspects: WushuAspect[] = [
     id: 'flexibility',
     label: 'Flexibility',
     title: 'Flexibility',
-    imageSrc: '/images/class-teens-adults.jpg',
-    imageAlt: 'Northwest Wushu students stretching together in a circle on the studio mats',
+    imageSrc: '/images/wushu-flexibility.jpg',
+    imageAlt: 'Northwest Wushu students training flexibility with straddle stretches on the studio mats',
     paragraphs: [
       'Flexibility is a foundation of wushu. Controlled stretching, kicks, and holds build the range of motion needed for high kicks, deep stances, and clean lines in every form.',
       'At Northwest Wushu, we train flexibility progressively and safely so students of every age can improve mobility, reduce injury risk, and move with greater power and ease.',
