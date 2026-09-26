@@ -125,7 +125,7 @@ app.post('/api/contact', async (req, res) => {
     return res.status(503).json({ error: 'Email service is not configured.' });
   }
 
-  const owner = process.env.OWNER_EMAIL || 'northwestwushu.2008@gmail.com';
+  const owner = process.env.OWNER_EMAIL || 'Contact@northwestwushu.com';
   const from = process.env.FROM_EMAIL || 'Northwest Wushu <onboarding@resend.dev>';
   const data = { first_name, last_name, email, phone, interest, message };
   const fullName = `${first_name} ${last_name}`;
@@ -208,7 +208,7 @@ app.post('/api/trial', async (req, res) => {
     return res.status(503).json({ error: 'Email service is not configured.' });
   }
 
-  const owner = process.env.OWNER_EMAIL || 'northwestwushu.2008@gmail.com';
+  const owner = process.env.OWNER_EMAIL || 'Contact@northwestwushu.com';
   const from = process.env.FROM_EMAIL || 'Northwest Wushu <onboarding@resend.dev>';
 
   try {

@@ -13,7 +13,7 @@ const REVEAL_CHILD_SELECTOR = [
   '.trial-booking',
   '.instagram-grid > li',
   '.faq-section details',
-  '.location-tabs',
+  '.location-split',
   '.coach-ticker',
   '.programs-showcase__header',
   '[data-programs-reveal]',

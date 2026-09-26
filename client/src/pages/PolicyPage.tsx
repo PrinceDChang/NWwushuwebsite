@@ -1,5 +1,6 @@
 import Layout from '../components/Layout';
 import PageHero from '../components/PageHero';
+import { site } from '../data/site';
 
 export default function PolicyPage() {
   return (
@@ -26,7 +27,7 @@ export default function PolicyPage() {
           <h2>Cancellations</h2>
           <p>
             If you cannot attend a confirmed trial or class, notify us as soon as possible at{' '}
-            <a href="mailto:northwestwushu.2008@gmail.com">northwestwushu.2008@gmail.com</a>.
+            <a href={`mailto:${site.email}`}>{site.email}</a>.
           </p>
 
           <p className="text-muted">[Placeholder — add attorney- or school-approved policy text before launch.]</p>

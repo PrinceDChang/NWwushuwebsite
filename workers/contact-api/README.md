@@ -2,7 +2,7 @@
 
 Serverless backend for the contact page. Sends two emails on each submission:
 
-1. **Owner notification** → `northwestwushu.2008@gmail.com` with `Reply-To` set to the visitor’s email
+1. **Owner notification** → `Contact@northwestwushu.com` with `Reply-To` set to the visitor’s email
 2. **Visitor confirmation** → the address they entered on the form
 
 Runs on [Cloudflare Workers](https://workers.cloudflare.com/) so it works alongside the static GitHub Pages site.

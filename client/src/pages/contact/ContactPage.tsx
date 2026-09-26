@@ -60,7 +60,7 @@ export default function ContactPage() {
       const message =
         err instanceof Error && err.message && err.message !== 'fail'
           ? err.message
-          : 'Could not send your message. Please email northwestwushu.2008@gmail.com directly.';
+          : `Could not send your message. Please email ${site.email} directly.`;
       setFormError(message);
       setSending(false);
     }

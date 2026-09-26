@@ -6,9 +6,10 @@ import Layout from '../../components/Layout';
 import PageHero from '../../components/PageHero';
 import TrialStepper from '../../components/TrialStepper';
 import { faqItems } from '../../data/faq';
+import { site } from '../../data/site';
 import { clearTrialData, getTrialConfirm, saveTrialConfirm } from '../../lib/trialStorage';
 
-const LOCATION = 'Seattle Armory, 305 Harrison St, Seattle, WA 98109';
+const LOCATION = site.address.full;
 const TIME_RANGES = {
   kids: { start: [10, 0], end: [11, 0] },
   adult: { start: [11, 0], end: [13, 0] },

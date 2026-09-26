@@ -72,8 +72,8 @@ export function visitorContactHtml(data) {
       </table>
       <h2 style="font-size:16px;margin:24px 0 8px;">Message</h2>
       <div style="white-space:pre-wrap;background:#fff5f4;border:1px solid #fdeae8;border-radius:12px;padding:16px;">${escapeHtml(data.message)}</div>
-      <p style="margin:24px 0 0;color:#5c6570;">If you need to add anything, reply to this email or contact us at <a href="mailto:northwestwushu.2008@gmail.com">northwestwushu.2008@gmail.com</a>.</p>
-      <p style="margin:16px 0 0;">— Northwest Wushu Academy<br>Seattle Armory, 305 Harrison St, Seattle, WA 98109</p>
+      <p style="margin:24px 0 0;color:#5c6570;">If you need to add anything, reply to this email or contact us at <a href="mailto:Contact@northwestwushu.com">Contact@northwestwushu.com</a>.</p>
+      <p style="margin:16px 0 0;">— Northwest Wushu Academy<br>Pacific Rim Center, 900 S. Jackson St., Unit 119, Seattle, WA 98104</p>
     </div>
   `;
 }
@@ -117,7 +117,7 @@ export function visitorTrialHtml(data) {
         <tr><td style="padding:8px 0;color:#5c6570;">Time</td><td style="padding:8px 0;">${escapeHtml(data.requested_time)}</td></tr>
       </table>
       <p style="margin:24px 0 0;">Please wear comfortable sportswear and athletic shoes. We are excited to meet you!</p>
-      <p style="margin:16px 0 0;">— Northwest Wushu Academy<br>Seattle Armory, 305 Harrison St, Seattle, WA 98109</p>
+      <p style="margin:16px 0 0;">— Northwest Wushu Academy<br>Pacific Rim Center, 900 S. Jackson St., Unit 119, Seattle, WA 98104</p>
     </div>
   `;
 }

@@ -13,7 +13,7 @@ export const wushuAspects: WushuAspect[] = [
     label: 'Overview',
     title: 'What is Wushu',
     imageSrc: '/images/about-studio-group.jpg',
-    imageAlt: 'Northwest Wushu students and coaches posing together in the Seattle Armory training studio',
+    imageAlt: 'Northwest Wushu students and coaches posing together in the training studio',
     paragraphs: [
       'Wushu is a modern, standardized form of Chinese martial arts that combines traditional combat techniques with athletic movement and acrobatics. Students develop strength, flexibility, coordination, and discipline.',
       'Whether you are exploring martial arts for fitness, culture, or competition, here at Northwest Wushu Academy, we train kids, teens, and adults of all levels and bring them into our supportive community.',

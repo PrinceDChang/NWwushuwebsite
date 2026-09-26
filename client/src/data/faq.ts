@@ -36,17 +36,17 @@ export const faqItems: FAQItem[] = [
   {
     question: 'Are classes only on Saturdays?',
     answer:
-      'Yes — at this time all group classes meet on Saturdays at the Seattle Armory. Kids meet 10:00–11:00 AM; Teen & Adult meet 11:00 AM–1:00 PM.',
+      'Yes — at this time all group classes meet on Saturdays at Pacific Rim Center. Kids meet 10:00–11:00 AM; Teen & Adult meet 11:00 AM–1:00 PM.',
   },
   {
     question: 'Where is the school located?',
     answer:
-      'We train at the Seattle Armory, 305 Harrison St, Seattle, WA 98109 — in the Seattle Center area. See our Location page for map, parking, and transit tips.',
+      'We train at Pacific Rim Center, 900 S. Jackson St., Unit 119, Seattle, WA 98104 — in Little Saigon / Chinatown–International District. See our Location page for map, parking, and transit tips.',
   },
   {
     question: 'Is there parking?',
     answer:
-      'Free street parking is often available nearby; paid garages are also close to Seattle Center. Allow a few extra minutes on busy event days.',
+      '2-hour parking is available in the Pacific Rim Center garage. The entrance is on the east side of the building (10th Avenue South).',
   },
   {
     question: 'Can parents watch class?',

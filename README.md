@@ -33,7 +33,7 @@ One Node web service builds the React app and serves it from Express, including:
    - **Health check:** `/api/health`
 3. Set environment variables:
    - `RESEND_API_KEY`
-   - `OWNER_EMAIL=northwestwushu.2008@gmail.com`
+   - `OWNER_EMAIL=Contact@northwestwushu.com`
    - `FROM_EMAIL=Northwest Wushu <onboarding@resend.dev>` (or your verified Resend domain)
    - `ALLOWED_ORIGINS=https://your-service.onrender.com,https://nwwushu.com`
 
