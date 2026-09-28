@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import CoachFeatureTicker from '../components/CoachFeatureTicker';
 import CTABand from '../components/CTABand';
 import Layout from '../components/Layout';
@@ -290,9 +289,14 @@ export default function AboutPage() {
                 <strong className="program-card__when">Saturday 10:00–11:00 AM</strong>
                 Foundations, coordination, and confidence in a supportive group setting.
               </p>
-              <Link to="/trial/?class=kids" className="btn btn--primary btn--small">
-                Sign up for free trial
-              </Link>
+              <a
+                href={site.classSignupUrl}
+                className="btn btn--primary btn--small"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Sign Up for Class
+              </a>
             </article>
 
             <article className="program-card" data-programs-reveal>
@@ -311,13 +315,20 @@ export default function AboutPage() {
                 <strong className="program-card__when">Saturday 11:00 AM–1:00 PM</strong>
                 Forms, weapons, and conditioning for beginners through experienced athletes.
               </p>
-              <Link to="/trial/?class=adult" className="btn btn--primary btn--small">
-                Sign up for free trial
-              </Link>
+              <a
+                href={site.classSignupUrl}
+                className="btn btn--primary btn--small"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Sign Up for Class
+              </a>
             </article>
           </div>
         </div>
       </section>
+
+      <CTABand />
 
       <section
         className="section section--alt programs-pricing"
@@ -328,23 +339,15 @@ export default function AboutPage() {
           <h2 id="pricing-heading" className="section__title">
             Class Pricing
           </h2>
-          <p className="programs-pricing__lead">
-            After your free trial, continue with drop-in classes or a quarterly package.
-          </p>
+          <p className="programs-pricing__lead">After your free trial, continue with drop-in classes.</p>
           <ul className="programs-pricing__rates">
             <li>
               <span className="programs-pricing__amount">$30</span>
               <span className="programs-pricing__label">per class</span>
             </li>
-            <li>
-              <span className="programs-pricing__amount">$300</span>
-              <span className="programs-pricing__label">per quarter (10 classes)</span>
-            </li>
           </ul>
         </div>
       </section>
-
-      <CTABand />
     </Layout>
   );
 }

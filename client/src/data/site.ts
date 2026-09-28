@@ -22,6 +22,9 @@ export const site = {
     'https://www.google.com/maps?q=900+S+Jackson+St,+Seattle,+WA+98104&hl=en&z=17&output=embed',
   mapsLink:
     'https://www.google.com/maps/dir/?api=1&destination=900+S+Jackson+St%2C+Seattle%2C+WA+98104',
+  googleFormEmbed:
+    'https://docs.google.com/forms/d/e/1FAIpQLSczS5q4X5xu2F2GPzh3EwVN8wd1oSXSF235YwMK_93dY3eAwA/viewform?embedded=true',
+  classSignupUrl: 'https://forms.gle/wwephbhZ6qP5r4mr8',
   maxClassSize: 25,
   location: {
     mapsTitle: 'Map to Pacific Rim Center',

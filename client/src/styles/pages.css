@@ -2903,15 +2903,7 @@
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 1.5rem;
     justify-content: center;
-  }
-
-  @media (min-width: 640px) {
-    .programs-pricing__rates {
-      grid-template-columns: repeat(2, minmax(0, 14rem));
-      gap: 2rem 3rem;
-    }
   }
 
   .programs-pricing__rates li {
@@ -2940,6 +2932,26 @@
   }
 
 /* src/pages/contact/index.astro */
+.contact-embed {
+    width: min(100% - 2rem, 48rem);
+  }
+
+.google-form-embed {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .google-form-embed iframe {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: 1153px;
+    border: 0;
+  }
+
 .hp {
     position: absolute;
     left: -9999px;
@@ -3448,6 +3460,14 @@
 
 /* ——— Mobile-only layout polish (desktop rules unchanged) ——— */
 @media (max-width: 767px) {
+  .contact-embed {
+    width: min(100% - 1.5rem, 48rem);
+  }
+
+  .google-form-embed iframe {
+    height: 1320px;
+  }
+
   .cta-band {
     padding: 3.25rem 0;
   }

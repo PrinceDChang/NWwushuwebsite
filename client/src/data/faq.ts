@@ -31,7 +31,7 @@ export const faqItems: FAQItem[] = [
   },
   {
     question: 'How much are classes after your free trial?',
-    answer: '$30 per class or $300 for a quarter (10 classes)',
+    answer: '$30 per class',
   },
   {
     question: 'Are classes only on Saturdays?',

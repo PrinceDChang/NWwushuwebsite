@@ -10,6 +10,7 @@ const REVEAL_CHILD_SELECTOR = [
   '.confirm-card',
   '.home-split',
   '.form-grid',
+  '.google-form-embed',
   '.trial-booking',
   '.instagram-grid > li',
   '.faq-section details',

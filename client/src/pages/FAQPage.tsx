@@ -32,7 +32,7 @@ export default function FAQPage() {
               Ask a more personal question and we’ll reply by email.
             </p>
             <Link
-              to="/contact/?from=faq&topic=General%20Question#contact-form"
+              to="/contact/#contact-form"
               className="btn btn--primary faq-contact__btn"
             >
               Ask a question
