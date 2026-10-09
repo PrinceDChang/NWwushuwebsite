@@ -33,9 +33,14 @@ export default function HomePage() {
             New to wushu? We welcome kids, teens, and adults — no experience needed. Your first class is free.
           </p>
           <div className="home-hero__actions">
-            <Link to="/trial/" className="btn btn--primary">
+            <a
+              href={site.trialSignupUrl}
+              className="btn btn--primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Try your first class for free
-            </Link>
+            </a>
             <Link to="/about/#what-is-wushu" className="btn btn--secondary">
               Learn more
             </Link>

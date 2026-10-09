@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import PageHero from '../components/PageHero';
+import { site } from '../data/site';
 import { photoReleaseText, waiverText } from '../data/waivers';
 
 export default function WaiversPage() {
@@ -11,8 +11,11 @@ export default function WaiversPage() {
       <section className="section">
         <div className="container container--narrow legal-page">
           <p>
-            Waivers are completed digitally during <Link to="/trial/">free trial sign-up</Link>. Below are the current
-            documents for your records.
+            Waivers are completed digitally during{' '}
+            <a href={site.trialSignupUrl} target="_blank" rel="noopener noreferrer">
+              free trial sign-up
+            </a>
+            . Below are the current documents for your records.
           </p>
 
           <h2>Liability waiver</h2>
@@ -30,9 +33,14 @@ export default function WaiversPage() {
           </div>
 
           <p style={{ marginTop: '2rem' }}>
-            <Link to="/trial/" className="btn btn--primary">
+            <a
+              href={site.trialSignupUrl}
+              className="btn btn--primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Sign up for a free trial
-            </Link>
+            </a>
           </p>
         </div>
       </section>

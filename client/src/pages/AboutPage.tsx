@@ -286,7 +286,7 @@ export default function AboutPage() {
                 <span className="program-card__ages">Ages 6–12</span>
               </h3>
               <p>
-                <strong className="program-card__when">Saturday 10:00–11:00 AM</strong>
+                <strong className="program-card__when">Sunday 2:00–3:00 PM</strong>
                 Foundations, coordination, and confidence in a supportive group setting.
               </p>
               <a
@@ -312,7 +312,7 @@ export default function AboutPage() {
                 <span className="program-card__ages">Ages 13+</span>
               </h3>
               <p>
-                <strong className="program-card__when">Saturday 11:00 AM–1:00 PM</strong>
+                <strong className="program-card__when">Sunday 3:00–5:00 PM</strong>
                 Forms, weapons, and conditioning for beginners through experienced athletes.
               </p>
               <a

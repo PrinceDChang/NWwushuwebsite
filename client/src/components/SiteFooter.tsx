@@ -27,7 +27,9 @@ export default function SiteFooter() {
               <Link to="/contact/">Contact Us</Link>
             </li>
             <li>
-              <Link to="/trial/">Free Trial Sign Up</Link>
+              <a href={site.trialSignupUrl} target="_blank" rel="noopener noreferrer">
+                Free Trial Sign Up
+              </a>
             </li>
           </ul>
         </div>

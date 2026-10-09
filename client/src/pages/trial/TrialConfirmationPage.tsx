@@ -11,15 +11,15 @@ import { clearTrialData, getTrialConfirm, saveTrialConfirm } from '../../lib/tri
 
 const LOCATION = site.address.full;
 const TIME_RANGES = {
-  kids: { start: [10, 0], end: [11, 0] },
-  adult: { start: [11, 0], end: [13, 0] },
+  kids: { start: [14, 0], end: [15, 0] },
+  adult: { start: [15, 0], end: [17, 0] },
 };
 
-function nextSaturdayISO() {
+function nextSundayISO() {
   const date = new Date();
   date.setHours(12, 0, 0, 0);
-  const daysUntilSaturday = (6 - date.getDay() + 7) % 7 || 7;
-  date.setDate(date.getDate() + daysUntilSaturday);
+  const daysUntilSunday = (7 - date.getDay()) % 7 || 7;
+  date.setDate(date.getDate() + daysUntilSunday);
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, '0');
   const d = String(date.getDate()).padStart(2, '0');
@@ -47,9 +47,9 @@ export default function TrialConfirmationPage() {
     let stored = getTrialConfirm();
     if (!stored.selectedDate && isLocalDev && params.get('preview') === '1') {
       stored = {
-        selectedDate: nextSaturdayISO(),
+        selectedDate: nextSundayISO(),
         classType: 'kids',
-        time: '10:00 AM – 11:00 AM',
+        time: '2:00 PM – 3:00 PM',
         classLabel: 'Kids Wushu',
         guardianEmail: 'demo@example.com',
         fullName: 'Demo Student',

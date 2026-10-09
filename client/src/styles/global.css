@@ -1234,7 +1234,7 @@ fieldset.form-field input[type='checkbox'] {
     transform 0.2s var(--ease-out);
 }
 
-.calendar__day--sat {
+.calendar__day--sun {
   cursor: pointer;
   color: var(--color-ink);
   font-weight: 600;
@@ -1268,7 +1268,7 @@ fieldset.form-field input[type='checkbox'] {
   color: var(--color-muted);
 }
 
-.calendar__day--sat:hover:not(:disabled) {
+.calendar__day--sun:hover:not(:disabled) {
   background: var(--color-brand-light);
   transform: scale(1.08);
 }

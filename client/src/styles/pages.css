@@ -769,6 +769,7 @@
 .schedule-calendar__day--sun {
   background: var(--day-sun-bg);
   color: var(--day-sun-ink);
+  font-weight: 600;
 }
 
 .schedule-calendar__day--mon {
@@ -799,7 +800,6 @@
 .schedule-calendar__day--sat {
   background: var(--day-sat-bg);
   color: var(--day-sat-ink);
-  font-weight: 600;
   border-right: none;
 }
 
@@ -876,6 +876,10 @@
 .schedule-calendar__cell--sat {
   border-right: none;
   background: color-mix(in srgb, var(--day-sat-bg) 40%, white);
+}
+
+.schedule-calendar__cell--sun.schedule-calendar__cell--event {
+  background: color-mix(in srgb, var(--day-sun-bg) 40%, white);
 }
 
 .schedule-calendar__cell--sat.schedule-calendar__cell--event {
@@ -1341,9 +1345,9 @@
     font-size: 0.75rem;
   }
 
-  /* Saturday-only columns — empty weekdays are unusable at phone widths */
-  .schedule-calendar__day:not(.schedule-calendar__day--sat),
-  .schedule-calendar__cell:not(.schedule-calendar__cell--sat) {
+  /* Sunday-only columns — empty weekdays are unusable at phone widths */
+  .schedule-calendar__day:not(.schedule-calendar__day--sun),
+  .schedule-calendar__cell:not(.schedule-calendar__cell--sun) {
     display: none;
   }
 
@@ -1362,7 +1366,7 @@
     font-size: 0.8125rem;
   }
 
-  .schedule-calendar__day--sat {
+  .schedule-calendar__day--sun {
     font-size: 0.9375rem;
     letter-spacing: 0.06em;
     padding-block: 0.65rem;

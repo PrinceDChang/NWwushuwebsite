@@ -3,16 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/Layout';
 import PageHero from '../../components/PageHero';
 import TrialStepper from '../../components/TrialStepper';
+import { trialSlots } from '../../data/classes';
 import { site } from '../../data/site';
 import { cx } from '../../lib/cx';
 import { clearTrialData, getTrialData, saveTrialConfirm, saveTrialData } from '../../lib/trialStorage';
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const SLOTS = {
-  kids: { label: 'Kids Wushu', time: '10:00 AM – 11:00 AM' },
-  adult: { label: 'Teen & Adult Wushu', time: '11:00 AM – 1:00 PM' },
-} as const;
 
 const MONTH_NAMES = [
   'January',
@@ -106,7 +102,7 @@ export default function TrialBookingPage() {
   const left = spotsLeft(selectedDate);
   const locked = !selectedDate;
   const full = Boolean(selectedDate) && left <= 0;
-  const slot = SLOTS[classType];
+  const slot = trialSlots[classType];
 
   const calendarDays = useMemo(() => {
     const first = new Date(viewYear, viewMonth, 1);
@@ -119,9 +115,9 @@ export default function TrialBookingPage() {
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(viewYear, viewMonth, day);
       const iso = toISODateLocal(date);
-      const isSaturday = date.getDay() === 6;
+      const isSunday = date.getDay() === 0;
       const isFuture = date >= today;
-      if (isSaturday && isFuture) {
+      if (isSunday && isFuture) {
         cells.push({ day, iso, disabled: spotsLeft(iso) <= 0, left: spotsLeft(iso) });
       } else {
         cells.push({ day, disabled: true });
@@ -142,9 +138,9 @@ export default function TrialBookingPage() {
       return `We will confirm your spot within ${site.replyTime}. Max ${cap} students per class.`;
     }
     if (left <= 0) {
-      return `This class is full (${cap} of ${cap} spots taken). Please pick another Saturday.`;
+      return `This class is full (${cap} of ${cap} spots taken). Please pick another Sunday.`;
     }
-    return `${left} of ${cap} spots left this Saturday. We will confirm your request within ${site.replyTime}.`;
+    return `${left} of ${cap} spots left this Sunday. We will confirm your request within ${site.replyTime}.`;
   }
 
   async function submit() {
@@ -163,11 +159,11 @@ export default function TrialBookingPage() {
       return;
     }
     if (!selectedDate) {
-      setFormError('Please select a Saturday for your trial.');
+      setFormError('Please select a Sunday for your trial.');
       return;
     }
     if (spotsLeft(selectedDate, classType) <= 0) {
-      setFormError('That class is full. Please pick another Saturday.');
+      setFormError('That class is full. Please pick another Sunday.');
       return;
     }
 
@@ -263,7 +259,7 @@ export default function TrialBookingPage() {
                       saveTrialData({ classType: 'kids' });
                     }}
                   />
-                  Child (Kids Wushu · 10:00–11:00 AM)
+                  Child (Kids Wushu · 2:00–3:00 PM)
                 </label>
                 <label>
                   <input
@@ -276,7 +272,7 @@ export default function TrialBookingPage() {
                       saveTrialData({ classType: 'adult' });
                     }}
                   />
-                  Teen &amp; Adult (11:00 AM–1:00 PM)
+                  Teen &amp; Adult (3:00–5:00 PM)
                 </label>
               </fieldset>
             </div>
@@ -343,7 +339,7 @@ export default function TrialBookingPage() {
                         type="button"
                         className={cx(
                           'calendar__day',
-                          'calendar__day--sat',
+                          'calendar__day--sun',
                           selected && 'calendar__day--selected',
                           cell.disabled && 'calendar__day--full',
                         )}
@@ -367,7 +363,7 @@ export default function TrialBookingPage() {
                     );
                   })}
                 </div>
-                <p className="calendar__hint">Trial classes meet on Saturdays. Pick an available Saturday.</p>
+                <p className="calendar__hint">Trial classes meet on Sundays. Pick an available Sunday.</p>
               </div>
               <input type="hidden" name="selectedDate" value={selectedDate || ''} />
             </div>

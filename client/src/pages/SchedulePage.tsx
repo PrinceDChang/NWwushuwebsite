@@ -12,7 +12,7 @@ export default function SchedulePage() {
       <section className="section schedule-page__footnote">
         <div className="container" style={{ maxWidth: '40rem' }}>
           <p className="text-muted text-center" style={{ margin: 0 }}>
-            This weekly timetable repeats year-round. All group classes meet on <strong>Saturdays</strong> at{' '}
+            This weekly timetable repeats year-round. All group classes meet on <strong>Sundays</strong> at{' '}
             {site.address.name}. We will confirm trial bookings within {site.replyTime}.
           </p>
         </div>

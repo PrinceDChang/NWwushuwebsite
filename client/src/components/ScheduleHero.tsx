@@ -4,7 +4,7 @@ import { cx } from '../lib/cx';
 import ClassCard from './ClassCard';
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;
-const timeSlots = ['8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM'] as const;
+const timeSlots = ['12 PM', '1 PM', '2 PM', '3 PM', '4 PM'] as const;
 
 const HOVER_DELAY_MS = 4000;
 const LEAVE_GRACE_MS = 200;
@@ -262,7 +262,7 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
           <p className="schedule-calendar__recurrence">
             <span className="schedule-calendar__recurrence-label">Every week</span>
             <span className="schedule-calendar__recurrence-detail">
-              {isMobileSchedule ? 'Saturdays' : 'Sunday – Saturday'}
+              {isMobileSchedule ? 'Sundays' : 'Sunday – Saturday'}
             </span>
           </p>
           <table
@@ -298,15 +298,15 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
                   <span>{slot}</span>
                 </th>
                 {days.map((day) => {
-                  if (day === 'Sat' && slot === '12 PM') return null;
+                  if (day === 'Sun' && slot === '4 PM') return null;
 
-                  if (day === 'Sat' && slot === '10 AM') {
+                  if (day === 'Sun' && slot === '2 PM') {
                     return (
                       <td
                         key={day}
                         className={cx(
                           'schedule-calendar__cell',
-                          'schedule-calendar__cell--sat',
+                          'schedule-calendar__cell--sun',
                           'schedule-calendar__cell--event',
                           overlayId === 'kids' && 'schedule-calendar__cell--active',
                           !isMobileSchedule && 'schedule-calendar__cell--static',
@@ -323,7 +323,7 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
                             onClick={(event) => openOverlay('kids', event.currentTarget)}
                           >
                             <span>Kids Class</span>
-                            <span className="schedule-calendar__event-time">10 – 11 AM</span>
+                            <span className="schedule-calendar__event-time">2 – 3 PM</span>
                           </button>
                         ) : (
                           <div
@@ -331,20 +331,20 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
                             style={{ ['--schedule-delay' as string]: '1100ms' }}
                           >
                             <span>Kids Class</span>
-                            <span className="schedule-calendar__event-time">10 – 11 AM</span>
+                            <span className="schedule-calendar__event-time">2 – 3 PM</span>
                           </div>
                         )}
                       </td>
                     );
                   }
 
-                  if (day === 'Sat' && slot === '11 AM') {
+                  if (day === 'Sun' && slot === '3 PM') {
                     return (
                       <td
                         key={day}
                         className={cx(
                           'schedule-calendar__cell',
-                          'schedule-calendar__cell--sat',
+                          'schedule-calendar__cell--sun',
                           'schedule-calendar__cell--event',
                           overlayId === 'adult' && 'schedule-calendar__cell--active',
                           !isMobileSchedule && 'schedule-calendar__cell--static',
@@ -361,16 +361,16 @@ export default function ScheduleHero({ title, subtitle }: { title: string; subti
                             aria-controls="schedule-class-overlay"
                             onClick={(event) => openOverlay('adult', event.currentTarget)}
                           >
-                            <span>Adult Class</span>
-                            <span className="schedule-calendar__event-time">11 AM – 1 PM</span>
+                            <span>Teen &amp; Adult</span>
+                            <span className="schedule-calendar__event-time">3 – 5 PM</span>
                           </button>
                         ) : (
                           <div
                             className="schedule-calendar__event schedule-calendar__event--adult schedule-calendar__event--expanded"
                             style={{ ['--schedule-delay' as string]: '1240ms' }}
                           >
-                            <span>Adult Class</span>
-                            <span className="schedule-calendar__event-time">11 AM – 1 PM</span>
+                            <span>Teen &amp; Adult</span>
+                            <span className="schedule-calendar__event-time">3 – 5 PM</span>
                           </div>
                         )}
                       </td>

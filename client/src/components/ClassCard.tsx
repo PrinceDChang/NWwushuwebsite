@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import type { WushuClass } from '../data/classes';
 import { cx } from '../lib/cx';
 
@@ -26,9 +25,14 @@ export default function ClassCard({
           <br />
           {classInfo.time}
         </p>
-        <Link to={classInfo.signupHref} className="btn btn--primary btn--small">
+        <a
+          href={classInfo.signupHref}
+          className="btn btn--primary btn--small"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Sign Up
-        </Link>
+        </a>
       </div>
     </article>
   );

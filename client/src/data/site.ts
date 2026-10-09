@@ -25,6 +25,7 @@ export const site = {
   googleFormEmbed:
     'https://docs.google.com/forms/d/e/1FAIpQLSczS5q4X5xu2F2GPzh3EwVN8wd1oSXSF235YwMK_93dY3eAwA/viewform?embedded=true',
   classSignupUrl: 'https://forms.gle/wwephbhZ6qP5r4mr8',
+  trialSignupUrl: 'https://form.jotform.com/262725339975168',
   maxClassSize: 25,
   location: {
     mapsTitle: 'Map to Pacific Rim Center',
@@ -59,5 +60,5 @@ export const site = {
 export const trialBanner = {
   text: 'Sign up for your free trial class',
   buttonText: 'Free trial',
-  href: '/trial/',
+  href: site.trialSignupUrl,
 } as const;

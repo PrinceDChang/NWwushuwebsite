@@ -8,11 +8,8 @@ import HomePage from './pages/HomePage';
 import LocationPage from './pages/LocationPage';
 import PolicyPage from './pages/PolicyPage';
 import SchedulePage from './pages/SchedulePage';
-import TrialAgreementsPage from './pages/trial/TrialAgreementsPage';
-import TrialBookingPage from './pages/trial/TrialBookingPage';
-import TrialConfirmationPage from './pages/trial/TrialConfirmationPage';
-import TrialStep1Page from './pages/trial/TrialStep1Page';
 import WaiversPage from './pages/WaiversPage';
+import { site } from './data/site';
 
 function TrailingSlash() {
   const { pathname, search, hash } = useLocation();
@@ -22,6 +19,19 @@ function TrailingSlash() {
     }
   }, [pathname, search, hash]);
   return null;
+}
+
+function TrialFormRedirect() {
+  useEffect(() => {
+    window.location.replace(site.trialSignupUrl);
+  }, []);
+  return (
+    <p className="container" style={{ padding: '2rem 1rem' }}>
+      <a href={site.trialSignupUrl} target="_blank" rel="noopener noreferrer">
+        Continue to free trial sign-up
+      </a>
+    </p>
+  );
 }
 
 function ScrollToHash() {
@@ -51,10 +61,7 @@ export default function App() {
         <Route path="/location/*" element={<LocationPage />} />
         <Route path="/contact/thank-you/*" element={<ContactThankYouPage />} />
         <Route path="/contact/*" element={<ContactPage />} />
-        <Route path="/trial/agreements/*" element={<TrialAgreementsPage />} />
-        <Route path="/trial/booking/*" element={<TrialBookingPage />} />
-        <Route path="/trial/confirmation/*" element={<TrialConfirmationPage />} />
-        <Route path="/trial/*" element={<TrialStep1Page />} />
+        <Route path="/trial/*" element={<TrialFormRedirect />} />
         <Route path="/policy/*" element={<PolicyPage />} />
         <Route path="/waivers/*" element={<WaiversPage />} />
         <Route path="/faq/*" element={<FAQPage />} />

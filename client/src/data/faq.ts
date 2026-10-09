@@ -27,16 +27,16 @@ export const faqItems: FAQItem[] = [
   {
     question: 'How do I sign up for a free trial?',
     answer:
-      'Use our Free Trial sign-up flow to choose Kids or Teen & Adult, pick a Saturday, and submit your information. We will confirm your spot by email within 1–2 business days.',
+      'Use the Free Trial Sign Up button on the site to open the trial form. Choose Kids or Teen & Adult, pick a Sunday, and submit your information. We will confirm your spot by email within 1–2 business days.',
   },
   {
     question: 'How much are classes after your free trial?',
     answer: '$30 per class',
   },
   {
-    question: 'Are classes only on Saturdays?',
+    question: 'Are classes only on Sundays?',
     answer:
-      'Yes — at this time all group classes meet on Saturdays at Pacific Rim Center. Kids meet 10:00–11:00 AM; Teen & Adult meet 11:00 AM–1:00 PM.',
+      'Yes — at this time all group classes meet on Sundays at Pacific Rim Center. Kids meet 2:00–3:00 PM; Teen & Adult meet 3:00–5:00 PM.',
   },
   {
     question: 'Where is the school located?',

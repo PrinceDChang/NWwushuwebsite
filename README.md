@@ -21,7 +21,7 @@ One Node web service builds the React app and serves it from Express, including:
 
 - `POST /api/contact` — owner notification + visitor confirmation via Resend
 - `POST /api/trial` — trial request emails via Resend
-- `GET /api/trial-spots` — Saturday capacity for the booking calendar
+- `GET /api/trial-spots` — Sunday capacity for the booking calendar
 - All existing page URLs (`/about/`, `/trial/booking/`, `/location/#summer`, …)
 
 ### Render setup

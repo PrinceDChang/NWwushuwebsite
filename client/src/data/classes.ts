@@ -1,3 +1,5 @@
+import { site } from './site';
+
 export type ClassType = 'kids' | 'adult';
 
 export interface WushuClass {
@@ -20,10 +22,10 @@ export const classes: WushuClass[] = [
     instructor: 'Jim Kirk',
     description:
       'Foundational movements, flexibility, coordination, and discipline through fun exercises.',
-    day: 'Saturday',
-    time: '10:00 AM – 11:00 AM',
+    day: 'Sunday',
+    time: '2:00 PM – 3:00 PM',
     priceNote: 'Monthly rates available — ask at your trial',
-    signupHref: '/trial/?class=kids',
+    signupHref: site.trialSignupUrl,
   },
   {
     id: 'adult',
@@ -32,14 +34,14 @@ export const classes: WushuClass[] = [
     instructor: 'Jim Kirk',
     description:
       'Traditional forms, weapons training, and conditioning for all skill levels.',
-    day: 'Saturday',
-    time: '11:00 AM – 1:00 PM',
+    day: 'Sunday',
+    time: '3:00 PM – 5:00 PM',
     priceNote: 'Monthly rates available — ask at your trial',
-    signupHref: '/trial/?class=adult',
+    signupHref: site.trialSignupUrl,
   },
 ];
 
 export const trialSlots = {
-  kids: { label: 'Kids Wushu', time: '10:00 AM – 11:00 AM' },
-  adult: { label: 'Teen & Adult Wushu', time: '11:00 AM – 1:00 PM' },
+  kids: { label: 'Kids Wushu', time: '2:00 PM – 3:00 PM' },
+  adult: { label: 'Teen & Adult Wushu', time: '3:00 PM – 5:00 PM' },
 } as const;
