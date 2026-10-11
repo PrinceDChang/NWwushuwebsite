@@ -11,7 +11,7 @@ services:
       - key: NODE_VERSION
         value: "22"
       - key: OWNER_EMAIL
-        value: Contact@northwestwushu.com
+        value: contact@northwestwushu.net
       - key: FROM_EMAIL
         value: Northwest Wushu <onboarding@resend.dev>
       - key: RESEND_API_KEY

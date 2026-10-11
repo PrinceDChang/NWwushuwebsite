@@ -4,7 +4,7 @@ export const site = {
   tagline: 'Master the art of wushu',
   description:
     'Seattle’s home for traditional Chinese martial arts since 2008. All levels welcome — kids, teens, and adults.',
-  email: 'Contact@northwestwushu.com',
+  email: 'contact@northwestwushu.net',
   instagram: 'https://www.instagram.com/northwestwushu/',
   instagramHandle: '@northwestwushu',
   discord: 'https://discord.gg/4PrbsZTfH',

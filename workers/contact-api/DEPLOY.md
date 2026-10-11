@@ -139,7 +139,7 @@ cd workers/contact-api && npm run deploy
 
 | What | Where |
 |------|--------|
-| Owner inbox | `Contact@northwestwushu.com` (in `wrangler.toml`) |
+| Owner inbox | `contact@northwestwushu.net` (in `wrangler.toml`) |
 | API code | `workers/contact-api/src/index.ts` |
 | Form script | `public/scripts/contact-form.js` |
 | Resend dashboard | [resend.com/emails](https://resend.com/emails) |
