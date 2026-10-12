@@ -2,6 +2,29 @@ import { site } from '../data/site';
 import { instagramPosts, instagramProfile, parseInstagramCaption } from '../lib/instagram';
 
 const followerFormatter = new Intl.NumberFormat('en-US', { notation: 'compact' });
+const countFormatter = new Intl.NumberFormat('en-US');
+
+function HeartIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path
+        fill="currentColor"
+        d="M12.1 21.35 10.55 19.94C5.4 15.27 2 12.21 2 8.5 2 5.5 4.42 3.15 7.5 3.15c1.74 0 3.41.81 4.5 2.09a6.01 6.01 0 0 1 4.5-2.09C19.58 3.15 22 5.5 22 8.5c0 3.71-3.4 6.77-8.55 11.44z"
+      />
+    </svg>
+  );
+}
+
+function CommentIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path
+        fill="currentColor"
+        d="M20 2H4a2 2 0 0 0-2 2v16.59a1 1 0 0 0 1.7.71L8 17h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"
+      />
+    </svg>
+  );
+}
 
 export default function InstagramSection() {
   const profile = instagramProfile;
@@ -67,10 +90,13 @@ export default function InstagramSection() {
         <ul className="instagram-grid" role="list">
           {posts.map((post) => {
             const { description, hashtags } = parseInstagramCaption(post.caption);
-            const hasOverlay = Boolean(description || hashtags.length > 0);
+            const likeLabel = `${countFormatter.format(post.likes)} likes`;
+            const commentLabel = `${countFormatter.format(post.comments)} comments`;
             const ariaLabel = [
               description,
               hashtags.length > 0 ? hashtags.join(' ') : '',
+              likeLabel,
+              commentLabel,
               post.isVideo ? 'Video' : '',
               'View on Instagram',
             ]
@@ -95,7 +121,7 @@ export default function InstagramSection() {
                     loading="lazy"
                     decoding="async"
                   />
-                  {hasOverlay && (
+                  {(description || hashtags.length > 0) && (
                     <span className="instagram-grid__overlay">
                       {description && <span className="instagram-grid__caption">{description}</span>}
                       {hashtags.length > 0 && (
@@ -109,6 +135,16 @@ export default function InstagramSection() {
                       )}
                     </span>
                   )}
+                  <span className="instagram-grid__engagement" aria-hidden="true">
+                    <span className="instagram-grid__stat">
+                      <HeartIcon />
+                      {countFormatter.format(post.likes)}
+                    </span>
+                    <span className="instagram-grid__stat">
+                      <CommentIcon />
+                      {countFormatter.format(post.comments)}
+                    </span>
+                  </span>
                   {post.isVideo && (
                     <span className="instagram-grid__badge" aria-hidden="true">
                       ▶

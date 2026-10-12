@@ -1,7 +1,7 @@
 import profileMeta from '../data/instagram-profile.json';
 import postsMeta from '../data/instagram-posts.json';
 
-type PostsMeta = Record<string, { caption: string; isVideo: boolean }>;
+type PostsMeta = Record<string, { caption: string; isVideo: boolean; likes: number; comments: number }>;
 
 export type InstagramPost = {
   id: string;
@@ -11,6 +11,8 @@ export type InstagramPost = {
   alt: string;
   caption: string;
   isVideo: boolean;
+  likes: number;
+  comments: number;
 };
 
 export type InstagramProfile = {
@@ -48,5 +50,7 @@ export const instagramPosts: InstagramPost[] = Object.entries(postsMeta as Posts
     alt: meta.caption || `Instagram post ${shortcode}`,
     caption: meta.caption,
     isVideo: meta.isVideo,
+    likes: meta.likes ?? 0,
+    comments: meta.comments ?? 0,
   }),
 );
